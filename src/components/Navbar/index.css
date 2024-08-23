@@ -1,0 +1,222 @@
+/* Component.css */
+.header {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 6;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 5px 0px;
+    height: 56px;
+  }
+  
+  .container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 24px;
+    padding-left: 24px;
+    margin-right: auto;
+    margin-left: auto;
+    height: 100%;
+    max-width: 1366px;
+  }
+  
+  .brand {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-width: 224px;
+  }
+  
+  .brand-logo {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100%;
+  }
+  
+  .brand-logo img {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: 0;
+  }
+  
+  .nav {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto;
+    margin-right: 24px;
+    margin-left: 24px;
+  }
+  
+  .nav ul {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    display: flex;
+    font-size: 15px;
+  }
+  
+  .nav li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .nav-item {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-top: 2px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    border-bottom-style: solid;
+    border-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    border-bottom-width: 4px;
+  }
+  
+  .nav-item + .nav-item {
+    margin-left: 60px;
+  }
+  
+  .search {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    color: rgb(72, 72, 72);
+  }
+  
+  .search-container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-grow: 0;
+    flex-shrink: 1;
+    margin-right: 24px;
+    font-size: 0;
+    cursor: pointer;
+    flex-basis: 320px;
+  }
+  
+  .search-box {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 5;
+  }
+  
+  .search-input-container {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    outline: none;
+  }
+  
+  .search-input-wrapper {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+  
+  .search-input {
+    padding: 0;
+    box-sizing: border-box;
+    font: inherit;
+    margin: 0;
+    line-height: normal;
+    display: inline-block;
+    overflow: visible;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 15px;
+    color: rgb(51, 51, 51);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(213, 213, 213);
+    border-radius: 3px;
+    padding-right: 50px;
+  }
+  
+  .search-icon {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    font-size: 15px;
+    color: rgb(51, 51, 51);
+    transform: translateY(-50%);
+    user-select: none;
+    right: 0;
+  }
+  
+  .location {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    margin-right: 12px;
+    cursor: pointer;
+  }
+  
+  .location-badge {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: rgb(224, 48, 18);
+    border-radius: 50%;
+  }
+  
+  .language-icon {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-right: 12px;
+    margin-left: 12px;
+    width: 24px;
+    height: 24px;
+  }
+  
