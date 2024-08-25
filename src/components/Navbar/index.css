@@ -163,16 +163,22 @@ body {
   align-items: center;
 }
 
-.location, .language-icon {
+.location {
   display: flex;
   align-items: center;
   margin-left: 25px;
   cursor: pointer;
   color: #333333;
   transition: color 0.3s ease, transform 0.3s ease;
+  flex-direction: column; /* Stack icon and text */
 }
 
-.location:hover, .language-icon:hover {
+.location-icon {
+  display: flex;
+  align-items: center;
+}
+
+.location:hover {
   color: #ff8800;
   transform: scale(1.1);
 }
@@ -186,6 +192,33 @@ body {
   top: 4px;
   right: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.location-text {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #333333;
+  font-weight: 500;
+  text-align: center;
+}
+
+.location:hover .location-text {
+  color: #ff8800;
+}
+
+/* Language Icon */
+.language-icon {
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+  cursor: pointer;
+  color: #333333;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.language-icon:hover {
+  color: #ff8800;
+  transform: scale(1.1);
 }
 
 /* Responsive Design */
@@ -215,4 +248,60 @@ body {
   .location, .language-icon {
     margin-left: 15px;
   }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  position: relative;
+  overflow-y: auto;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.states-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.state-item {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.state-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.state-name {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333333;
+  font-weight: 500;
 }

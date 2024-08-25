@@ -1,8 +1,14 @@
-import React from "react";
-import { FaCar, FaSearch, FaMapMarkerAlt, FaGlobe } from "react-icons/fa";
+import React ,{ useState } from "react";
+import { FaSearch, FaMapMarkerAlt, FaUser } from "react-icons/fa";
+import Modal from "react-modal";
+import { statesData } from "../../statesData";
 import "./index.css";
 
 export default function Navbar() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
   return (
     <>
       <header className="header">
@@ -40,17 +46,37 @@ export default function Navbar() {
               </div>
             </div>
             <div className="icons">
-              <div className="location" title="Location">
-                <span className="location-badge" />
+            <div className="location" title="Location" onClick={openModal}>
+              <div className="location-icon">
                 <FaMapMarkerAlt size={24} />
               </div>
+              <div className="location-text">Choose Location</div>
+            </div>
               <div className="language-icon" title="Language">
-                <FaGlobe size={24} />
+                <FaUser size={24} />
               </div>
             </div>
           </div>
         </div>
       </header>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        className="modal"
+        overlayClassName="modal-overlay"
+        contentLabel="Select State"
+      >
+        <button onClick={closeModal} className="modal-close-button">×</button>
+        <h2>Select a State</h2>
+        <div className="states-list">
+          {statesData.map((state, index) => (
+            <div key={index} className="state-item">
+              <img src={state.image} alt={state.name} className="state-image" />
+              <p className="state-name">{state.name}</p>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </>
   );
 }
