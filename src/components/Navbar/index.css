@@ -18,7 +18,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-bottom: 2px solid #eeeeee;
   position: relative;
-  z-index: 1000;
+  z-index: 1000; /* Adjust z-index if needed */
 }
 
 /* Container */
@@ -248,15 +248,17 @@ body {
   .location, .language-icon {
     margin-left: 15px;
   }
-}/* Modal Overlay */
+}
+
+/* Modal Overlay */
 .modal-overlay {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center; /* Changed to center vertically */
   background-color: rgba(0, 0, 0, 0.5);
-  padding-top: 30px;
+  padding: 30px 0; /* Adjusted padding */
   animation: fadeIn 0.3s ease-out;
-  z-index: 1050;
+  z-index: 1050; /* Ensure this is higher than the header */
 }
 
 @keyframes fadeIn {
@@ -280,6 +282,7 @@ body {
   max-height: 80vh;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   animation: slideDown 0.4s ease-out;
+  z-index: 1060; /* Ensure this is higher than the overlay */
 }
 
 @keyframes slideDown {
@@ -310,6 +313,7 @@ body {
   font-size: 20px;
   color: #ff0000; /* Red color for the icon */
   transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  z-index: 1061; /* Ensure this is higher than the modal content */
 }
 
 .modal-close-button:hover {
@@ -321,7 +325,6 @@ body {
 .modal-close-button:focus {
   outline: none; /* Remove default focus outline */
 }
-
 
 /* Modal Header */
 .modal-header {
@@ -341,6 +344,7 @@ body {
 .state-search:focus {
   border-color: #007bff;
 }
+
 /* States List */
 .states-list {
   display: flex;
@@ -411,7 +415,6 @@ body {
   letter-spacing: 0.5px;
   cursor: pointer;
 }
-
 
 /* Show More Button */
 .show-more-button {
