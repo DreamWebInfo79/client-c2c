@@ -1,18 +1,394 @@
-/* Home.css */
 .home-container {
-    width: 100%;
-    height: 100vh; /* Full viewport height */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  .home-background {
-    width: 100%;
-    height: 100%;
-    background-image: url('https://img.freepik.com/free-photo/car-road-with-mountain-sunset_181624-10502.jpg?t=st=1724690597~exp=1724694197~hmac=ff43705319f22084e7bd4519f5ee089e09544ce02dfe7bb862d198a3e6b079e2&w=826'); /* Replace with your image path */
-    background-size: cover;
-    background-position: center;
-  }
-  
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.brand-container {
+  margin: 50px 0;
+  padding: 0 20px;
+}
+
+.brand-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #333;
+  font-weight: bold;
+  position: relative;
+}
+
+.brand-container h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #28a745;
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+}
+
+.slick-slide {
+  padding: 0 15px;
+}
+
+.car-card {
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.car-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.car-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-bottom: 2px solid #e0e0e0;
+}
+.car-details {
+  padding: 20px;
+  background-color: #f7f7f7;
+  position: relative; /* Ensure the button is positioned relative to the details section */
+  padding-bottom: 60px; /* Add extra padding at the bottom to make space for the button */
+}
+
+.car-details h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  color: #333;
+  font-weight: bold;
+}
+
+.car-details p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+.buy-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s, transform 0.3s;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.buy-button:hover {
+  background-color: #218838;
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Custom slider dots and arrows */
+.slick-dots {
+  bottom: -40px;
+}
+
+.slick-dots li button:before {
+  font-size: 14px;
+  color: #333;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #28a745;
+}
+
+.slick-prev, .slick-next {
+  font-size: 24px;
+  color: #333;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.slick-prev:hover, .slick-next:hover {
+  color: #28a745;
+  background-color: #e9ecef;
+}
+
+
+/* Component.css */
+
+.NewUcExCard {
+  box-sizing: border-box;
+  position: relative;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgba(36, 39, 44, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px;
+  margin: 0px;
+  margin-bottom: 0px;
+  font-family: 'Poppins', sans-serif;
+  height: 315px;
+  list-style-type: none;
+  list-style: outside none none;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.image_container {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  height: 154px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.imagebox {
+  box-sizing: border-box;
+  cursor: pointer;
+  background: rgba(229, 229, 229, 0.3);
+  position: relative;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.imagebox img {
+  box-sizing: border-box;
+  border: 0px;
+  max-width: 100%;
+  border-style: none;
+  width: 100%;
+  object-fit: cover;
+  height: 154px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bottom_container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 0px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.title_heart_section {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-family: 'Poppins', sans-serif;
+}
+
+.titlebox {
+  box-sizing: border-box;
+  cursor: pointer;
+  width: calc(100% - 35px);
+  font-family: 'Poppins', sans-serif;
+}
+
+.title {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px 0px 4px;
+  overflow: hidden;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: rgb(36, 39, 44);
+  text-overflow: ellipsis;
+  width: 98%;
+  font-size: 14px;
+  line-height: 17px;
+  white-space: nowrap;
+  font-family: 'Poppins', sans-serif;
+}
+
+.titlebox a {
+  box-sizing: border-box;
+  text-decoration: none;
+  background-color: transparent;
+  color: rgb(36, 39, 44);
+  cursor: pointer;
+  font-weight: inherit;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dotsDetails {
+  box-sizing: border-box;
+  white-space: nowrap;
+  font-weight: 400;
+  color: rgba(36, 39, 44, 0.7);
+  font-size: 10px;
+  line-height: 13px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dotsDetails span {
+  box-sizing: border-box;
+  color: rgb(36, 39, 44);
+  font-family: 'Poppins', sans-serif;
+}
+
+#shortlistHeartIcon {
+  box-sizing: border-box;
+  border-radius: 50%;
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0);
+  padding: 0px;
+  width: 30px;
+  height: auto;
+  position: relative;
+  top: -5px;
+  right: -9px;
+  font-family: 'Poppins', sans-serif;
+}
+
+#shortlistHeartIcon img {
+  box-sizing: border-box;
+  border: 0px;
+  max-width: 100%;
+  border-style: none;
+  position: relative;
+  width: 24px;
+  height: auto;
+  top: 0px;
+  right: 0px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.Price {
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.Price p {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  font-weight: 600;
+  padding-top: 8px;
+  color: rgb(36, 39, 44);
+  font-size: 18px;
+  line-height: 17px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.discounts {
+  box-sizing: border-box;
+  margin-top: 0px;
+  display: block;
+  align-items: center;
+  height: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.sellerdetail {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lead-btn-holder {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+}
+
+.lead-btn-holder button {
+  box-sizing: border-box;
+  font: inherit;
+  margin: 0px;
+  overflow: visible;
+  text-transform: none;
+  appearance: button;
+  cursor: pointer;
+  padding: 0px;
+  background: none;
+  border: none;
+  align-items: center;
+  margin-top: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  height: 21px;
+  line-height: normal;
+  color: rgb(247, 93, 52);
+  font-family: 'Poppins', sans-serif;
+}
+
+.lead-btn-holder button img {
+  box-sizing: border-box;
+  border: 0px;
+  max-width: 100%;
+  border-style: none;
+  margin-left: 3px;
+  cssFloat: right;
+  height: auto;
+  width: auto;
+  position: relative;
+  top: -1px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.distanceText {
+  box-sizing: border-box;
+  border-top: 1px dashed rgba(36, 39, 44, 0.15);
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 8px;
+  padding-top: 8px;
+  text-overflow: ellipsis;
+  position: absolute;
+  bottom: 11px;
+  left: 20px;
+  width: calc(100% - 40px);
+  color: rgb(36, 39, 44);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.distanceText img {
+  box-sizing: border-box;
+  border: 0px;
+  max-width: 100%;
+  border-style: none;
+  margin: 0px 2px 0px 0px;
+  vertical-align: -2px;
+  width: 12px;
+  height: 12px;
+  display: inline;
+  font-family: 'Poppins', sans-serif;
+}

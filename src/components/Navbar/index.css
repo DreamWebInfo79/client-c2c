@@ -256,6 +256,7 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
   padding-top: 30px;
   animation: fadeIn 0.3s ease-out;
+  z-index: 1050;
 }
 
 @keyframes fadeIn {

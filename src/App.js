@@ -11,6 +11,7 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
+        {/* <Home/> */}
           <Route path="/" element={<Home />} />
           {/* Add more routes here as needed */}
         </Routes>
