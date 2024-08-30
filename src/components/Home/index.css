@@ -392,3 +392,29 @@
   display: inline;
   font-family: 'Poppins', sans-serif;
 }
+
+.gif-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* Add spacing around the GIF */
+  padding: 10px;
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  overflow: hidden; /* Hide overflow if GIF is larger than the container */
+}
+
+.styled-gif {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px; /* Rounded corners */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add a zoom effect on hover */
+.styled-gif:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}
+

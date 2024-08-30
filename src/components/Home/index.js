@@ -7,6 +7,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { BiSolidRightArrowCircle } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
+// import carVideo from '../../../public/video/c2cintro.mp4'
 
 
 import './index.css';
@@ -213,6 +214,14 @@ const Home = () => {
 
   return (
     <div className="home-container">
+               <div className="gif-container">
+        <img
+          src="/video/car.gif"
+          alt="Description of the GIF"
+          width="100%" // Adjust size as needed
+          height="auto" // Maintain aspect ratio
+        />
+      </div>
       {brands.map(brand => (
         <div className="brand-container" key={brand}>
           <h2>{brand} Cars</h2>
