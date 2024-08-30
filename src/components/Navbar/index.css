@@ -313,8 +313,8 @@ body {
 }
 
 .modal-close-button:hover {
-  background: #ffcccc; /* Darker red on hover */
-  color: #cc0000; /* Darker red for the icon */
+  background: #ffcccc; 
+  color: #cc0000; 
   transform: scale(1.1); /* Slightly increase size on hover */
 }
 
