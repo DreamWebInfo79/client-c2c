@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
-import { FaTag, FaCogs, FaMapMarkerAlt, FaCar, FaTachometerAlt, FaChair, FaGasPump, FaPaintBrush, FaUser } from 'react-icons/fa';
+import { FaRegHeart, FaTag, FaCogs, FaMapMarkerAlt, FaCar, FaTachometerAlt, FaChair, FaGasPump, FaPaintBrush, FaUser, FaHeart } from 'react-icons/fa';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 import { cars } from './cars';
@@ -44,8 +44,23 @@ const CarDetails = () => {
   return (
     <>
       <div className="car-details-container">
+      <div className='car-header-container'>
+  <div className='car-header-left'>
+    <h1>{car.brand} {car.model}</h1>
+    <p className='car-infos'>{car.year} | {car.fuelType} | {car.transmission}</p>
+  </div>
+  <div className='car-header-left'>
+    <p className='car-price'>Price: {car.price}</p>
+  </div>
+  <div className='car-header-right'>
+    <FaRegHeart className='favourite-icon' />
+    <p> Add to favourite</p>
+  </div>
+</div>
+
         <div className="car-image-container">
           <img src={car.image} alt={car.model} className="car-image" />
+          <div></div>
         </div>
         <div className="car-details">
           <h1>{`${car.year} ${car.model}`}</h1>
