@@ -17,3 +17,6 @@ export const statesData = [
   { name: 'Meghalaya', image: '/states/Meghalaya.jpg' }, // Living Root Bridges
   { name: 'Puducherry', image: '/states/Puducherry.jpeg' }, // Auroville
 ];
+
+
+export const videoGif = "/public/video/carGif.gif"

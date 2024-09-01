@@ -1,6 +1,10 @@
+*{
+  font-family: "Montserrat", sans-serif !important;
+}
+
 body {
   margin: 0;
-  font-family: "Nunito", sans-serif;
+  /* font-family: "Nunito", sans-serif; */
   font-optical-sizing: auto;
   font-style: normal;
   -webkit-font-smoothing: antialiased;

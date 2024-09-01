@@ -7,7 +7,10 @@ import { CiLocationOn } from "react-icons/ci";
 import { BiSolidRightArrowCircle } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 // import carVideo from '../../../public/video/c2cintro.mp4'
+import CarSearchForm from '../CarSearchForm';
+import {videoGif} from '../../statesData';
 
 
 import './index.css';
@@ -196,12 +199,12 @@ const settings = {
   arrows: true,
   prevArrow: <FaChevronLeft className="slick-prev" />,
   nextArrow: <FaChevronRight className="slick-next" />,
-  autoplay:true
+  autoplay: true,
 };
-
 
 const Home = () => {
   const [favourites, setFavourites] = useState({});
+  const navigate = useNavigate();
 
   const toggleFavourite = (carId) => {
     setFavourites((prevFavourites) => ({
@@ -212,79 +215,84 @@ const Home = () => {
 
   const brands = Array.from(new Set(cars.map(car => car.brand)));
 
+
+const style = {
+  backgroundImage: `url(/video/car.gif)`,
+  backgroundSize:'cover',
+  height:'500px',
+};
+
+
   return (
     <div className="home-container">
-               <div className="gif-container">
+      {/* <div className="gif-container">
         <img
           src="/video/car.gif"
           alt="Description of the GIF"
-          width="100%" // Adjust size as needed
-          height="auto" // Maintain aspect ratio
+          width="100%"
+          height="auto"
         />
-      </div>
+      </div> */}
+        <div className="car-search-form-container"  style={style}>
+          <CarSearchForm />
+        </div>
       {brands.map(brand => (
         <div className="brand-container" key={brand}>
           <h2>{brand} Cars</h2>
           <Slider {...settings}>
-            {cars
-              .filter(car => car.brand === brand)
-              .map(car => (
-                <div className="NewUcExCard posR" key={car.id}>
-                  <div className="image_container posR">
-                    <div className="imagebox hover">
-                      <img
-                        height={154}
-                        width={284}
-                        alt={car.model}
-                        src={car.image}
-                        title={car.model}
-                        className="car-image"
-                      />
-                    </div>
-                  </div>
-                  <div className="bottom_container">
-                    <div className="title_heart_section">
-                      <div className="titlebox hover">
-                        <h3 className="title">
-                          <a
-                            href="#"
-                            title={car.model}
-                            className="car-link"
-                          >
-                            {`${car.year} ${car.model}`}
-                          </a>
-                        </h3>
-                        <div className="dotsDetails">
-                          {`${car.year} • ${car.condition}`}
-                        </div>
-                      </div>
-                      <div
-                        id="shortlistHeartIcon"
-                        className="shortlist NewUcrShortList"
-                        onClick={() => toggleFavourite(car.id)}
-                      >
-                        {favourites[car.id] ? <FaHeart /> : <FaRegHeart />}
-                      </div>
-                    </div>
-                    <div className="Price hover">
-                      <p className="car-price">{car.price}</p>
-                    </div>
-                    <div className="discounts" />
-                    <div className="sellerdetail">
-                      <div className="lead-btn-holder">
-                        <button id="ucrVDP-ucButton-0" className="seller-button">
-                          View More
-                          <BiSolidRightArrowCircle />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="distanceText">
-                      <CiLocationOn />
-                      {car.location}
-                    </div>
+            {cars.filter(car => car.brand === brand).map(car => (
+              <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
+                <div className="image_container posR">
+                  <div className="imagebox hover">
+                    <img
+                      height={154}
+                      width={284}
+                      alt={car.model}
+                      src={car.image}
+                      title={car.model}
+                      className="car-image"
+                    />
                   </div>
                 </div>
-              ))}
+                <div className="bottom_container">
+                  <div className="title_heart_section">
+                    <div className="titlebox hover">
+                      <h3 className="title">
+                        <a  href="#" title={car.model} className="car-link">
+                          {`${car.year} ${car.model}`}
+                        </a>
+                      </h3>
+                      <div className="dotsDetails">
+                        {`${car.year} • ${car.condition}`}
+                      </div>
+                    </div>
+                    <div
+                      id="shortlistHeartIcon"
+                      className="shortlist NewUcrShortList"
+                      onClick={() => toggleFavourite(car.id)}
+                    >
+                      {favourites[car.id] ? <FaHeart /> : <FaRegHeart />}
+                    </div>
+                  </div>
+                  <div className="Price hover">
+                    <p className="car-price">{car.price}</p>
+                  </div>
+                  <div className="discounts" />
+                  <div className="sellerdetail">
+                    <div className="lead-btn-holder">
+                      <button id="ucrVDP-ucButton-0" className="seller-button">
+                        View More
+                        <BiSolidRightArrowCircle />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="distanceText">
+                    <CiLocationOn />
+                    {car.location}
+                  </div>
+                </div>
+              </div>
+            ))}
           </Slider>
         </div>
       ))}

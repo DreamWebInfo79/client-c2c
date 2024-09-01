@@ -1,5 +1,7 @@
+/* import video from '../../../public/video/c2cintro.mp4' */
+
 .home-container {
-  padding: 20px;
+  /* padding: 20px; */
   background-color: #f8f9fa;
 }
 
@@ -397,12 +399,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0; /* Add spacing around the GIF */
-  padding: 10px;
+  /* margin: 20px 0;  */
+  /* padding: 10px; */
   background-color: #f9f9f9; /* Light background for contrast */
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  overflow: hidden; /* Hide overflow if GIF is larger than the container */
+  overflow: hidden;
+  height: 500px; /* Hide overflow if GIF is larger than the container */
 }
 
 .styled-gif {
@@ -417,4 +420,18 @@
   transform: scale(1.05); /* Slight zoom on hover */
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
 }
+/* 
+.car-search-form-container {
+  background-image: url("/video/car.gif");
+} */
 
+.car-search-form-container{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 400px;
+  width: 100%;
+  background-color: #f9f9f9 !important;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
