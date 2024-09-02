@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Slider from 'react-slick';
 import { FaChevronLeft,FaChevronRight } from "react-icons/fa6";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -190,21 +189,9 @@ const cars = [
   }
 ]
 
-const settings = {
-  dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  arrows: true,
-  prevArrow: <FaChevronLeft className="slick-prev" />,
-  nextArrow: <FaChevronRight className="slick-next" />,
-  autoplay: true,
-};
-
 const Home = () => {
   const [favourites, setFavourites] = useState({});
-  const [activeTab, setActiveTab] = useState('SUV');
+  const [activeTab, setActiveTab] = useState('All');
   const navigate = useNavigate();
 
   const toggleFavourite = (carId) => {
@@ -214,7 +201,7 @@ const Home = () => {
     }));
   };
 
-  const brands = Array.from(new Set(cars.map(car => car.brand)));
+  const filteredCars = activeTab === 'All' ? cars : cars.filter(car => car.brand === activeTab);
 
 
 const style = {
@@ -237,44 +224,49 @@ const style = {
         <div className="car-search-form-container"  style={style}>
           <CarSearchForm />
         </div>
-      {/* {brands.map(brand => ( */}
+        <div className="car-container-main">
         <h1 className="car-container-heading">Popular Cars</h1>
         <div className="tabs-container">
         <div 
-          className={`tab ${activeTab === 'Toyota' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('Toyota')}
+          className={`tab ${activeTab === 'All' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('All')}
         >
-          SUV
+          All CARS
         </div>
         <div 
           className={`tab ${activeTab === 'Honda' ? 'active' : ''}`} 
           onClick={() => setActiveTab('Honda')}
         >
-          Hatchback
+          Honda
         </div>
         <div 
           className={`tab ${activeTab === 'Maruti' ? 'active' : ''}`} 
           onClick={() => setActiveTab('Maruti')}
         >
-          Sedan
+          Maruti
         </div>
         <div 
           className={`tab ${activeTab === 'Hyundai' ? 'active' : ''}`} 
           onClick={() => setActiveTab('Hyundai')}
         >
-          MUV
+          Hyundai
         </div>
         <div 
           className={`tab ${activeTab === 'Ford' ? 'active' : ''}`} 
           onClick={() => setActiveTab('Ford')}
         >
-          Luxury
+          Ford
+        </div>
+        <div 
+          className={`tab ${activeTab === 'Toyota' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('Toyota')}
+        >
+          Toyota
         </div>
       </div>
-        <div className="cars-brand-container">
+        <div className="cars-brand-container-home">
           {/* <h2>{brand} Cars</h2> */}
-          {/* <Slider {...settings}> */}
-            {cars.map(car => (
+            {filteredCars.map(car => (
               <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
                 <div className="image_container posR">
                   <div className="imagebox hover">
@@ -292,7 +284,7 @@ const style = {
                   <div className="title_heart_section">
                     <div className="titlebox hover">
                       <h3 className="title">
-                        <a  href="#" title={car.model} className="car-link">
+                        <a title={car.model} className="car-link">
                           {`${car.year} ${car.model}`}
                         </a>
                       </h3>
@@ -327,9 +319,9 @@ const style = {
                 </div>
               </div>
             ))}
-          {/* </Slider> */}
         </div>
       {/* ))} */}
+    </div>
     </div>
   );
 };

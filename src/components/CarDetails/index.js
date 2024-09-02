@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { MdLocationOn } from "react-icons/md";
+import { FaWhatsapp, FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+
 import { useParams, useNavigate } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
 import { FaRegHeart, FaTag, FaCogs, FaMapMarkerAlt, FaCar, FaTachometerAlt, FaChair, FaGasPump, FaPaintBrush, FaUser, FaHeart } from 'react-icons/fa';
@@ -92,37 +95,31 @@ const CarDetails = () => {
                 </div>
             </Carousel>
   </div>
-
   <div className="car-info">
-    <h1>{car.brand} {car.model}</h1>
+    <h1 className="car-title">{car.brand} {car.model}</h1>
     
     <p className="car-description">Car is at a good price and condition</p>
-    <p className="car-details">
-      <strong>Year:</strong> {car.year} <br />
-      <strong>Mileage:</strong> {car.kmDriven} km <br />
-      <strong>Condition:</strong> {car.condition}
-    </p>
-    <p><strong>Home Test Drive :</strong> Available</p>
-    <p><strong>Location:</strong> Spinny Car Hub, DSL Virtue Mall, Hyderabad</p>
-    <div>
-      <div>
-        <h1>$ 3.12e Lakh</h1>
-        <p>Fixed on road price</p>
-      </div>
-      <div className="btn-container">
-        <div>
-        <button className="book-now">Book Now <br/> 100% Cashback </button>
-      </div>
-      <div>
-        <button className="free-test-drive">Free Test Drive</button>
-      </div>
-      </div>
-      
-      <div>
+    <p className="car-detail"><strong>Year:</strong> {car.year}</p>
+    <p className="car-detail"><strong>Mileage:</strong> {car.kmDriven} km</p>
+    <p className="car-detail"><strong>Condition:</strong> {car.condition}</p>
+    <p className="car-detail"><strong>Location:</strong> Spinny Car Hub, DSL Virtue Mall, Hyderabad</p>
+    <p className="car-detail"><strong>Home Test Drive:</strong> Available</p>
 
-      </div>
+    <div className="btn-container">
+        <button className="book-now">Book Now <br/> 100% Cashback</button>
+        <button className="free-test-drive">Free Test Drive</button>
     </div>
+    
+    <div className="share-container">
+        <h2>Share with a friend:</h2>
+        <div className="social-icons">
+            <FaWhatsapp className="social-icon" />
+            <FaFacebook className="social-icon" />
+            <FaTwitter className="social-icon" />
+            <FaInstagram className="social-icon" />
+        </div>
     </div>
+</div>
   </div>
 
         <div className="car-details">

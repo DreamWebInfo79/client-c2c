@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import Slider from 'rc-slider';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 import 'rc-slider/assets/index.css';
 import './index.css';
+
 
 const CarSearchForm = () => {
   const [budget, setBudget] = useState(0);
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
+  const [value, setValue] = useState([2, 30]);
 
   const handleBrandOptionChange = (event) => {
     setSelectBrandValue(event.target.value);
@@ -24,18 +27,13 @@ const CarSearchForm = () => {
   );
 
   const handleBudgetChange = (value) => {
-    setBudget(value);
+    setValue(value);
   };
 
-  const marks = {
-    0: '0L',
-    2: '2L',
-    5: '5L',
-    10: '10L',
-    15: '15L',
-    20: '20L',
-    25: '25L',
-  };
+
+  function valuetext(value) {
+    return `${value}L`;
+  }
 
   const renderBrandOptions = () => (
     <>
@@ -51,6 +49,10 @@ const CarSearchForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Your submit logic
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
@@ -69,17 +71,18 @@ const CarSearchForm = () => {
         </div>
         <div className="slider-container">
           <label htmlFor="budgetSlider" className="label-slider-item">Select Budget</label>
+          <Box sx={{ width: 300 }}>
           <Slider
-            id="budgetSlider"
-            min={0}
-            max={25}
-            marks={marks}
-            step={null}
-            onChange={handleBudgetChange}
-            value={budget}
-            className='slider-item'
-          />
-          <div>Selected Budget: {budget > 0 ? `${budget}L` : 'Select Budget'}</div>
+              value={budget}
+              onChange={handleBudgetChange}
+              valueLabelDisplay="auto"
+              marks={value}
+              min={1}
+              max={25}
+              getAriaValueText={valuetext}
+            />
+          </Box>
+          <div>Selected Budget: {budget[0]}L - {budget[1]}L</div>
         </div>
         <div>
           <select

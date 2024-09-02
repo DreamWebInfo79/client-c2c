@@ -4,11 +4,12 @@ import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
 import {useGeoLocation} from 'geo-location-hook';
+import { Link } from 'react-router-dom'; 
 import "./index.css";
 
 export default function Navbar() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState(null);
   const { location, error, isLoading } = useGeoLocation();
@@ -95,11 +96,11 @@ export default function Navbar() {
           </div>
           <nav className="nav">
             <ul>
-              <li>
-                <div className="nav-item">CARS</div>
+            <li>
+                <Link to="/" className="nav-item">CARS</Link> 
               </li>
               <li>
-                <div className="nav-item">My CARS</div>
+                <Link to="/my-cars" className="nav-item">My CARS</Link> 
               </li>
             </ul>
           </nav>
