@@ -204,6 +204,7 @@ const settings = {
 
 const Home = () => {
   const [favourites, setFavourites] = useState({});
+  const [activeTab, setActiveTab] = useState('SUV');
   const navigate = useNavigate();
 
   const toggleFavourite = (carId) => {
@@ -236,11 +237,44 @@ const style = {
         <div className="car-search-form-container"  style={style}>
           <CarSearchForm />
         </div>
-      {brands.map(brand => (
-        <div className="brand-container" key={brand}>
-          <h2>{brand} Cars</h2>
-          <Slider {...settings}>
-            {cars.filter(car => car.brand === brand).map(car => (
+      {/* {brands.map(brand => ( */}
+        <h1 className="car-container-heading">Popular Cars</h1>
+        <div className="tabs-container">
+        <div 
+          className={`tab ${activeTab === 'Toyota' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('Toyota')}
+        >
+          SUV
+        </div>
+        <div 
+          className={`tab ${activeTab === 'Honda' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('Honda')}
+        >
+          Hatchback
+        </div>
+        <div 
+          className={`tab ${activeTab === 'Maruti' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('Maruti')}
+        >
+          Sedan
+        </div>
+        <div 
+          className={`tab ${activeTab === 'Hyundai' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('Hyundai')}
+        >
+          MUV
+        </div>
+        <div 
+          className={`tab ${activeTab === 'Ford' ? 'active' : ''}`} 
+          onClick={() => setActiveTab('Ford')}
+        >
+          Luxury
+        </div>
+      </div>
+        <div className="cars-brand-container">
+          {/* <h2>{brand} Cars</h2> */}
+          {/* <Slider {...settings}> */}
+            {cars.map(car => (
               <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
                 <div className="image_container posR">
                   <div className="imagebox hover">
@@ -293,9 +327,9 @@ const style = {
                 </div>
               </div>
             ))}
-          </Slider>
+          {/* </Slider> */}
         </div>
-      ))}
+      {/* ))} */}
     </div>
   );
 };
