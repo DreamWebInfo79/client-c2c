@@ -432,3 +432,19 @@ h1 {
 .social-icon:hover {
   color: #000;
 }
+/* .legend{
+  width: 150px;
+  height: 150px;
+} */
+
+/* styles.css */
+
+.line {
+  border: 0;
+  height: 2px; /* Thickness of the line */
+  background-color: #333; /* Color of the line */
+  margin: 20px 0; /* Space around the line */
+  width: 80%; /* Line width */
+  align-self: center; /* Center align the line */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Black shadow */
+}

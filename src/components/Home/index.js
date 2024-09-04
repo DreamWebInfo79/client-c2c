@@ -207,7 +207,7 @@ const Home = () => {
 const style = {
   backgroundImage: `url(/video/car.gif)`,
   backgroundSize:'cover',
-  height:'500px',
+  height:'550px',
 };
 
 

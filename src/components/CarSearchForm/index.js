@@ -6,10 +6,20 @@ import './index.css';
 
 
 const CarSearchForm = () => {
-  const [budget, setBudget] = useState(0);
+  const [budget, setBudget] = useState([2, 20]);
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
   const [value, setValue] = useState([2, 30]);
+
+  const states = [
+
+    "Any", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
+    "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", 
+    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
+    "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ];
 
   const handleBrandOptionChange = (event) => {
     setSelectBrandValue(event.target.value);
@@ -21,13 +31,17 @@ const CarSearchForm = () => {
 
   const renderCityOptions = () => (
     <>
-      <option value="">Select District</option>
-      {/* Your city options go here */}
+      <option value="">Select State</option>
+      {states.map((state) => (
+        <option key={state} value={state}>
+          {state}
+        </option>
+      ))}
     </>
   );
 
-  const handleBudgetChange = (value) => {
-    setValue(value);
+  const handleBudgetChange = (event, newValue) => {
+    setBudget(newValue); // Update the budget state with the selected range
   };
 
 
@@ -35,6 +49,15 @@ const CarSearchForm = () => {
     return `${value}L`;
   }
 
+  const marks = [
+    { value: 2, label: '2L' },
+    { value: 5, label: '5L' },
+    { value: 10, label: '10L' },
+    { value: 15, label: '15L' },
+    { value: 20, label: '20L' }
+  ];
+
+  
   const renderBrandOptions = () => (
     <>
       <option value="">Select Brand</option>
@@ -76,10 +99,11 @@ const CarSearchForm = () => {
               value={budget}
               onChange={handleBudgetChange}
               valueLabelDisplay="auto"
-              marks={value}
-              min={1}
-              max={25}
               getAriaValueText={valuetext}
+              min={2}
+              max={20}
+              step={1}
+              marks={marks}
             />
           </Box>
           <div>Selected Budget: {budget[0]}L - {budget[1]}L</div>
