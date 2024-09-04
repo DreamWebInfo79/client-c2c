@@ -6,7 +6,7 @@ import './index.css';
 
 
 const CarSearchForm = () => {
-  const [budget, setBudget] = useState([2, 20]);
+  const [budget, setBudget] = useState([1, 20]);
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
   const [value, setValue] = useState([2, 30]);
@@ -50,11 +50,11 @@ const CarSearchForm = () => {
   }
 
   const marks = [
-    { value: 2, label: '2L' },
+    { value: 1, label: '1L' },
     { value: 5, label: '5L' },
     { value: 10, label: '10L' },
     { value: 15, label: '15L' },
-    { value: 20, label: '20L' }
+    { value: 20, label: '20L+' }
   ];
 
   

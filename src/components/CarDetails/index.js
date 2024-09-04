@@ -16,6 +16,7 @@ import { FaUserTie } from "react-icons/fa";
 import { MdEventSeat } from "react-icons/md";
 import { FaSun, FaSnowflake, FaKey, FaCameraRetro, FaBluetooth, FaWindowMaximize } from 'react-icons/fa';
 import './index.css';
+import {  FaDoorOpen, FaShapes, FaParking, FaLock } from "react-icons/fa";
 
 const CarDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,15 @@ const CarDetails = () => {
     { icon: <MdEventSeat size={30} />, label: "Heated Seats" },
     { icon: <FaCameraRetro size={30} />, label: "Backup Camera" }
   ];
+
+  const carFeaturesss = [
+  { icon: <FaCar size={30} />, label: "Touchscreen Display" },
+  { icon: <FaDoorOpen size={30} />, label: "Number of Doors" },
+  { icon: <FaChair size={30} />, label: "Number of Seats" },
+  { icon: <FaShapes size={30} />, label: "Body Type"},
+  { icon: <FaParking size={30} />, label: "Parking Sensors" },
+  { icon: <FaLock size={30} />, label: "Child Safety Locks" }
+];
 
   useEffect(() => {
     const fetchCar = async () => {
@@ -260,22 +270,17 @@ const CarDetails = () => {
 </div>
 <hr className='line'/>
 <div>
-  <h1>Technical </h1>
-  <ul style={styles.list}>
-    {carFeaturess.map((feature, index) => (
-      <li key={index} style={styles.item}>
-        <div style={styles.square}>
-          {feature.label.charAt(0)}
-        </div>
-        <div style={styles.text}>
-          <strong>{feature.label}:</strong> {feature.value}
-        </div>
+  <h1>Technical Specifications</h1>
+  <ul style={{ display: "flex", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
+    {carFeaturesss.map((feature, index) => (
+      <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px', height: '100px', padding: '10px', width:'200px' }}>
+        {feature.icon}
+        <p>{feature.label}</p>
       </li>
     ))}
   </ul>
 </div>
-
-          <div className="car-attributes">
+          {/* <div className="car-attributes">
             <div className="attribute">
               <FaTag />
               <p><strong>Price:</strong> {car.price}</p>
@@ -305,7 +310,7 @@ const CarDetails = () => {
               <p><strong>Fuel Type:</strong> {car.fuelType}</p>
             </div>
             <div className="attribute">
-              {/* <FaGears /> */}
+              <FaGears />
               <p><strong>Transmission:</strong> {car.transmission}</p>
             </div>
             <div className="attribute">
@@ -328,7 +333,7 @@ const CarDetails = () => {
               <FaTag />
               <p><strong>Insurance:</strong> {car.insurance}</p>
             </div>
-          </div>
+          </div> */}
         </div>
         <h1 className="related-cars-heading">Related Cars</h1>
         <div className="cars-brand-container">
