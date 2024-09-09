@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CarDetails from './components/CarDetails';
+import Admin from './components/admin';
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         {/* <Home/> */}
           <Route path="/" element={<Home />} />
           <Route path="/car/:id" element={<CarDetails />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
         <Footer />
       </div>
