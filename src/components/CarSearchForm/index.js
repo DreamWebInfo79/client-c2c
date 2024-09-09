@@ -10,9 +10,7 @@ const CarSearchForm = () => {
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
   const [value, setValue] = useState([2, 30]);
-
   const states = [
-
     "Any", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
     "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
     "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", 
