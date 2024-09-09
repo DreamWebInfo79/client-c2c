@@ -1,17 +1,19 @@
-import React ,{ useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
-import {useGeoLocation} from 'geo-location-hook';
-import { Link } from 'react-router-dom'; 
+import { useGeoLocation } from 'geo-location-hook';
+import { Link } from 'react-router-dom';
 import "./index.css";
 
 export default function Navbar() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState(null);
+  const [isRegister, setIsRegister] = useState(false); // Toggle between login and register
   const { location, error, isLoading } = useGeoLocation();
 
   const handleShowMore = () => {
@@ -28,22 +30,22 @@ export default function Navbar() {
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => {
-    setModalIsOpen(false)
-      setSearchQuery('')
-  }
+    setModalIsOpen(false);
+    setSearchQuery('');
+  };
+
+  const openLoginModal = () => setLoginModalIsOpen(true);
+  const closeLoginModal = () => setLoginModalIsOpen(false);
 
   const handleStateSelect = (state) => {
     setSelectedState(state);
     setModalIsOpen(false);
-    // Optionally close the modal or take any other action
-    // setModalIsOpen(false);
   };
 
   const handleDetectLocation = () => {
     if (location) {
       const nearestState = findNearestState(location, filteredStates);
       handleStateSelect(nearestState);
-      console.log('Nearest state:', nearestState);
       setSelectedState(nearestState);
       setModalIsOpen(false);
     } else if (error) {
@@ -52,14 +54,13 @@ export default function Navbar() {
   };
 
   const findNearestState = (location, states) => {
-    // Implement a basic distance calculation assuming states have lat/long
     const distance = (lat1, lon1, lat2, lon2) => {
       const R = 6371; // Radius of the Earth in km
       const dLat = (lat2 - lat1) * (Math.PI / 180);
       const dLon = (lon2 - lon1) * (Math.PI / 180);
       const a = Math.sin(dLat / 2) ** 2 +
-                Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
-                Math.sin(dLon / 2) ** 2;
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) ** 2;
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     };
@@ -68,8 +69,8 @@ export default function Navbar() {
     let minDistance = Infinity;
 
     states.forEach(state => {
-      const stateLat = state.latitude;  // Example property name
-      const stateLon = state.longitude; // Example property name
+      const stateLat = state.latitude;
+      const stateLon = state.longitude;
       const dist = distance(location.latitude, location.longitude, stateLat, stateLon);
 
       if (dist < minDistance) {
@@ -81,26 +82,23 @@ export default function Navbar() {
     return nearestState;
   };
 
-
-
-
   return (
     <>
       <header className="header">
         <div className="container">
           <div className="brand">
             <div className="brand-logo">
-              <img alt='c2c-logo' className="logo-c2c" src='/assets/C2Clogo.jpg'/>
+              <img alt='c2c-logo' className="logo-c2c" src='/assets/C2Clogo.jpg' />
               <h1 className="brand-name-c2c">C2C</h1>
             </div>
           </div>
           <nav className="nav">
             <ul>
-            <li>
-                <Link to="/" className="nav-item">CARS</Link> 
+              <li>
+                <Link to="/" className="nav-item">CARS</Link>
               </li>
               <li>
-                <Link to="/my-cars" className="nav-item">My CARS</Link> 
+                <Link to="/my-cars" className="nav-item">My CARS</Link>
               </li>
             </ul>
           </nav>
@@ -121,22 +119,26 @@ export default function Navbar() {
               </div>
             </div>
             <div className="icons">
-            <div className="location" title="Location" onClick={openModal}>
-              <div className="location-icon">
-                <FaMapMarkerAlt size={24} />
+              <div className="location" title="Location" onClick={openModal}>
+                <div className="location-icon">
+                  <FaMapMarkerAlt size={24} />
+                </div>
+                <div className="location-text">Choose Location</div>
               </div>
-              <div className="location-text">Choose Location</div>
-            </div>
-              <div className="language-icon" title="Language">
+              <div className="language-icon" title="Language" onClick={openLoginModal}>
                 <FaUser size={24} />
               </div>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Selected State */}
       {selectedState && (
-        <h1>selected state: {selectedState.name}</h1>
+        <h1>Selected state: {selectedState.name}</h1>
       )}
+
+      {/* State Modal */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -145,19 +147,16 @@ export default function Navbar() {
         contentLabel="Select State"
       >
         <button className="modal-close-button" onClick={closeModal}>
-          <IoClose/>
+          <IoClose />
         </button>
         <div className="modal-header">
-          <input 
-            type="text" 
-            className="state-search" 
-            placeholder="Enter state" 
-            onChange={handleSearch} 
+          <input
+            type="text"
+            className="state-search"
+            placeholder="Enter state"
+            onChange={handleSearch}
           />
         </div>
-        <button className="detect-location-button" onClick={handleDetectLocation}>
-            Detect My Location
-          </button>
         <div className="states-list">
           {filteredStates.slice(0, showAll ? filteredStates.length : 9).map((state, index) => (
             <div className="state-item" key={index} onClick={() => handleStateSelect(state)}>
@@ -166,15 +165,50 @@ export default function Navbar() {
             </div>
           ))}
         </div>
-        <div style={{ textAlign: 'center' }}>
         {!showAll && filteredStates.length > 8 && (
           <button className="show-more-button" onClick={handleShowMore}>
             Show More
           </button>
         )}
-        </div>
       </Modal>
 
+      {/* Login/Registration Modal */}
+      <Modal
+        isOpen={loginModalIsOpen}
+        onRequestClose={closeLoginModal}
+        className="modal-login"
+        overlayClassName="modal-overlay"
+        contentLabel="User Login"
+      >
+        <button className="modal-close-button" onClick={closeLoginModal}>
+          <IoClose />
+        </button>
+        <div className="modal-content">
+          <h2>{isRegister ? "Register" : "Login"}</h2>
+          <form>
+            <input type="email" placeholder="Email" required className="modal-input" />
+            <input type="password" placeholder="Password" required className="modal-input" />
+            {isRegister && (
+              <input type="password" placeholder="Confirm Password" required className="modal-input" />
+            )}
+            <div className="modal-buttons-container">
+            <button type="submit" className="modal-button">
+              {isRegister ? "Register" : "Login"}
+            </button>
+            </div>
+            
+          </form>
+          <p>
+            {isRegister ? "Already have an account? " : "Don't have an account? "}
+            <span
+              className="modal-toggle"
+              onClick={() => setIsRegister(!isRegister)}
+            >
+              {isRegister ? "Login here" : "Register now"}
+            </span>
+          </p>
+        </div>
+      </Modal>
     </>
   );
 }

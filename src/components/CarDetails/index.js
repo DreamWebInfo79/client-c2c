@@ -24,6 +24,8 @@ const CarDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // const selectedCar = car.brand || "Honda";
+
   const carFeatures = [
     { icon: <FaSnowflake size={30} />, label: "Air Conditioning" },
     { icon: <FaWindowMaximize size={30} />, label: "Power Windows" },
@@ -149,7 +151,7 @@ const CarDetails = () => {
 <div className="car-image-container">
   <div style={{width:"70%", height:"auto"}}>
 
-  <Carousel>
+  <Carousel autoPlay infiniteLoop>
                 <div>
                     <img  src={car.image} alt="car" />
                     <p className="legend">Image 1</p>
