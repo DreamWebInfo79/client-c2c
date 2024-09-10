@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaMapMarkerAlt, FaUser } from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash  } from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
@@ -15,6 +15,10 @@ export default function Navbar() {
   const [selectedState, setSelectedState] = useState(null);
   const [isRegister, setIsRegister] = useState(false); // Toggle between login and register
   const { location, error, isLoading } = useGeoLocation();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleShowMore = () => {
     setShowAll(true);
@@ -80,6 +84,32 @@ export default function Navbar() {
     });
 
     return nearestState;
+  };
+
+
+
+  const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
+  const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(!confirmPasswordVisible);
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordChange = (event) => {
+    setConfirmPassword(event.target.value);
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    if (password.length < 7) {
+      alert("Password must contain at least 7 characters.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+    // Perform registration logic here
   };
 
   return (
@@ -175,29 +205,57 @@ export default function Navbar() {
       {/* Login/Registration Modal */}
       <Modal
         isOpen={loginModalIsOpen}
-        onRequestClose={closeLoginModal}
+        onRequestClose={() => setLoginModalIsOpen(false)}
         className="modal-login"
         overlayClassName="modal-overlay"
         contentLabel="User Login"
       >
-        <button className="modal-close-button" onClick={closeLoginModal}>
+        <button className="modal-close-button" onClick={() => setLoginModalIsOpen(false)}>
           <IoClose />
         </button>
         <div className="modal-content">
           <h2>{isRegister ? "Register" : "Login"}</h2>
-          <form>
+          <form onSubmit={isRegister ? handleRegister : null}>
             <input type="email" placeholder="Email" required className="modal-input" />
-            <input type="password" placeholder="Password" required className="modal-input" />
-            {isRegister && (
-              <input type="password" placeholder="Confirm Password" required className="modal-input" />
-            )}
-            <div className="modal-buttons-container">
-            <button type="submit" className="modal-button">
-              {isRegister ? "Register" : "Login"}
-            </button>
+            
+            {/* Password field with eye icon */}
+            <div className="password-container">
+              <input
+                type={passwordVisible ? "text" : "password"}
+                placeholder="Password"
+                required
+                className="modal-input"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <span className="eye-icon" onClick={togglePasswordVisibility}>
+                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
             
+            {isRegister && (
+              <div className="password-container">
+                <input
+                  type={confirmPasswordVisible ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  required
+                  className="modal-input"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                />
+                <span className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
+                  {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+            )}
+
+            <div className="modal-buttons-container">
+              <button type="submit" className="modal-button">
+                {isRegister ? "Register" : "Login"}
+              </button>
+            </div>
           </form>
+          
           <p>
             {isRegister ? "Already have an account? " : "Don't have an account? "}
             <span
@@ -209,6 +267,9 @@ export default function Navbar() {
           </p>
         </div>
       </Modal>
+
+      
+
     </>
   );
 }

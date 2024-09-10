@@ -98,7 +98,7 @@ const CarSearchForm = () => {
               onChange={handleBudgetChange}
               valueLabelDisplay="auto"
               getAriaValueText={valuetext}
-              min={2}
+              min={1}
               max={20}
               step={1}
               marks={marks}

@@ -1,0 +1,71 @@
+/* 
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%; 
+    background-color: rgb(48, 188, 244);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    z-index: 1000;
+} */
+
+/* Adjusted z-index to a higher value */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: rgb(48, 188, 244);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    z-index: 9999; /* Increased z-index */
+}
+
+/* Ensure body/content has bottom padding to avoid the nav being covered */
+body {
+    padding-bottom: 60px; /* Height of the bottom nav + some space */
+}
+
+/* Media query to display bottom-nav on smaller screens */
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+    }
+}
+
+
+/* Other CSS remains the same */
+.bottom-nav .nav-item {
+    text-align: center;
+    flex: 1;
+    color: #0d0505;
+}
+
+.bottom-nav .nav-item i {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.bottom-nav .nav-item span {
+    font-size: 12px;
+}
+
+.bottom-nav .nav-item.active i {
+    color: #007bff;
+}
+
+.bottom-nav .nav-item.active span {
+    color: #007bff;
+}
+
+/* Show the bottom navbar only on screens less than 768px */

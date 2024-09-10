@@ -38,7 +38,9 @@ body {
 
 .brand-logo {
   display: flex;
+  flex-direction: column;
   align-items: center;
+
 }
 
 .logo-c2c {
@@ -224,12 +226,14 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .nav ul {
     flex-direction: column;
     align-items: center;
+    justify-content: start;
+    text-align: center;
   }
 
   .nav-item {
@@ -510,20 +514,30 @@ body {
 
 /* Modal Styles */
 .modal-login {
-  background-color: #fff;
-  width: 400px;
-  max-width: 90%;
-  margin: 100px auto;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
-
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px; /* Set a maximum width for the modal */
+  height: auto;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
 }
 
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 .modal-overlay {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -546,19 +560,19 @@ body {
   cursor: pointer;
   font-size: 24px;
 }
-
+/* 
 .modal-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 .modal-login h2 {
   font-size: 24px;
   margin-bottom: 20px;
   color: #0886f4;
 }
-
+/* 
 .modal-input {
   width: 100%;
   padding: 10px;
@@ -567,6 +581,20 @@ body {
   border: 1px solid #ccc;
   font-size: 16px;
   box-sizing: border-box;
+} */
+
+.modal-input {
+  width: 250px; /* Ensure input takes full width */
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.password-container {
+  position: relative;
+  width: 100%; /* Full width of input */
 }
 
 .modal-button {
@@ -620,3 +648,108 @@ body {
   /* justify-content: space-between; */
   width: 100%;
 }
+/* 
+.password-container {
+  position: relative;
+} */
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
+
+
+/* Search Input Responsive Width */
+@media (max-width: 768px) {
+  .search-input {
+    width: 100%; /* Full width on mobile */
+  }
+  .nav{
+    display: none;
+  }
+/* 
+  .search-input{
+    display: none;
+  } */
+
+  .location-icon{
+    display: none;
+  }
+
+  .location-text{
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .search-input {
+    width: 300px; /* Medium width on tablet */
+  }
+}
+
+/* Modal Overlay Styling */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6); /* Darker background for better focus */
+  overflow-y: auto; /* Scroll only within modal if content is large */
+}
+
+/* Improved Password Container Styling */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.modal-input {
+  width: 100%; /* Ensure input width is consistent */
+  padding-right: 30px; /* Adjust padding to fit the eye icon */
+}
+
+/* Language and Location Icons */
+.location {
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+  cursor: pointer;
+  color: #333333;
+  transition: color 0.3s ease, transform 0.3s ease;
+  flex-direction: row; /* Align icon and text side by side */
+}
+
+.language-icon {
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.language-icon:hover, .location:hover {
+  color: #ff8800;
+  transform: scale(1.05);
+}
+
+
+/* 
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+} */
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
