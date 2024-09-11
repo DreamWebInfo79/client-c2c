@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash  } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
+import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft  } from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
@@ -23,6 +23,22 @@ export default function Navbar() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [isSearchVisible, setSearchVisible] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchInputRef = useRef(null);
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+  };
+
+  useEffect(() => {
+    if (isSearchOpen) {
+      searchInputRef.current.focus(); // Focus on the input when search opens
+    }
+  }, [isSearchOpen]);
 
   const handleSearchClick = () => {
     setSearchVisible(!isSearchVisible);
@@ -156,31 +172,43 @@ export default function Navbar() {
             </ul>
           </nav>
           <div className="actions">
-            <div className="search">
-            <div className={`search-container ${isSearchVisible ? "open" : ""}`}>
-      <button className="search-icon" onClick={handleSearchClick}>
-        <FaSearch/>
-      </button>
-      <input
-        type="text"
-        className={`search-input ${isSearchVisible ? "visible" : ""}`}
-        placeholder="Search..."
-      />
-       {isSearchVisible && (
+            {/* <div className="search"> */}
+            <div className={`search-container ${isSearchOpen ? "open" : ""}`}>
+      <div className="search-header">
+        {isSearchOpen ? (
+          <button className="back-icon" onClick={closeSearch}>
+            <FaArrowLeft />
+          </button>
+        ) : (
+          <button className="search-icon" onClick={toggleSearch}>
+            <FaSearch />
+          </button>
+        )}
+        <input
+          ref={searchInputRef}
+          type="text"
+          className={`search-input ${isSearchOpen ? "visible" : ""}`}
+          placeholder="Search..."
+        />
+      </div>
+      {isSearchOpen && (
         <div className="trending-cars">
           <h3>Trending Cars</h3>
           <ul>
-            {trendingCars.map((car, index) => (
-              <li key={index}>
-                {car.icon}
-                {car.name}
-              </li>
-            ))}
+            <li>
+              <FaSearch /> Jeep Compass
+            </li>
+            <li>
+              <FaSearch /> Tata Curvv
+            </li>
+            <li>
+              <FaSearch /> Hyundai Alcazar
+            </li>
           </ul>
         </div>
       )}
     </div>
-            </div>
+            {/* </div> */}
             <div className="icons">
               <div className="location" title="Location" onClick={openModal}>
                 <div className="location-icon">
@@ -226,7 +254,9 @@ export default function Navbar() {
           {filteredStates.slice(0, showAll ? filteredStates.length : 9).map((state, index) => (
             <div className="state-item" key={index} onClick={() => handleStateSelect(state)}>
               <img src={state.image} alt={state.name} className="state-image" />
-              <div className="state-name">{state.name}</div>
+              <div className="state-name">
+              <h6 className="state-name-text">{state.name}</h6>
+              </div>
             </div>
           ))}
         </div>

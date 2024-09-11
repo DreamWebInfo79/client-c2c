@@ -190,7 +190,7 @@ const CarDetails = () => {
     <p className="car-detail"><strong>Home Test Drive:</strong> Available</p>
 
     <div className="btn-container">
-        <button className="book-now">Book Now <br/> 100% Cashback</button>
+        <button className="book-now">Book Now <br/>Contact us</button>
         <button className="free-test-drive">Free Test Drive</button>
     </div>
     
@@ -262,9 +262,9 @@ const CarDetails = () => {
 <hr className='line'/>
 <div>
   <h1>Features</h1>
-  <ul style={{ display: "flex", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
+  <ul style={{ display: "flex",justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
     {carFeatures.map((feature, index) => (
-      <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px', height: '100px', padding: '10px', width:'200px' }}>
+      <li key={index} className='feature'>
         {feature.icon}
         <p>{feature.label}</p>
       </li>
@@ -274,9 +274,9 @@ const CarDetails = () => {
 <hr className='line'/>
 <div>
   <h1>Technical Specifications</h1>
-  <ul style={{ display: "flex", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
+  <ul style={{ display: "flex",justifyContent: "center",  listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
     {carFeaturesss.map((feature, index) => (
-      <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px', height: '100px', padding: '10px', width:'200px' }}>
+      <li key={index}  className='feature'>
         {feature.icon}
         <p>{feature.label}</p>
       </li>
