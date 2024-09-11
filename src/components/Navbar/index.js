@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft  } from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar } from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
@@ -163,11 +163,17 @@ export default function Navbar() {
           </div>
           <nav className="nav">
             <ul>
-              <li>
+              {/* <li>
                 <Link to="/" className="nav-item">CARS</Link>
-              </li>
+              </li> */}
               <li>
-                <Link to="/my-cars" className="nav-item">MY CARS</Link>
+                <Link to="/my-cars" className="nav-item-mycars">
+                
+            <div className="nav-item-mycars">
+                <FaCar  className="nav-icon" />
+                <span>Cars</span>
+            </div>
+              </Link>
               </li>
             </ul>
           </nav>
@@ -215,7 +221,7 @@ export default function Navbar() {
                   <FaMapMarkerAlt size={24} />
                 </div>
                 <div className="location-text">
-                <p>Choose Location</p>
+                <p>Location</p>
                 </div>
               </div>
               <div className="language-icon" title="Language" onClick={openLoginModal}>

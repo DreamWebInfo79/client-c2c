@@ -20,7 +20,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
         </Routes>
         <Footer />
-        <BottomNav />
+        {/* <BottomNav /> */}
         
       </div>
     </Router>

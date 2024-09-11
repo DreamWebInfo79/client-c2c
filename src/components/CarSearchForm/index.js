@@ -6,7 +6,7 @@ import './index.css';
 
 
 const CarSearchForm = () => {
-  const [budget, setBudget] = useState([1, 20]);
+  const [budget, setBudget] = useState([1, 50]);
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
   const [value, setValue] = useState([2, 30]);
@@ -49,10 +49,11 @@ const CarSearchForm = () => {
 
   const marks = [
     { value: 1, label: '1L' },
-    { value: 5, label: '5L' },
     { value: 10, label: '10L' },
-    { value: 15, label: '15L' },
-    { value: 20, label: '20L+' }
+    { value: 20, label: '20L' },
+    { value: 30, label: '30L' },
+    { value: 40, label: '40L' },
+    { value: 50, label: '50L+' }
   ];
 
   
@@ -99,7 +100,7 @@ const CarSearchForm = () => {
               valueLabelDisplay="auto"
               getAriaValueText={valuetext}
               min={1}
-              max={20}
+              max={50}
               step={1}
               marks={marks}
             />
