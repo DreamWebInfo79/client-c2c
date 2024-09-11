@@ -38,9 +38,19 @@ body {
 
 .brand-logo {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
+}
 
+@media screen and (max-width:778px){
+  .brand-logo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .brand-name-c2c{
+    margin-left: 0;
+  }
 }
 
 .logo-c2c {
@@ -56,7 +66,7 @@ body {
 }
 
 .brand-name-c2c {
-  margin-left: 15px;
+  margin-left: 12px;
   font-size: 28px;
   font-weight: bold;
   color: #333333;
@@ -73,7 +83,7 @@ body {
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
-  color: #333333;
+  color: #333333 !important;
   transition: color 0.3s ease, border-bottom 0.3s ease;
   padding-bottom: 5px;
   position: relative;
@@ -167,12 +177,12 @@ body {
 
 .location {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   margin-left: 25px;
   cursor: pointer;
   color: #333333;
   transition: color 0.3s ease, transform 0.3s ease;
-  flex-direction: column; /* Stack icon and text */
+  /* flex-direction: column; Stack icon and text */
 }
 
 .location-icon {
@@ -227,6 +237,10 @@ body {
 @media (max-width: 768px) {
   .container {
     flex-direction: row;
+  }
+
+  .language-icon{
+    display: none;
   }
 
   .nav ul {
@@ -677,11 +691,11 @@ body {
   } */
 
   .location-icon{
-    display: none;
+    display: flex;
   }
 
   .location-text{
-    display: none;
+    display: flex;
   }
 }
 

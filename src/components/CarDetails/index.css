@@ -5,20 +5,46 @@
     flex-direction: column;
     /* background-color: #f9f9f9; */
   }
+
+  .NewUcExCard{
+    width: 300px;
+  }
+/* 
+  @media screen and (max-width:800px){
+    .NewUcExCard{
+      width: 90%;
+    }
+   
   
+    .car-image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: cover; 
+      max-width: 100%;
+    }
+
+    
+  }
+   */
   .car-image-container {
     width: 100%;
-    /* max-width: 700px; */
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     margin-bottom: 30px;
-    /* box-shadow: #050505; */
-    
     box-shadow: 5px 4px 8px rgba(0, 0, 0, 0.1);
   }
 
-  
+  @media screen and (max-width:778px){
+    .car-image-container{
+      flex-direction: column;
+      /* height:auto; */
+      align-items: center;
+    }
+    .car-info{
+      display: none !important;
+    }
+  }
   
 
 
@@ -449,9 +475,9 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Black shadow */
 }
 
-
+/* 
 @media only screen and (max-width: 768px) {
-  /* Tablet styling */
+ 
   .car-header-container {
     flex-direction: column;
     align-items: flex-start;
@@ -483,17 +509,14 @@ h1 {
     font-size: 14px;
   }
 
-  .car-image-container {
-    flex-direction: column;
-  }
 
   .car-info {
     margin-top: 15px;
   }
-}
-
+} */
+/* 
 @media only screen and (max-width: 480px) {
-  /* Mobile styling */
+  
   .car-details-container {
     padding: 10px;
   }
@@ -534,4 +557,57 @@ h1 {
   .social-icon {
     font-size: 20px;
   }
+} */
+
+
+.car-details-main{
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
 }
+
+
+@media (max-width: 768px) {
+  .car-header-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .car-header-left, .car-header-centre, .car-header-right {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .car-header-left h1 {
+    font-size: 1.2rem;
+  }
+
+  .car-header-left .car-infos {
+    font-size: 0.85rem;
+  }
+
+  .car-header-centre .car-price {
+    font-size: 1.4rem;
+  }
+
+  .car-header-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .car-header-right p {
+    font-size: 0.85rem;
+  }
+
+  .favourite-icon {
+    font-size: 1.5rem;
+    margin-right: 5px;
+  }
+}
+
+

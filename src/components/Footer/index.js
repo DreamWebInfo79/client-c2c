@@ -19,10 +19,10 @@ export default function Component() {
       <footer id="footer" className="footer">
         <div className="footer-container">
           <div className="footer-links">
-            <a className="footer-link-item" href="https://www.carwale.com/about-us/" title="About Us">About Us</a>
-            <a className="footer-link-item" href="https://www.carwale.com/career/" title="Careers">Careers</a>
-            <a className="footer-link-item" href="https://www.carwale.com/used/sell/terms/" title="Terms & Conditions">Terms & Conditions</a>
-            <a className="footer-link-item" href="https://www.carwale.com/contactus/" title="Advertise">Advertise</a>
+            <a className="footer-link-item" href="https://www.car2customer.com/about-us/" title="About Us">About Us</a>
+            {/* <a className="footer-link-item" href="https://www.car2customer.com/career/" title="Careers">Careers</a> */}
+            <a className="footer-link-item" href="https://www.car2customer.com/used/sell/terms/" title="Terms & Conditions">Terms & Conditions</a>
+            <a className="footer-link-item" href="https://www.car2customer.com/contactus/" title="Advertise">Advertise</a>
           </div>
 
           <div className="footer-content">
@@ -31,7 +31,7 @@ export default function Component() {
               <div className="social-links">
                 <a
                   className="social-link"
-                  href="https://www.facebook.com/CarWale/"
+                  href="https://www.facebook.com/Cartocustomer/"
                   rel="nofollow noopener"
                   target="_blank"
                   title="Facebook"

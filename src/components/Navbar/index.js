@@ -118,8 +118,12 @@ export default function Navbar() {
         <div className="container">
           <div className="brand">
             <div className="brand-logo">
+            <div>
               <img alt='c2c-logo' className="logo-c2c" src='/assets/C2Clogo.jpg' />
+              </div>
+              <div>
               <h1 className="brand-name-c2c">C2C</h1>
+            </div>
             </div>
           </div>
           <nav className="nav">
@@ -153,7 +157,9 @@ export default function Navbar() {
                 <div className="location-icon">
                   <FaMapMarkerAlt size={24} />
                 </div>
-                <div className="location-text">Choose Location</div>
+                <div className="location-text">
+                <p>Choose Location</p>
+                </div>
               </div>
               <div className="language-icon" title="Language" onClick={openLoginModal}>
                 <FaUser size={24} />

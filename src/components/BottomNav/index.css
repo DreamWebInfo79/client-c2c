@@ -1,71 +1,70 @@
-/* 
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%; 
-    background-color: rgb(48, 188, 244);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    z-index: 1000;
-} */
-
-/* Adjusted z-index to a higher value */
+/* Bottom Navbar Container */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
-    background-color: rgb(48, 188, 244);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(45deg, rgb(0, 123, 255), rgb(48, 188, 244));
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-around;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    z-index: 9999; /* Increased z-index */
+    padding: 15px 0;
+    z-index: 9999;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    /* height:/ 0px; */
 }
 
-/* Ensure body/content has bottom padding to avoid the nav being covered */
-body {
-    padding-bottom: 60px; /* Height of the bottom nav + some space */
+/* Navigation Items */
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    transition: color 0.3s ease;
 }
 
-/* Media query to display bottom-nav on smaller screens */
+.nav-item span {
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* React Icons styling */
+.nav-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Hover and Active States */
+.nav-item:hover .nav-icon,
+.nav-item:hover span {
+    color: #fff200; /* Bright yellow for hover */
+    transform: scale(1.2);
+}
+
+.nav-item.active .nav-icon,
+.nav-item.active span {
+    color: #fff200; /* Active state in yellow */
+    transform: scale(1.2);
+}
+
+/* Add spacing to avoid navbar overlapping content */
+
+
+/* Mobile-first design, always show the nav */
 @media (max-width: 768px) {
     .bottom-nav {
         display: flex;
     }
 }
 
-
-/* Other CSS remains the same */
-.bottom-nav .nav-item {
-    text-align: center;
-    flex: 1;
-    color: #0d0505;
+/* Hide on larger screens */
+@media (min-width: 769px) {
+    .bottom-nav {
+        display: none;
+    }
 }
-
-.bottom-nav .nav-item i {
-    display: block;
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.bottom-nav .nav-item span {
-    font-size: 12px;
-}
-
-.bottom-nav .nav-item.active i {
-    color: #007bff;
-}
-
-.bottom-nav .nav-item.active span {
-    color: #007bff;
-}
-
-/* Show the bottom navbar only on screens less than 768px */

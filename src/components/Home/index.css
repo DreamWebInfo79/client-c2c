@@ -458,6 +458,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
+@media (max-width: 768px) {
+  .tabs-container{
+    display: flex;
+    flex-direction: column;
+
+  }
+}
+
+
 .tab {
   padding: 10px 20px; /* Padding inside each tab */
   font-size: 1.2rem; /* Adjust the font size */

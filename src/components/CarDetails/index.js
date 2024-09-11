@@ -17,6 +17,7 @@ import { MdEventSeat } from "react-icons/md";
 import { FaSun, FaSnowflake, FaKey, FaCameraRetro, FaBluetooth, FaWindowMaximize } from 'react-icons/fa';
 import './index.css';
 import {  FaDoorOpen, FaShapes, FaParking, FaLock } from "react-icons/fa";
+import BottomNav from '../BottomNav';
 
 const CarDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -148,7 +149,7 @@ const CarDetails = () => {
   </div>
 </div>
 
-<div className="car-image-container">
+<div className="car-image-container" style={{height:"auto"}}>
   <div style={{width:"70%", height:"auto"}}>
 
   <Carousel autoPlay infiniteLoop>
@@ -211,7 +212,7 @@ const CarDetails = () => {
           <p>Car is as Good Condition,Car is as Good Condition Car is as Good Condition, Car is as Good Condition</p>
 {/* <hr className='line'/> */}
          
-          <ul style={{ display: "flex", listStyleType: "none", padding: 0, margin: 0 }}>
+          <ul className='car-details-main'>
   <li>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '10px' }}>
       <FaRoad size={25} />
@@ -340,7 +341,7 @@ const CarDetails = () => {
         <h1 className="related-cars-heading">Related Cars</h1>
         <div className="cars-brand-container">
         {cars.map(car => (
-              <div style={{width:'290px'}} className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
+              <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
                 <div className="image_container posR">
                   <div className="imagebox hover">
                     <img
