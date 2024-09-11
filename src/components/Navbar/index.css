@@ -261,6 +261,7 @@ body {
 
   .search-input {
     width: 100%;
+    visibility: hidden;
   }
 
   .location, .language-icon {
@@ -767,3 +768,69 @@ body {
   flex-shrink: 0;
 }
 
+
+/* Container for search */
+.search-container {
+  display: flex;
+  align-items: center;
+  /* background-color: #f1f1f1;  Light background for contrast */
+  border-radius: 8px;         /* Rounded corners */
+  padding: 5px 10px;          /* Padding around the search bar */
+  /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); Soft shadow for elevation */
+  /* max-width: 00px;           Control width of the search container */
+  margin: 0 auto;             /* Center it horizontally */
+  position: relative;         /* For better positioning of elements */
+  width: 60%;
+}
+
+/* Search icon button */
+.search-icon {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #333;               /* Slightly darker for better contrast */
+  margin-right: 10px;        /* Space between icon and input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease; /* Add a small animation on hover */
+}
+
+.search-icon:hover {
+  transform: scale(1.1);      /* Scale up the icon on hover */
+}
+
+/* Input styles */
+.search-input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 8px 0;
+  font-size: 16px;
+  width: 100%;                /* Take full width inside the container */
+  transition: width 0.3s ease-in-out, visibility 0.3s ease-in-out, opacity 0.3s ease;
+  color: #333;
+}
+
+/* Input placeholder styling */
+.search-input::placeholder {
+  color: #999;   
+  padding: 5px;
+               /* Lighter color for placeholder text */
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+  .search-input {
+    width: 0;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .search-input.visible {
+    width: 150px; /* Define width when visible */
+    visibility: visible;
+    opacity: 1;
+  }
+}

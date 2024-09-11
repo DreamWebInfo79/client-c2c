@@ -19,6 +19,11 @@ export default function Navbar() {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isInputVisible, setIsInputVisible] = useState(false);
+
+  const toggleInputVisibility = () => {
+    setIsInputVisible(!isInputVisible);
+  };
 
   const handleShowMore = () => {
     setShowAll(true);
@@ -138,19 +143,16 @@ export default function Navbar() {
           </nav>
           <div className="actions">
             <div className="search">
-              <div className="search-container" title="Search">
-                <div className="search-box">
-                  <input
-                    type="text"
-                    placeholder="Search by car name or brand"
-                    aria-label="Search by car name or brand"
-                    className="search-input"
-                  />
-                  <div className="search-icon">
-                    <FaSearch size={20} />
-                  </div>
-                </div>
-              </div>
+            <div className="search-container">
+      <button className="search-icon" onClick={toggleInputVisibility}>
+        <FaSearch/>
+      </button>
+      <input
+        type="text"
+        className={`search-input ${isInputVisible ? 'visible' : ''}`}
+        placeholder="Search by car name or brand..."
+      />
+    </div>
             </div>
             <div className="icons">
               <div className="location" title="Location" onClick={openModal}>

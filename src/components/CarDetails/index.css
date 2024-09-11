@@ -33,6 +33,7 @@
     justify-content: space-around;
     margin-bottom: 30px;
     box-shadow: 5px 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
   }
 
   @media screen and (max-width:778px){
@@ -42,7 +43,7 @@
       align-items: center;
     }
     .car-info{
-      display: none !important;
+      /* display: none !important; */
     }
   }
   
