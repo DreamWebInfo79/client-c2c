@@ -5,6 +5,8 @@ import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
 import { useGeoLocation } from 'geo-location-hook';
 import { Link } from 'react-router-dom';
+import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Importing icons
+
 import "./index.css";
 
 export default function Navbar() {
@@ -20,6 +22,11 @@ export default function Navbar() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
+  const [isSearchVisible, setSearchVisible] = useState(false);
+
+  const handleSearchClick = () => {
+    setSearchVisible(!isSearchVisible);
+  };
 
   const toggleInputVisibility = () => {
     setIsInputVisible(!isInputVisible);
@@ -117,6 +124,13 @@ export default function Navbar() {
     // Perform registration logic here
   };
 
+  const trendingCars = [
+    { name: "Tata Curvv", icon: <AiOutlineClockCircle /> },
+    { name: "Hyundai Alcazar", icon: <AiOutlineClockCircle /> },
+    { name: "Jeep Compass", icon: <AiOutlineClockCircle /> },
+  ];
+
+
   return (
     <>
       <header className="header">
@@ -137,21 +151,34 @@ export default function Navbar() {
                 <Link to="/" className="nav-item">CARS</Link>
               </li>
               <li>
-                <Link to="/my-cars" className="nav-item">My CARS</Link>
+                <Link to="/my-cars" className="nav-item">MY CARS</Link>
               </li>
             </ul>
           </nav>
           <div className="actions">
             <div className="search">
-            <div className="search-container">
-      <button className="search-icon" onClick={toggleInputVisibility}>
+            <div className={`search-container ${isSearchVisible ? "open" : ""}`}>
+      <button className="search-icon" onClick={handleSearchClick}>
         <FaSearch/>
       </button>
       <input
         type="text"
-        className={`search-input ${isInputVisible ? 'visible' : ''}`}
-        placeholder="Search by car name or brand..."
+        className={`search-input ${isSearchVisible ? "visible" : ""}`}
+        placeholder="Search..."
       />
+       {isSearchVisible && (
+        <div className="trending-cars">
+          <h3>Trending Cars</h3>
+          <ul>
+            {trendingCars.map((car, index) => (
+              <li key={index}>
+                {car.icon}
+                {car.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
             </div>
             <div className="icons">
