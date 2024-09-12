@@ -45,7 +45,16 @@ export const cars = [
       "condition": "Used",
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Honda",
-      "location":"Namakkal"
+      "location":"Namakkal",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
     },
     {
       "id": 4,
@@ -56,6 +65,15 @@ export const cars = [
       "image": "https://imgd.aeplcdn.com/1280x720/n/cw/ec/46891/jazz-exterior-right-front-three-quarter.jpeg?q=80",
       "brand": "Honda",
       "location":"Karur",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
     },
     {
       "id": 5,
@@ -66,6 +84,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Honda",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
     },
     {
       "id": 6,
@@ -76,6 +103,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Honda",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -87,6 +123,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Maruti",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -98,6 +143,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Maruti",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -109,6 +163,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Maruti",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -120,6 +183,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Maruti",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -131,6 +203,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Hyundai",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -142,6 +223,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Hyundai",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -153,6 +243,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Hyundai",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -164,6 +263,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Hyundai",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -175,6 +283,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Hyundai",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     },
     {
@@ -186,6 +303,15 @@ export const cars = [
       "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
       "brand": "Hyundai",
       "location":"Chennai",
+      "kmDriven": "40,000 km",
+        "seats": 5,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "color": "Black",
+        "engine": "1.8L",
+        "owners": 2,
+        "serviceHistory": "Partial",
+        "insurance": "Valid until 2024"
   
     }
   ]

@@ -40,7 +40,7 @@ body {
   display: flex;
   /* flex-direction: column; */
   align-items: center;
-  gap:15px;
+  gap:5px;
 }
 
 @media screen and (max-width:778px){
@@ -48,9 +48,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .brand-name-c2c{
-    margin-left: 0;
+    gap: 0 !important;
   }
 }
 
@@ -60,6 +58,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
+  margin: 0px;
 }
 
 .logo-c2c:hover {

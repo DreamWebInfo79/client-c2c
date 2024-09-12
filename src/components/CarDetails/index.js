@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
 import { FaRegHeart, FaTag, FaCogs, FaMapMarkerAlt, FaCar, FaTachometerAlt, FaChair, FaGasPump, FaPaintBrush, FaUser, FaHeart } from 'react-icons/fa';
 import { cars } from './cars';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { CiLocationOn } from "react-icons/ci";
 import { BiSolidRightArrowCircle } from "react-icons/bi";
@@ -65,12 +65,7 @@ const CarDetails = () => {
   if (loading) {
     return (
       <div className="loading-spinner-container">
-        <TailSpin
-          height="80"
-          width="80"
-          color="#00BFFF"
-          ariaLabel="loading"
-        />
+        <img src="/video/car-loader.gif" className="car-loader"/>
       </div>
     );
   }

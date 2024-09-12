@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar } from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar} from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
@@ -166,15 +166,7 @@ export default function Navbar() {
               {/* <li>
                 <Link to="/" className="nav-item">CARS</Link>
               </li> */}
-              <li>
-                <Link to="/my-cars" className="nav-item-mycars">
-                
-            <div className="nav-item-mycars">
-                <FaCar  className="nav-icon" />
-                <span>Cars</span>
-            </div>
-              </Link>
-              </li>
+              
             </ul>
           </nav>
           <div className="actions">
@@ -187,7 +179,7 @@ export default function Navbar() {
           </button>
         ) : (
           <button className="search-icon" onClick={toggleSearch}>
-            <FaSearch />
+            <FaSearch /> Search
           </button>
         )}
         <input
@@ -216,16 +208,34 @@ export default function Navbar() {
     </div>
             {/* </div> */}
             <div className="icons">
+            <div className="location">
+              <div className="login-icon">
+
+              
+                <Link to ="/my-cars" className="nav-item">
+                  <FaCar size={24} />
+                </Link>
+              </div>
+              <div className="location-text">
+                <p>My Cars</p>
+                </div>
+                </div>
               <div className="location" title="Location" onClick={openModal}>
                 <div className="location-icon">
                   <FaMapMarkerAlt size={24} />
                 </div>
                 <div className="location-text">
-                <p>Location</p>
+                <p>Choose Location</p>
                 </div>
               </div>
+              <div className="location">
               <div className="language-icon" title="Language" onClick={openLoginModal}>
                 <FaUser size={24} />
+              </div>
+                <div className="location-text">
+                <p>Profile</p>
+                </div>
+
               </div>
             </div>
           </div>

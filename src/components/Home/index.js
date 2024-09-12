@@ -196,7 +196,21 @@ const Home = () => {
 
   const brands = ['All', 'Honda', 'Maruti', 'Hyundai', 'Tata', 'Toyota', 'BMW', 'Mercedes', 'Audi', 'Ford'];
 
-  const visibleBrands = showAll ? brands : brands.slice(0, 6);
+
+  const carBrands = [
+    {name:'All', logo: 'car-brand/all.png'},
+    { name: 'Toyota', logo: 'car-brand/toyota.png' },
+    { name: 'Honda', logo: '/car-brand/honda-rm-removebg-preview.png' },
+    { name: 'Ford', logo: '/car-brand/ford.png' },
+    { name: 'BMW', logo: '/car-brand/bmw-removebg-preview.png' },
+    { name: 'Mercedes-Benz', logo: '/car-brand/benz-removebg-preview.png' },
+    { name: 'Audi', logo: '/car-brand/audi-removebg-preview.png' },
+    { name: 'TATA', logo: '/car-brand/Tata-Symbol.png' },
+    { name: 'Mahindra', logo: '/car-brand/f2bf43_6dde9adb83b745e7b9a0c14c4665d70d~mv2.jpg' },
+  ];
+
+  const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);
+
 
   const navigate = useNavigate();
 
@@ -238,9 +252,9 @@ const style = {
           <div
             key={brand}
             className={`tab ${activeTab === brand ? 'active' : ''}`}
-            onClick={() => setActiveTab(brand)}
+            onClick={() => setActiveTab(brand.name)}
           >
-            {brand === 'All' ? 'All CARS' : brand}
+            {brand.name === 'All' ? 'All CARS' : brand.name}
           </div>
         ))}
         {!showAll && (
@@ -250,26 +264,31 @@ const style = {
         )}
       </div>
 
-      {/* Mobile Container */}
-      <div className="tabs-container-mobile">
-        {visibleBrands.map((brand) => (
-          <div
-            key={brand}
-            className={`tab-mobile ${activeTab === brand ? 'active' : ''}`}
-            onClick={() => setActiveTab(brand)}
-          >
-            <div>
-              <img className='car-image-mobile' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFxjzTYY2O232-AvhP6e_I5fIDKO-Bq7o4cw&s"/>
-            </div>
-            {brand}
-          </div>
-        ))}
-        {!showAll && (
-          <div className="tab show-more" onClick={() => setShowAll(true)}>
-            Show More
-          </div>
-        )}
+{/* Mobile Container */}
+<div className="tabs-container-mobile">
+  <div className="brands-grid">
+    {visibleBrands.map((brand) => (
+      <div
+        key={brand.name}
+        className={`brand-tab ${activeTab === brand.name ? 'active' : ''}`}
+        onClick={() => setActiveTab(brand.name)}
+      >
+      <div>
+        <img className="brand-logo" src={brand.logo} alt={`${brand.name} logo`} />
+        </div>
+        <div>
+        <span className="brand-name">{brand.name}</span>
       </div>
+      </div>
+    ))}
+  </div>
+  
+  <div className="toggle-button" onClick={() => setShowAll(!showAll)}>
+    {showAll ? 'View Less Brands' : 'View More Brands'}
+  </div>
+</div>
+
+
     </div>
         <div className="cars-brand-container-home">
           {/* <h2>{brand} Cars</h2> */}
