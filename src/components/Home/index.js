@@ -192,6 +192,12 @@ const cars = [
 const Home = () => {
   const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
+  const [showAll, setShowAll] = useState(false);
+
+  const brands = ['All', 'Honda', 'Maruti', 'Hyundai', 'Tata', 'Toyota', 'BMW', 'Mercedes', 'Audi', 'Ford'];
+
+  const visibleBrands = showAll ? brands : brands.slice(0, 6);
+
   const navigate = useNavigate();
 
   const toggleFavourite = (carId) => {
@@ -226,44 +232,45 @@ const style = {
         </div>
         <div className="car-container-main">
         <h1 className="car-container-heading">Popular Cars</h1>
-        <div className="tabs-container">
-        <div 
-          className={`tab ${activeTab === 'All' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('All')}
-        >
-          All CARS
-        </div>
-        <div 
-          className={`tab ${activeTab === 'Honda' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('Honda')}
-        >
-          Honda
-        </div>
-        <div 
-          className={`tab ${activeTab === 'Maruti' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('Maruti')}
-        >
-          Maruti
-        </div>
-        <div 
-          className={`tab ${activeTab === 'Hyundai' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('Hyundai')}
-        >
-          Hyundai
-        </div>
-        <div 
-          className={`tab ${activeTab === 'Ford' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('Ford')}
-        >
-          Ford
-        </div>
-        <div 
-          className={`tab ${activeTab === 'Toyota' ? 'active' : ''}`} 
-          onClick={() => setActiveTab('Toyota')}
-        >
-          Toyota
-        </div>
+        <div>
+        <div className="tabs-container desktop">
+        {visibleBrands.map((brand) => (
+          <div
+            key={brand}
+            className={`tab ${activeTab === brand ? 'active' : ''}`}
+            onClick={() => setActiveTab(brand)}
+          >
+            {brand === 'All' ? 'All CARS' : brand}
+          </div>
+        ))}
+        {!showAll && (
+          <div className="tab show-more" onClick={() => setShowAll(true)}>
+            Show More
+          </div>
+        )}
       </div>
+
+      {/* Mobile Container */}
+      <div className="tabs-container-mobile">
+        {visibleBrands.map((brand) => (
+          <div
+            key={brand}
+            className={`tab-mobile ${activeTab === brand ? 'active' : ''}`}
+            onClick={() => setActiveTab(brand)}
+          >
+            <div>
+              <img className='car-image-mobile' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFxjzTYY2O232-AvhP6e_I5fIDKO-Bq7o4cw&s"/>
+            </div>
+            {brand}
+          </div>
+        ))}
+        {!showAll && (
+          <div className="tab show-more" onClick={() => setShowAll(true)}>
+            Show More
+          </div>
+        )}
+      </div>
+    </div>
         <div className="cars-brand-container-home">
           {/* <h2>{brand} Cars</h2> */}
             {filteredCars.map(car => (

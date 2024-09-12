@@ -152,6 +152,46 @@
   white-space: nowrap;
 }
 
+@media screen and (max-width:778px){
+   .NewUcExCard{
+    display: flex;
+    height: auto;
+    width: 100%;
+   } 
+   .image_container {
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    height: 154px !important;
+    width: 100% !important;
+  }
+
+  
+.imagebox {
+  box-sizing: border-box;
+  cursor: pointer;
+  background: rgba(229, 229, 229, 0.3);
+  position: relative;
+  height: 100%;
+  width: 140px !important;
+}
+
+.imagebox img {
+  box-sizing: border-box;
+  border: 0px;
+  width: 100% !important;
+  border-style: none;
+  width: 100%;
+  object-fit: cover;
+  height: 154px;
+}
+.car-image{
+  height: 30px;
+  width: 100px !important;
+}
+
+}
+
 .image_container {
   box-sizing: border-box;
   position: relative;
@@ -448,44 +488,6 @@
   /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
   /* margin-left: 3rem; */
 }
-.tabs-container {
-  display: flex;
-  justify-content: space-around; /* Distribute tabs evenly */
-  background-color: #f1f1f1; /* Light gray background for the tab container */
-  border-radius: 10px; /* Rounded corners for the container */
-  padding: 10px; /* Padding inside the tab container */
-  margin: 20px 0; /* Margin around the tab container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-}
-
-@media (max-width: 768px) {
-  .tabs-container{
-    display: flex;
-    flex-direction: column;
-
-  }
-}
-
-
-.tab {
-  padding: 10px 20px; /* Padding inside each tab */
-  font-size: 1.2rem; /* Adjust the font size */
-  font-weight: bold; /* Bold text for the tabs */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  border-radius: 5px; /* Rounded corners for the tabs */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
-}
-
-.tab:hover {
-  background-color: #d1d1d1; /* Slightly darker background on hover */
-}
-
-.active {
-  background-color: #28a745; /* Green background for the active tab */
-  color: white; /* White text color for the active tab */
-}
-
-
 
 .car-container-main {
   /* display: flex; */
@@ -505,4 +507,86 @@
   gap: 20px;
   justify-content: center;
   /* margin: 20px 0; */
+}
+
+/* Common Styles */
+.tabs-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab:hover {
+  background-color: #e2e2e2;
+}
+
+.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.show-more {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.show-more:hover {
+  text-decoration: underline;
+}
+
+/* Desktop-specific Styles */
+.desktop {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+  .desktop {
+    display: none; /* Hide desktop container on mobile */
+  }
+}
+
+/* Mobile-specific Styles */
+.tabs-container-mobile{
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.car-image-mobile{
+  height: 50px;
+  width: 50px;
+}
+
+@media (max-width: 768px) {
+  .mobile {
+    display: flex; /* Show mobile container on small screens */
+  }
+  
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .brand-logo {
+    width: 24px;
+    height: 24px;
+    /* background: url('/path-to-your-logo.svg') no-repeat center center; */
+    background-size: contain;
+    margin-right: 10px;
+  }
 }
