@@ -10,7 +10,7 @@ import { cars } from '../CarDetails/cars';
 
 const PageWrapper = styled.div`
   display: flex;
-  height: 100vh;
+  height: 100%;
   background: linear-gradient(135deg, #e0eafc, #cfdef3);
 `;
 
@@ -35,6 +35,7 @@ const SidebarItem = styled.div`
 const Content = styled.div`
   flex: 1;
   padding: 20px;
+  /* height: 100%; */
 `;
 
 const CarDashboard = () => {
@@ -55,9 +56,9 @@ const CarDashboard = () => {
     setIsLoggedIn(true);
   };
 
-  if (!isLoggedIn) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
+  // if (!isLoggedIn) {
+  //   return <LoginPage onLogin={handleLogin} />;
+  // }
 
   return (
     <PageWrapper>

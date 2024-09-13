@@ -3,7 +3,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    /* height:100vh; */
+    margin-bottom: 990px !important;
   }
   
   /* Form section layout */
@@ -96,6 +96,9 @@
   .feature-icons {
     display: flex;
     gap: 10px;
+    /* height:150px;
+    width:150px;
+    flex-direction: column; */
     flex-wrap: wrap;
   }
   
@@ -109,6 +112,10 @@
     border-radius: 8px;
   }
   
+  .feature-icon.selected {
+    background-color: #70d85b;
+  }
+
   .feature-icon p {
     margin-top: 5px;
   }
@@ -122,36 +129,65 @@
   .feature-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ddd; /* Optional border for visibility */
+    border-radius: 4px; /* Optional rounded corners */
   }
   
-  .feature-item p {
-    margin: 0;
+  .delete-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #ff0000;
   }
   
-  /* Technical specifications section */
+  .delete-icon:hover {
+    color: #cc0000;
+  }
+  
   .technical-specifications {
-    margin-bottom: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .technical-specification {
     display: flex;
-    gap: 10px;
     align-items: center;
     margin-bottom: 10px;
   }
   
   .technical-specification input {
-    flex: 1;
-    padding: 8px;
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    width: 150px;
   }
   
-  button {
+  .add-specification-button {
+    display: flex;
+    align-items: center;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-specification-button:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-icon {
+    margin-left: 10px;
+  }
+  
+  
+  .add-car-button {
     display: block;
     width: 100%;
     padding: 12px;
@@ -165,11 +201,11 @@
     transition: background-color 0.3s ease;
   }
   
-  button:hover {
+  .add-car-button:hover {
     background-color: #0056b3;
   }
   
-  button:focus {
+  .add-car-button:focus {
     outline: none;
   }
   

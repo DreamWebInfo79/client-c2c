@@ -2,14 +2,56 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro } from 'react-icons/fa';
-import { MdPhotoCamera, MdDelete } from 'react-icons/md';
+import { MdPhotoCamera, MdDelete, MdAdd } from 'react-icons/md';
+import { FaCarBattery, FaGasPump, FaMusic, FaTachometerAlt, FaFan, FaShieldAlt, FaHandsHelping, FaLightbulb, FaChargingStation, FaRulerCombined, FaOilCan, FaLeaf } from 'react-icons/fa';
+import Select from 'react-select';
+import { Snackbar, Alert } from '@mui/material';
+import Indian_states_cities_list from "indian-states-cities-list";
 import './addCar.css';
 
 // Cloudinary configuration
-const CLOUDINARY_UPLOAD_PRESET = 'your_preset'; // Replace with your Cloudinary preset
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/your_cloud_name/upload'; // Replace with your Cloudinary URL
+const CLOUDINARY_UPLOAD_PRESET = 'oaniufcx'; // Replace with your Cloudinary preset
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dn3x0cm7f/upload'; // Replace with your Cloudinary URL
 
-const featureIcons = [
+const fuelOptions = [
+  { value: 'Petrol', label: 'Petrol' },
+  { value: 'Diesel', label: 'Diesel' },
+  { value: 'Electric', label: 'Electric' },
+  { value: 'Hybrid', label: 'Hybrid' },
+];
+
+const carBrandOptions = [
+  { value: 'Toyota', label: 'Toyota' },
+  { value: 'Honda', label: 'Honda' },
+  { value: 'Hyundai', label: 'Hyundai' },
+  { value: 'Ford', label: 'Ford' },
+];
+
+const yearOptions = Array.from({ length: 30 }, (_, i) => {
+  const year = new Date().getFullYear() - i;
+  return { value: year.toString(), label: year.toString() };
+});
+
+const transmissionOptions = [
+  { value: 'Manual', label: 'Manual' },
+  { value: 'Automatic', label: 'Automatic' },
+];
+
+const conditionOptions = [
+  { value: 'New', label: 'New' },
+  { value: 'Used', label: 'Used' },
+];
+
+// const locationOptions = [
+//   { value: 'Hyderabad, Telangana', label: 'Hyderabad, Telangana' },
+//   { value: 'Bangalore, Karnataka', label: 'Bangalore, Karnataka' },
+//   { value: 'Mumbai, Maharashtra', label: 'Mumbai, Maharashtra' },
+//   // Add more locations as needed
+// ];
+
+const locationOptions=Indian_states_cities_list.STATES_OBJECT
+
+const featureIcons = [ 
   { icon: FaSnowflake, label: 'Air Conditioning' },
   { icon: FaWindowMaximize, label: 'Power Windows' },
   { icon: FaCogs, label: 'Power Steering' },
@@ -17,6 +59,25 @@ const featureIcons = [
   { icon: FaKey, label: 'Keyless Entry' },
   { icon: FaSun, label: 'Sunroof' },
   { icon: FaCameraRetro, label: 'Backup Camera' },
+  { icon: FaCarBattery, label: 'Battery Saver Mode' },
+  { icon: FaGasPump, label: 'Fuel Efficient' },
+  { icon: FaMusic, label: 'Premium Sound System' },
+  { icon: FaTachometerAlt, label: 'Tachometer' },
+  { icon: FaFan, label: 'Ventilated Seats' },
+  { icon: FaShieldAlt, label: 'Anti-Lock Brakes (ABS)' },
+  { icon: FaHandsHelping, label: 'Parking Assistance' },
+  { icon: FaLightbulb, label: 'LED Headlights' },
+  { icon: FaChargingStation, label: 'Electric Charging Port' },
+  { icon: FaRulerCombined, label: 'Adjustable Steering' }
+];
+
+const defaultTechnicalSpecifications = [
+  { label: 'Touchscreen Display', value: 'Yes' },
+  { label: 'Number of Doors', value: '4' },
+  { label: 'Number of Seats', value: '5' },
+  { label: 'Body Type', value: 'Sedan' },
+  { label: 'Parking Sensors', value: 'Yes' },
+  { label: 'Child Safety Locks', value: 'Yes' }
 ];
 
 const CarForm = () => {
@@ -38,6 +99,40 @@ const CarForm = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [specifications, setSpecifications] = useState(defaultTechnicalSpecifications);
+
+  const handleAddSpecification = () => {
+    setSpecifications([...specifications, { label: '', value: '' }]);
+  };
+
+  const handleSpecificationChange = (index, field, value) => {
+    const updatedSpecs = [...specifications];
+    updatedSpecs[index] = { ...updatedSpecs[index], [field]: value };
+    setSpecifications(updatedSpecs);
+  };
+
+  const handleDeleteSpecification = (index) => {
+    setSpecifications(specifications.filter((_, i) => i !== index));
+  };
+
+
+const toggleFeature = (iconObj) => {
+  const isAlreadySelected = selectedFeatures.some(feature => feature.label === iconObj.label);
+
+  if (isAlreadySelected) {
+    // If already selected, remove it from the selected features
+    setSelectedFeatures(selectedFeatures.filter(feature => feature.label !== iconObj.label));
+  } else {
+    // Otherwise, add the feature to the selected list
+    setSelectedFeatures([...selectedFeatures, iconObj]);
+  }
+};
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -121,12 +216,6 @@ const CarForm = () => {
     });
   };
 
-  const handleAddSpecification = () => {
-    setCarDetails({
-      ...carDetails,
-      technicalSpecifications: [...carDetails.technicalSpecifications, { label: '', value: '' }],
-    });
-  };
 
   const handleSpecificationDelete = (index) => {
     setCarDetails({
@@ -140,10 +229,45 @@ const CarForm = () => {
     multiple: true,
   });
 
+  const showSnackbar = (message, severity = 'success') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here, you would typically send carDetails to your backend or use it as needed
-    console.log('Car details submitted:', carDetails);
+    // Assuming validation is successful
+    if (carDetails.brand && carDetails.model && carDetails.year) {
+      showSnackbar('Car details added successfully!', 'success');
+      console.log('Car details submitted:', carDetails);
+    } else {
+      showSnackbar('Error adding car details. Please fill all required fields.', 'error');
+    }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleSelectChange = (selectedOption, field) => {
+    setCarDetails({
+      ...carDetails,
+      [field]: selectedOption.value,
+    });
+  };
+
+  const handleAddSelectedFeatures = () => {
+    const uniqueFeatures = selectedFeatures.filter(feature => 
+      !carDetails.features.some(existingFeature => existingFeature.label === feature.label)
+    );
+
+    setCarDetails({
+      ...carDetails,
+      features: [...carDetails.features, ...uniqueFeatures],
+    });
+    setSelectedFeatures([]);
   };
 
   return (
@@ -153,7 +277,12 @@ const CarForm = () => {
         <div className="form-section left">
           <div className="form-group">
             <label><FaCar /> Brand:</label>
-            <input type="text" name="brand" value={carDetails.brand} onChange={handleInputChange} required />
+            <Select
+              options={carBrandOptions}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'brand')}
+              placeholder="Select Brand"
+            />
+            {/* <input type="text" name="brand" value={carDetails.brand} onChange={handleInputChange} required /> */}
           </div>
           <div className="form-group">
             <label><FaCar /> Model:</label>
@@ -161,7 +290,11 @@ const CarForm = () => {
           </div>
           <div className="form-group">
             <label><FaCalendarAlt /> Year:</label>
-            <input type="text" name="year" value={carDetails.year} onChange={handleInputChange} required />
+            <Select
+              options={yearOptions}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'year')}
+              placeholder="Select Year"
+            />
           </div>
           <div className="form-group">
             <label><FaMoneyBill /> Price:</label>
@@ -176,19 +309,35 @@ const CarForm = () => {
         <div className="form-section right">
           <div className="form-group">
             <label><FaCar /> Fuel Type:</label>
-            <input type="text" name="fuelType" value={carDetails.fuelType} onChange={handleInputChange} required />
+            <Select
+              options={fuelOptions}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'fuelType')}
+              placeholder="Select Fuel Type"
+            />
           </div>
           <div className="form-group">
             <label><FaCar /> Transmission:</label>
-            <input type="text" name="transmission" value={carDetails.transmission} onChange={handleInputChange} required />
+            <Select
+              options={transmissionOptions}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'transmission')}
+              placeholder="Select Transmission"
+            />
           </div>
           <div className="form-group">
             <label><FaCar /> Condition:</label>
-            <input type="text" name="condition" value={carDetails.condition} onChange={handleInputChange} required />
+            <Select
+              options={conditionOptions}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'condition')}
+              placeholder="Select Condition"
+            />
           </div>
           <div className="form-group">
             <label><FaMapMarkerAlt /> Location:</label>
-            <input type="text" name="location" value={carDetails.location} onChange={handleInputChange} required />
+            <Select
+              options={locationOptions}
+              onChange={(selectedOption) => handleSelectChange(selectedOption, 'location')}
+              placeholder="Select Location"
+            />
           </div>
           <div className="form-group images-upload" {...getRootProps()}>
             <input {...getInputProps()} />
@@ -208,55 +357,72 @@ const CarForm = () => {
             <div className="feature-icons">
               {featureIcons.map((iconObj, index) => {
                 const Icon = iconObj.icon;
+                const isSelected = selectedFeatures.some(feature => feature.label === iconObj.label);
                 return (
-                  <div key={index} className="feature-icon" onClick={() => setSelectedFeature(iconObj)}>
+                  <div
+                    key={index}
+                    className={`feature-icon ${isSelected ? 'selected' : ''}`}
+                    onClick={() => toggleFeature(iconObj)}
+                  >
                     <Icon size={24} />
                     <p>{iconObj.label}</p>
                   </div>
                 );
               })}
             </div>
-            <button type="button" onClick={handleFeatureAdd}>Add Feature</button>
+            <button className='add-car-button' type="button" onClick={handleAddSelectedFeatures}>Add Features</button>
             <div className="features-list">
               {carDetails.features.map((feature, index) => (
                 <div key={index} className="feature-item">
                   <feature.icon size={24} />
                   <p>{feature.label}</p>
-                  <MdDelete className="delete-icon" onClick={() => handleFeatureDelete(index)} />
+                  <MdDelete size={24} className="delete-icon" onClick={() => handleFeatureDelete(index)} />
                 </div>
               ))}
             </div>
+
           </div>
 
-          <div className="form-group technical-specifications">
-            <label>Technical Specifications:</label>
-            {carDetails.technicalSpecifications.map((spec, index) => (
-              <div key={index} className="technical-specification">
-                <input
-                  type="text"
-                  value={spec.label}
-                  placeholder="Label"
-                  onChange={(e) => handleTechnicalSpecificationChange(index, 'label', e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={spec.value}
-                  placeholder="Value"
-                  onChange={(e) => handleTechnicalSpecificationChange(index, 'value', e.target.value)}
-                />
-                <MdDelete
-                  className="delete-icon"
-                  onClick={() => handleSpecificationDelete(index)}
-                />
-              </div>
-            ))}
-            <button type="button" onClick={handleAddSpecification}>Add More</button>
-          </div>
+          <div className="technical-specifications">
+      <h3>Technical Specifications</h3>
+      {specifications.map((spec, index) => (
+        <div key={index} className="technical-specification">
+          <input
+            type="text"
+            value={spec.label}
+            placeholder="Label"
+            onChange={(e) => handleSpecificationChange(index, 'label', e.target.value)}
+            style={{ marginRight: '8px' }}
+          />
+          <input
+            type="text"
+            value={spec.value}
+            placeholder="Value"
+            onChange={(e) => handleSpecificationChange(index, 'value', e.target.value)}
+            style={{ marginRight: '8px' }}
+          />
+          <MdDelete
+            className="delete-icon"
+            onClick={() => handleDeleteSpecification(index)}
+            style={{ cursor: 'pointer', color: 'red' }}
+          />
+        </div>
+      ))}
+      <button onClick={handleAddSpecification} className="add-specification-button">
+        <MdAdd size={20} /> Add More
+      </button>
+    </div>
         </div>
 
-        <button type="submit">Submit</button>
+        <button className='add-car-button' type="submit">Submit</button>
       </form>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
+    
   );
 };
 
