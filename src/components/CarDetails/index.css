@@ -91,7 +91,7 @@
     /* background-color: #ffffff; */
     border-radius: 12px;
     /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); */
-    align-items: start x;
+    align-items: start;
     display: flex;
     flex-direction: column;
     justify-content: start !important;
@@ -481,6 +481,7 @@ h1 {
   font-size: 20px;
   color: #666;
   transition: color 0.3s ease;
+  cursor:pointer;
 }
 
 .social-icon:hover {
@@ -629,4 +630,6 @@ h1 {
   }
 }
 
-
+.feature-heading-text{
+  margin-bottom:8px !important;
+}

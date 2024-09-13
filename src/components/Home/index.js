@@ -198,15 +198,15 @@ const Home = () => {
 
 
   const carBrands = [
-    {name:'All', logo: 'car-brand/all.png'},
-    { name: 'Toyota', logo: 'car-brand/toyota.png' },
+    {name:'All', logo: 'car-brand/all-car-bramd.webp'},
+    { name: 'Toyota', logo: 'car-brand/toyota-logo-2020-europe-download.png' },
     { name: 'Honda', logo: '/car-brand/honda-rm-removebg-preview.png' },
-    { name: 'Ford', logo: '/car-brand/ford.png' },
-    { name: 'BMW', logo: '/car-brand/bmw-removebg-preview.png' },
+    { name: 'Ford', logo: '/car-brand/ford-logo-2017-download.png' },
+    { name: 'BMW', logo: '/car-brand/bmw-logo-2020-gray-download.png' },
     { name: 'Mercedes-Benz', logo: '/car-brand/benz-removebg-preview.png' },
-    { name: 'Audi', logo: '/car-brand/audi-removebg-preview.png' },
-    { name: 'TATA', logo: '/car-brand/Tata-Symbol.png' },
-    { name: 'Mahindra', logo: '/car-brand/f2bf43_6dde9adb83b745e7b9a0c14c4665d70d~mv2.jpg' },
+    { name: 'Audi', logo: '/car-brand/audi-logo-2016-download.png' },
+    { name: 'TATA', logo: '/car-brand/download-removebg-preview.png' },
+    { name: 'Mahindra', logo: '/car-brand/mahindra-logo.png' },
   ];
 
   const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);

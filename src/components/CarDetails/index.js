@@ -24,6 +24,30 @@ const CarDetails = () => {
   const [car, setCar] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
+  const currentURL = window.location.href;
+
+  const handleShareClick = (platform) => {
+    let shareURL = "";
+    const encodedURL = encodeURIComponent(currentURL);
+
+    switch (platform) {
+        case "whatsapp":
+            shareURL = `https://wa.me/?text=${encodedURL}`;
+            break;
+        case "facebook":
+            shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`;
+            break;
+        case "twitter":
+            shareURL = `https://twitter.com/intent/tweet?url=${encodedURL}`;
+            break;
+        default:
+            break;
+    }
+
+    if (shareURL) {
+        window.open(shareURL, "_blank");
+    }
+};
 
   // const selectedCar = car.brand || "Honda";
 
@@ -47,6 +71,10 @@ const CarDetails = () => {
   { icon: <FaChair size={30} />, label: "Number of Seats" },
   { icon: <FaShapes size={30} />, label: "Body Type"},
   { icon: <FaParking size={30} />, label: "Parking Sensors" },
+  { icon: <FaLock size={30} />, label: "Child Safety Locks" },
+  { icon: <FaChair size={30} />, label: "Number of Seats" },
+  { icon: <FaShapes size={30} />, label: "Body Type"},
+  { icon: <FaParking size={30} />, label: "Parking Sensors" },
   { icon: <FaLock size={30} />, label: "Child Safety Locks" }
 ];
 
@@ -65,7 +93,8 @@ const CarDetails = () => {
   if (loading) {
     return (
       <div className="loading-spinner-container">
-        <img src="/video/car-loader.gif" className="car-loader"/>
+        <img src="/video/car-loader.gif" alt="car-loader" className="car-loader"/>
+        <h1>Loading.....Please wait!!</h1>
       </div>
     );
   }
@@ -175,7 +204,7 @@ const CarDetails = () => {
             </Carousel>
   </div>
   <div className="car-info">
-    <h1 className="car-title">{car.brand} {car.model}</h1>
+    <h1 className="car-title">{car.model}</h1>
     
     <p className="car-description">Car is at a good price and condition</p>
     <p className="car-detail"><strong>Year:</strong> {car.year}</p>
@@ -192,11 +221,11 @@ const CarDetails = () => {
     <div className="share-container">
         <h2>Share with a friend:</h2>
         <div className="social-icons">
-            <FaWhatsapp className="social-icon" />
-            <FaFacebook className="social-icon" />
-            <FaTwitter className="social-icon" />
-            <FaInstagram className="social-icon" />
-        </div>
+                <FaWhatsapp className="social-icon" onClick={() => handleShareClick("whatsapp")} />
+                <FaFacebook className="social-icon" onClick={() => handleShareClick("facebook")} />
+                <FaTwitter className="social-icon" onClick={() => handleShareClick("twitter")} />
+                {/* <FaInstagram className="social-icon" onClick={() => handleShareClick("instagram")} /> */}
+            </div>
     </div>
 </div>
   </div>
@@ -256,7 +285,7 @@ const CarDetails = () => {
 </ul>
 <hr className='line'/>
 <div>
-  <h1>Features</h1>
+  <h1 className="feature-heading-text">Features</h1>
   <ul style={{ display: "flex",justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
     {carFeatures.map((feature, index) => (
       <li key={index} className='feature'>
@@ -267,11 +296,22 @@ const CarDetails = () => {
   </ul>
 </div>
 <hr className='line'/>
-<div>
-  <h1>Technical Specifications</h1>
+{/* <div>
+  <h1 className="feature-heading-text">Technical Specifications</h1>
   <ul style={{ display: "flex",justifyContent: "center",  listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
     {carFeaturesss.map((feature, index) => (
       <li key={index}  className='feature'>
+        {feature.icon}
+        <p>{feature.label}</p>
+      </li>
+    ))}
+  </ul>
+</div> */}
+<div>
+  <h1 className="feature-heading-text">Technical</h1>
+  <ul style={{ display: "flex",justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
+    {carFeaturesss.map((feature, index) => (
+      <li key={index} className='feature'>
         {feature.icon}
         <p>{feature.label}</p>
       </li>

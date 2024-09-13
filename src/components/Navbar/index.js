@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar} from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar, FaHeart} from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
-import { useGeoLocation } from 'geo-location-hook';
 import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Importing icons
 
@@ -16,7 +15,6 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState(null);
   const [isRegister, setIsRegister] = useState(false); // Toggle between login and register
-  const { location, error, isLoading } = useGeoLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [password, setPassword] = useState('');
@@ -74,46 +72,6 @@ export default function Navbar() {
     setModalIsOpen(false);
   };
 
-  const handleDetectLocation = () => {
-    if (location) {
-      const nearestState = findNearestState(location, filteredStates);
-      handleStateSelect(nearestState);
-      setSelectedState(nearestState);
-      setModalIsOpen(false);
-    } else if (error) {
-      console.error('Error detecting location:', error);
-    }
-  };
-
-  const findNearestState = (location, states) => {
-    const distance = (lat1, lon1, lat2, lon2) => {
-      const R = 6371; // Radius of the Earth in km
-      const dLat = (lat2 - lat1) * (Math.PI / 180);
-      const dLon = (lon2 - lon1) * (Math.PI / 180);
-      const a = Math.sin(dLat / 2) ** 2 +
-        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) ** 2;
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return R * c;
-    };
-
-    let nearestState = null;
-    let minDistance = Infinity;
-
-    states.forEach(state => {
-      const stateLat = state.latitude;
-      const stateLon = state.longitude;
-      const dist = distance(location.latitude, location.longitude, stateLat, stateLon);
-
-      if (dist < minDistance) {
-        minDistance = dist;
-        nearestState = state;
-      }
-    });
-
-    return nearestState;
-  };
-
 
 
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
@@ -151,16 +109,18 @@ export default function Navbar() {
     <>
       <header className="header">
         <div className="container">
-          <div className="brand">
-            <div className="brand-logo">
-            <div>
-              <img alt='c2c-logo' className="logo-c2c" src='/assets/C2Clogo.jpg' />
-              </div>
-              <div>
-              <h1 className="brand-name-c2c">C2C</h1>
-            </div>
-            </div>
-          </div>
+        <div className="brand">
+      <Link to="/">
+  <div className="brand-logo">
+    <div>
+        <img alt='c2c-logo' className="logo-c2c" src='/assets/C2Clogo.jpg' />
+    </div>
+    <div>
+      <h1 className="brand-name-c2c">C2C</h1>
+    </div>
+  </div>
+      </Link>
+</div>
           <nav className="nav">
             <ul>
               {/* <li>
@@ -208,18 +168,16 @@ export default function Navbar() {
     </div>
             {/* </div> */}
             <div className="icons">
-            <div className="location">
-              <div className="login-icon">
-
-              
                 <Link to ="/my-cars" className="nav-item">
-                  <FaCar size={24} />
-                </Link>
+            <div className="location">
+              <div className="location-icon">
+                  <FaHeart size={24} />
               </div>
               <div className="location-text">
                 <p>My Cars</p>
                 </div>
                 </div>
+                </Link>
               <div className="location" title="Location" onClick={openModal}>
                 <div className="location-icon">
                   <FaMapMarkerAlt size={24} />
@@ -228,15 +186,17 @@ export default function Navbar() {
                 <p>Choose Location</p>
                 </div>
               </div>
+
               <div className="location">
-              <div className="language-icon" title="Language" onClick={openLoginModal}>
+              <div className="location-icon" title="Language" onClick={openLoginModal}>
                 <FaUser size={24} />
               </div>
-                <div className="location-text">
+              <div className="location-text">
                 <p>Profile</p>
                 </div>
 
               </div>
+              
             </div>
           </div>
         </div>

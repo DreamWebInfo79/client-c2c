@@ -17,7 +17,7 @@ function App() {
         {/* <Home/> */}
           <Route path="/" element={<Home />} />
           <Route path="/car/:id" element={<CarDetails />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/agent-login" element={<Admin />} />
         </Routes>
         <Footer />
         {/* <BottomNav /> */}
