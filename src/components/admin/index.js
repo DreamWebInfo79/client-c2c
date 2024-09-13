@@ -56,9 +56,9 @@ const CarDashboard = () => {
     setIsLoggedIn(true);
   };
 
-  // if (!isLoggedIn) {
-  //   return <LoginPage onLogin={handleLogin} />;
-  // }
+  if (!isLoggedIn) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
 
   return (
     <PageWrapper>

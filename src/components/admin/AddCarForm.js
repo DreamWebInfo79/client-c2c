@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
-import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro } from 'react-icons/fa';
+import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro, FaCamera } from 'react-icons/fa';
 import { MdPhotoCamera, MdDelete, MdAdd } from 'react-icons/md';
 import { FaCarBattery, FaGasPump, FaMusic, FaTachometerAlt, FaFan, FaShieldAlt, FaHandsHelping, FaLightbulb, FaChargingStation, FaRulerCombined, FaOilCan, FaLeaf } from 'react-icons/fa';
 import Select from 'react-select';
@@ -9,9 +9,8 @@ import { Snackbar, Alert } from '@mui/material';
 import Indian_states_cities_list from "indian-states-cities-list";
 import './addCar.css';
 
-// Cloudinary configuration
-const CLOUDINARY_UPLOAD_PRESET = 'oaniufcx'; // Replace with your Cloudinary preset
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dn3x0cm7f/upload'; // Replace with your Cloudinary URL
+const CLOUDINARY_UPLOAD_PRESET = 'oaniufcx';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dn3x0cm7f/upload';
 
 const fuelOptions = [
   { value: 'Petrol', label: 'Petrol' },
@@ -340,8 +339,10 @@ const toggleFeature = (iconObj) => {
             />
           </div>
           <div className="form-group images-upload" {...getRootProps()}>
+          {/* <label><FaCamera /> images:</label> */}
             <input {...getInputProps()} />
             <p><MdPhotoCamera /> Drag & drop images here, or click to select files</p>
+            </div>
             <div className="image-previews">
               {imagePreviews.map((preview, index) => (
                 <div key={index} className="image-preview-container">
@@ -349,7 +350,6 @@ const toggleFeature = (iconObj) => {
                   <MdDelete className="delete-icon" onClick={() => handleImageDelete(index)} />
                 </div>
               ))}
-            </div>
           </div>
 
           <div className="form-group feature-selection">
