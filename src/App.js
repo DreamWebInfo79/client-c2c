@@ -9,7 +9,10 @@ import ScrollToTop from './components/ScrollToTop';
 // import BottomNav from './components/BottomNav';   
 import './App.css';
 
+import usePageTracking from './hooks/usePageTracking';
+
 function App() {
+  usePageTracking();
   return (
     <Router>
       <div className="App">
