@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 // Styled Components
 const PageWrapper = styled.div`
@@ -60,6 +61,8 @@ const ErrorMessage = styled.p`
 const AddUser = ({ onAddUser }) => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // For success message
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +72,7 @@ const AddUser = ({ onAddUser }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.username || !formData.password) {
@@ -82,10 +85,20 @@ const AddUser = ({ onAddUser }) => {
       return;
     }
 
-    // Call the onAddUser function passed via props
-    onAddUser(formData);
-    setFormData({ username: '', password: '' });
-    setError('');
+    try {
+      // Send the data to the backend to add the user
+      const response = await axios.post('http://localhost:3001/api/add-user', formData);
+
+      if (response.data.success) {
+        setSuccessMessage('User added successfully!');
+        setError('');
+        setFormData({ username: '', password: '' }); // Reset the form
+      } else {
+        setError('Failed to add user. Please try again.');
+      }
+    } catch (error) {
+      setError('An error occurred while adding the user. Please try again.');
+    }
   };
 
   return (

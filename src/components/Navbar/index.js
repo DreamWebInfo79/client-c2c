@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Importing icons
 import { logEvent } from '../../analytics';
+import axios from 'axios'; 
 import "./index.css";
 
 export default function Navbar() {
@@ -23,6 +24,11 @@ export default function Navbar() {
   const [isSearchVisible, setSearchVisible] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchInputRef = useRef(null);
+  const [isOtpFieldVisible, setOtpFieldVisible] = useState(false); // Show OTP field
+  const [otp, setOtp] = useState(''); // OTP state
+  const [email, setEmail] = useState('');
+  const [isOtpSent, setOtpSent] = useState(false); // OTP sent flag
+
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -78,27 +84,104 @@ export default function Navbar() {
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
   const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(!confirmPasswordVisible);
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
 
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-  };
+  const handleEmailChange = (event) => setEmail(event.target.value);
+  const handlePasswordChange = (event) => setPassword(event.target.value);
+  const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
+  const handleOtpChange = (event) => setOtp(event.target.value);
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    logEvent('register_user', { username: 'jk' }, 'jk');
-    if (password.length < 7) {
-      alert("Password must contain at least 7 characters.");
+
+   // Simulate sending OTP API request
+   const sendOtp = async () => {
+    if (!email) {
+      alert('Please enter your email.');
       return;
     }
-    if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
+  
+    try {
+      const response = await axios.post("http://localhost:3001/api/send-otp", { email });
+  
+      if (response.data.success) {
+        setOtpSent(true);
+        setOtpFieldVisible(true);
+        alert("OTP sent to your email!");
+      } else {
+        alert("Failed to send OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
     }
-    // Perform registration logic here
   };
+
+
+
+// Handle register with OTP verification
+const handleRegister = async (e) => {
+  e.preventDefault();
+  
+  if (password.length < 7) {
+    alert("Password must contain at least 7 characters.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  if (!isOtpSent || !otp) {
+    alert("Please enter the OTP sent to your email.");
+    return;
+  }
+
+  try {
+    // Verify OTP
+    const otpVerificationResponse = await axios.post("http://localhost:3001/api/verify-otp", { email, otp });
+
+    if (otpVerificationResponse.data.success) {
+      alert("OTP verified! Proceeding with registration...");
+
+      // Proceed with registration after OTP verification
+      const response = await axios.post("/api/register", { email, password });
+
+      if (response.data.success) {
+        alert("Registration successful!");
+      } else {
+        alert("Registration failed. Please try again.");
+      }
+    } else {
+      alert("Invalid OTP. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error during registration:", error);
+  }
+};
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  if (!email || !password) {
+    alert("Please enter your email and password.");
+    return;
+  }
+
+  try {
+    // Send login request
+    const response = await axios.post("http://localhost:3001/api/login", { email, password });
+
+    if (response.data.success) {
+      alert("Login successful!");
+      // You can save the token or user details in localStorage or context if needed
+      localStorage.setItem("token", response.data.token); // Example for storing token
+      // Redirect or handle post-login logic here
+    } else {
+      alert("Login failed. Please check your credentials.");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    alert("An error occurred during login. Please try again.");
+  }
+};
 
   const trendingCars = [
     { name: "Tata Curvv", icon: <AiOutlineClockCircle /> },
@@ -239,8 +322,8 @@ export default function Navbar() {
         )}
       </Modal>
 
-      {/* Login/Registration Modal */}
-      <Modal
+        {/* Login/Registration Modal */}
+        <Modal
         isOpen={loginModalIsOpen}
         onRequestClose={() => setLoginModalIsOpen(false)}
         className="modal-login"
@@ -253,8 +336,27 @@ export default function Navbar() {
         <div className="modal-content">
           <h2>{isRegister ? "Register" : "Login"}</h2>
           <form onSubmit={isRegister ? handleRegister : null}>
-            <input type="email" placeholder="Email" required className="modal-input" />
-            
+            <input
+              type="email"
+              placeholder="Email"
+              required
+              className="modal-input"
+              value={email}
+              onChange={handleEmailChange}
+            />
+
+            {/* OTP field */}
+            {isOtpFieldVisible && (
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                required
+                className="modal-input"
+                value={otp}
+                onChange={handleOtpChange}
+              />
+            )}
+
             {/* Password field with eye icon */}
             <div className="password-container">
               <input
@@ -269,7 +371,7 @@ export default function Navbar() {
                 {passwordVisible ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
-            
+
             {isRegister && (
               <div className="password-container">
                 <input
@@ -287,12 +389,15 @@ export default function Navbar() {
             )}
 
             <div className="modal-buttons-container">
+              <button type="button" className="modal-button" onClick={sendOtp}>
+                {isOtpSent ? "Resend OTP" : "Send OTP"}
+              </button>
               <button type="submit" className="modal-button">
                 {isRegister ? "Register" : "Login"}
               </button>
             </div>
           </form>
-          
+
           <p>
             {isRegister ? "Already have an account? " : "Don't have an account? "}
             <span
@@ -304,9 +409,6 @@ export default function Navbar() {
           </p>
         </div>
       </Modal>
-
-      
-
     </>
   );
 }

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import Modal from 'react-modal';
+import axios from 'axios'; 
 
 // Dummy user data
 const dummyUsers = [
@@ -119,6 +120,20 @@ const UserTable = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [formData, setFormData] = useState({ name: '', password: '' });
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/api/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+        alert('Failed to fetch users. Please try again.');
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -134,22 +149,40 @@ const UserTable = () => {
     setDeleteModalIsOpen(true);
   };
 
-  const handleEditModalSubmit = (e) => {
+  const handleEditModalSubmit = async (e) => {
     e.preventDefault();
-    setUsers(prevUsers =>
-      prevUsers.map(user =>
-        user.id === selectedUser.id
-          ? { ...user, ...formData }
-          : user
-      )
-    );
-    setEditModalIsOpen(false);
+
+    try {
+      // API call to update user
+      await axios.put(`/api/users/${selectedUser.id}`, formData);
+
+      setUsers(prevUsers =>
+        prevUsers.map(user =>
+          user.id === selectedUser.id
+            ? { ...user, ...formData }
+            : user
+        )
+      );
+      setEditModalIsOpen(false);
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      alert('Failed to update user. Please try again.');
+    }
   };
 
-  const handleDeleteModalConfirm = () => {
-    setUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUser.id));
-    setDeleteModalIsOpen(false);
+  const handleDeleteModalConfirm = async () => {
+    try {
+      // API call to delete user
+      await axios.delete(`/api/users/${selectedUser.id}`);
+
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUser.id));
+      setDeleteModalIsOpen(false);
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      alert('Failed to delete user. Please try again.');
+    }
   };
+
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
