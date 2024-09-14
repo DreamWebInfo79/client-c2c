@@ -17,7 +17,8 @@ import { MdEventSeat } from "react-icons/md";
 import { FaSun, FaSnowflake, FaKey, FaCameraRetro, FaBluetooth, FaWindowMaximize } from 'react-icons/fa';
 import './index.css';
 import {  FaDoorOpen, FaShapes, FaParking, FaLock } from "react-icons/fa";
-import BottomNav from '../BottomNav';
+
+import { logEvent } from '../../analytics';
 
 const CarDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,10 @@ const CarDetails = () => {
   const navigate = useNavigate();
   const currentURL = window.location.href;
 
+
+
   const handleShareClick = (platform) => {
+    logEvent('Share Car', { platform }, 'jk');
     let shareURL = "";
     const encodedURL = encodeURIComponent(currentURL);
 
@@ -155,6 +159,18 @@ const CarDetails = () => {
     { label: "Body Type", value: "Sedan" }
   ];
 
+
+
+  const handleBookNowClick = () => {
+    logEvent('book_now', { car_id: car.id }, 'jk');
+    // Handle book now click
+  };
+
+  const handleFreeTestDriveClick = () => {
+    logEvent('free_test_drive', { car_id: car.id }, 'jk');
+    // Handle free test drive click
+  };
+
   return (
     <>
       <div className="car-details-container">
@@ -214,8 +230,8 @@ const CarDetails = () => {
     <p className="car-detail"><strong>Home Test Drive:</strong> Available</p>
 
     <div className="btn-container">
-        <button className="book-now">Book Now <br/>Contact us</button>
-        <button className="free-test-drive">Free Test Drive</button>
+        <button className="book-now" onClick={() => handleBookNowClick()}>Book Now <br/>Contact us</button>
+        <button className="free-test-drive" onClick={() => handleFreeTestDriveClick()} >Free Test Drive</button>
     </div>
     
     <div className="share-container">

@@ -5,7 +5,7 @@ import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Importing icons
-
+import { logEvent } from '../../analytics';
 import "./index.css";
 
 export default function Navbar() {
@@ -68,6 +68,7 @@ export default function Navbar() {
   const closeLoginModal = () => setLoginModalIsOpen(false);
 
   const handleStateSelect = (state) => {
+    logEvent('select_state', { state }, 'jk');
     setSelectedState(state);
     setModalIsOpen(false);
   };
@@ -87,6 +88,7 @@ export default function Navbar() {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    logEvent('register_user', { username: 'jk' }, 'jk');
     if (password.length < 7) {
       alert("Password must contain at least 7 characters.");
       return;

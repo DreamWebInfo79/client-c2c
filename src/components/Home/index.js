@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 // import carVideo from '../../../public/video/c2cintro.mp4'
 import CarSearchForm from '../CarSearchForm';
 import {videoGif} from '../../statesData';
-
+import { logEvent } from '../../analytics';
 
 import './index.css';
 
@@ -215,6 +215,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const toggleFavourite = (carId) => {
+    logEvent('Car', 'Favourite', carId);
     setFavourites((prevFavourites) => ({
       ...prevFavourites,
       [carId]: !prevFavourites[carId],

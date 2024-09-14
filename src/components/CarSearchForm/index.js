@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import 'rc-slider/assets/index.css';
 import './index.css';
-
+import { logEvent } from '../../analytics';
 
 const CarSearchForm = () => {
   const [budget, setBudget] = useState([1, 50]);
@@ -20,6 +20,7 @@ const CarSearchForm = () => {
   ];
 
   const handleBrandOptionChange = (event) => {
+
     setSelectBrandValue(event.target.value);
   };
 
@@ -69,6 +70,7 @@ const CarSearchForm = () => {
   );
 
   const handleSubmit = (event) => {
+    logEvent('search_car', { brand: selectBrandValue, city: cityValue, budget: budget[0] },'jk');
     event.preventDefault();
     // Your submit logic
   };

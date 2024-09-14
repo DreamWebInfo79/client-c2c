@@ -1,6 +1,7 @@
 import React from "react";
 import { FaFacebook, FaTwitter, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import './index.css';
+import { logEvent } from '../../analytics';
 
 export default function Component() {
   const carBrands = [
