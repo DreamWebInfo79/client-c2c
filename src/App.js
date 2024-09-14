@@ -5,6 +5,7 @@ import Home from './components/Home';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CarDetails from './components/CarDetails';
 import Admin from './components/admin';
+import ScrollToTop from './components/ScrollToTop';
 // import BottomNav from './components/BottomNav';   
 import './App.css';
 
@@ -13,6 +14,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
+      <ScrollToTop />
         <Routes>
         {/* <Home/> */}
           <Route path="/" element={<Home />} />
