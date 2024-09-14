@@ -3,16 +3,18 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import CarDetails from './components/CarDetails';
-import Admin from './components/admin';
+import Admin from './components/admin/Admin';
 import ScrollToTop from './components/ScrollToTop';
 import usePageTracking from './hooks/usePageTracking';
 import './App.css';
 
 function App() {
-  usePageTracking(); // Ensure this hook is used here
+  
+  
+  usePageTracking();
+
 
   return (
-    <Router>
       <div className="App">
         <Navbar />
         <ScrollToTop />
@@ -23,7 +25,6 @@ function App() {
         </Routes>
         <Footer />
       </div>
-    </Router>
   );
 }
 

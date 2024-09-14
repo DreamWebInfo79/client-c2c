@@ -203,12 +203,6 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-
-      {/* Selected State */}
-      {selectedState && (
-        <h1>Selected state: {selectedState.name}</h1>
-      )}
-
       {/* State Modal */}
       <Modal
         isOpen={modalIsOpen}

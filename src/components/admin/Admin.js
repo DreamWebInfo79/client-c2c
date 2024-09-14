@@ -38,7 +38,7 @@ const Content = styled.div`
   /* height: 100%; */
 `;
 
-const CarDashboard = () => {
+const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeSection, setActiveSection] = useState('table');
   const [carData, setCarData] = useState(cars);
@@ -87,4 +87,4 @@ const CarDashboard = () => {
   );
 };
 
-export default CarDashboard;
+export default Admin;
