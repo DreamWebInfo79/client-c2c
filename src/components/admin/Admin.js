@@ -1,11 +1,12 @@
 // CarDashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import CarTable from './CarTable';
 import AddCarForm from './AddCarForm';
 import UserTable from './UserTable';
 import AddUser from './AddUser';
 import LoginPage from './LoginPage';
+import axios from 'axios';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -40,7 +41,23 @@ const Content = styled.div`
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeSection, setActiveSection] = useState('table');
-  const [carData, setCarData] = useState(null);
+  const [carData, setCarData] = useState([]);
+
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+        const fetchedCars = response.data.cars || [];
+        const allCars = Object.values(fetchedCars).flat();
+        setCarData(allCars);
+        // setCars(fetchedCars.Tata); 
+        console.log(fetchedCars);
+      } catch (error) {
+        console.error('Failed to fetch car data', error);
+      }
+    };
+    fetchCars();
+  }, []);
 
   const handleDelete = (index) => {
     const updatedData = carData.filter((_, i) => i !== index);

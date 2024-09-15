@@ -389,9 +389,10 @@ const handleLogin = async (e) => {
             )}
 
             <div className="modal-buttons-container">
-              <button type="button" className="modal-button" onClick={sendOtp}>
-                {isOtpSent ? "Resend OTP" : "Send OTP"}
-              </button>
+              
+              {isRegister && <button type="button" className="modal-button" onClick={sendOtp}>
+                Send OTP
+              </button>}
               <button type="submit" className="modal-button">
                 {isRegister ? "Register" : "Login"}
               </button>

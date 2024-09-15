@@ -3,14 +3,9 @@ import styled from 'styled-components';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import Modal from 'react-modal';
 import axios from 'axios'; 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
-// Dummy user data
-const dummyUsers = [
-  { id: 1, name: 'John Doe', password: 'password123', createdAt: '2024-01-15' },
-  { id: 2, name: 'Jane Smith', password: 'password456', createdAt: '2024-02-20' },
-  { id: 3, name: 'Michael Brown', password: 'password789', createdAt: '2024-03-10' },
-  // Add more users as needed
-];
 
 // Styled Components
 const PageWrapper = styled.div`
@@ -113,17 +108,20 @@ const DeleteButton = styled(ModalButton)`
 Modal.setAppElement('#root');
 
 const UserTable = () => {
-  const [users, setUsers] = useState(dummyUsers);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [formData, setFormData] = useState({ name: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
 
-  useEffect(() => {
+
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/users');
+        const response = await axios.get('http://localhost:3001/admin/all');
         setUsers(response.data);
       } catch (error) {
         console.error('Failed to fetch users:', error);
@@ -131,68 +129,100 @@ const UserTable = () => {
       }
     };
 
+  useEffect(() => {
     fetchUsers();
-  }, []);
-
+  },[])
+  
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
-    setFormData({ name: user.name, password: user.password });
+    setFormData({ email: user.email, password: '' });
     setEditModalIsOpen(true);
   };
+  
 
   const handleDeleteClick = (user) => {
     setSelectedUser(user);
     setDeleteModalIsOpen(true);
   };
+  // uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3"
 
   const handleEditModalSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Prepare the updated data
+    const updatedFormData = {
+      email: formData.email,
+      uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3",
+    };
+  
+    // Include password only if it has been changed
+    if (formData.password) {
+      updatedFormData.password = formData.password;
+    }
+  
     try {
-      // API call to update user
-      await axios.put(`/api/users/${selectedUser.id}`, formData);
-
-      setUsers(prevUsers =>
-        prevUsers.map(user =>
-          user.id === selectedUser.id
-            ? { ...user, ...formData }
-            : user
-        )
-      );
-      setEditModalIsOpen(false);
+      const response = await axios.put(`http://localhost:3001/admin/${selectedUser.uniqueId}`, updatedFormData);
+  
+      if (response.data.message) {
+        fetchUsers();
+        setEditModalIsOpen(false);
+        setSnackbarMessage('User updated successfully!');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      } else {
+        setSnackbarMessage('Failed to update user. Please try again.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      }
     } catch (error) {
       console.error('Failed to update user:', error);
-      alert('Failed to update user. Please try again.');
+      setSnackbarMessage('Failed to update user. Please try again.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
+  
 
   const handleDeleteModalConfirm = async () => {
     try {
       // API call to delete user
-      await axios.delete(`/api/users/${selectedUser.id}`);
+      const response = await axios.delete(`http://localhost:3001/admin/${selectedUser.uniqueId}`,{
+        data: { uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3" }
+    });
 
-      setUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUser.id));
-      setDeleteModalIsOpen(false);
+      if (response.data.message) {
+        fetchUsers();
+        // setUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUser.id));
+        setDeleteModalIsOpen(false);
+        setSnackbarMessage('User deleted successfully!');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      } else {
+        setSnackbarMessage('Failed to delete user. Please try again.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      }
     } catch (error) {
       console.error('Failed to delete user:', error);
-      alert('Failed to delete user. Please try again.');
+      setSnackbarMessage('Failed to delete user. Please try again.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
-
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.password.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredUsers = filteredUsers && users.filter(user =>
+  //   user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   user.password.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <PageWrapper>
@@ -213,9 +243,9 @@ const UserTable = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map(user => (
+          {users.map(user => (
             <TableRow key={user.id}>
-              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
               <TableCell>{user.password}</TableCell>
               <TableCell>{user.createdAt}</TableCell>
               <TableCell>
@@ -241,9 +271,9 @@ const UserTable = () => {
         <UserForm onSubmit={handleEditModalSubmit}>
           <Input
             type="text"
-            name="name"
+            name="email"
             placeholder="Name"
-            value={formData.name}
+            value={formData.email}
             onChange={handleFormChange}
             required
           />
@@ -253,7 +283,6 @@ const UserTable = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleFormChange}
-            required
           />
           <SaveButton type="submit">Save Changes</SaveButton>
         </UserForm>
@@ -266,7 +295,7 @@ const UserTable = () => {
         style={{ content: { maxWidth: '400px', margin: 'auto' } }}
       >
         <ModalTitle>Delete User</ModalTitle>
-        <p>Are you sure you want to delete {selectedUser?.name}?</p>
+        <p>Are you sure you want to delete {selectedUser?.email}?</p>
         <DeleteButton onClick={handleDeleteModalConfirm}>
           Delete
         </DeleteButton>

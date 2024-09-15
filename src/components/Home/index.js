@@ -7,7 +7,6 @@ import { BiSolidRightArrowCircle } from 'react-icons/bi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import CarSearchForm from '../CarSearchForm';
-import { videoGif } from '../../statesData';
 import { logEvent } from '../../analytics';
 import axios from 'axios';
 import './index.css';

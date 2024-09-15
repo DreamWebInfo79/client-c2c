@@ -1,6 +1,7 @@
 // LoginPage.js
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -47,29 +48,43 @@ const Button = styled.button`
 `;
 
 const LoginPage = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Replace with actual authentication logic
-    if (username === 'admin' && password === 'admin') {
-      onLogin();
-    } else {
-      alert('Invalid credentials');
+    
+    try {
+      // Send POST request to the login route
+      const response = await axios.post('http://localhost:3001/admin/login', {
+        email,    // Send email and password in the request body
+        password,
+      });
+
+      // If login is successful, trigger onLogin and handle success response
+      if (response.data.message === 'Login successful!') {
+        onLogin();
+      }
+    } catch (error) {
+      // Handle error response
+      if (error.response && error.response.status === 401) {
+        alert('Invalid credentials');
+      } else {
+        console.error('Login error:', error);
+        alert('Failed to log in');
+      }
     }
   };
-
   return (
     <PageWrapper>
       <LoginContainer>
         <Heading>Admin Login</Heading>
         <form onSubmit={handleSubmit}>
           <Input
-            type="text"
+            type="email"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 // Styled Components
 const PageWrapper = styled.div`
@@ -59,9 +61,11 @@ const ErrorMessage = styled.p`
 `;
 
 const AddUser = ({ onAddUser }) => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // For success message
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
 
 
   const handleInputChange = (e) => {
@@ -75,30 +79,41 @@ const AddUser = ({ onAddUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.username || !formData.password) {
-      setError('Both fields are required.');
+    if (!formData.email || !formData.password) {
+      setSnackbarMessage('Both fields are required.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long.');
+      setSnackbarMessage('Password must be at least 6 characters long.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
 
     try {
       // Send the data to the backend to add the user
-      const response = await axios.post('http://localhost:3001/api/add-user', formData);
+      const response = await axios.post('http://localhost:3001/admin/register', formData);
 
-      if (response.data.success) {
-        setSuccessMessage('User added successfully!');
-        setError('');
-        setFormData({ username: '', password: '' }); // Reset the form
+      if (response.data.message) {
+        setSnackbarMessage('User added successfully!');
+        setSnackbarSeverity('success');
+        setFormData({ email: '', password: '' }); // Reset the form
       } else {
-        setError('Failed to add user. Please try again.');
+        setSnackbarMessage('Failed to add user. Please try again.');
+        setSnackbarSeverity('error');
       }
     } catch (error) {
-      setError('An error occurred while adding the user. Please try again.');
+      setSnackbarMessage('An error occurred while adding the user. Please try again.');
+      setSnackbarSeverity('error');
     }
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -107,10 +122,10 @@ const AddUser = ({ onAddUser }) => {
         <Title>Add User</Title>
         <UserForm onSubmit={handleSubmit}>
           <Input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
+            type="email"
+            name="email"
+            placeholder="email"
+            value={formData.email}
             onChange={handleInputChange}
             required
           />
@@ -126,6 +141,19 @@ const AddUser = ({ onAddUser }) => {
           <Button type="submit">Add User</Button>
         </UserForm>
       </FormCard>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </PageWrapper>
   );
 };
