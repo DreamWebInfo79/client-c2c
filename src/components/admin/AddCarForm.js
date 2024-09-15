@@ -24,6 +24,7 @@ const carBrandOptions = [
   { value: 'Honda', label: 'Honda' },
   { value: 'Hyundai', label: 'Hyundai' },
   { value: 'Ford', label: 'Ford' },
+  { value: 'custom', label: 'Add New Brand...' }
 ];
 
 const yearOptions = Array.from({ length: 30 }, (_, i) => {
@@ -103,6 +104,9 @@ const CarForm = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [specifications, setSpecifications] = useState(defaultTechnicalSpecifications);
+  const [customBrand, setCustomBrand] = useState('');
+  const [isCustomBrand, setIsCustomBrand] = useState(false);
+
 
   const handleAddSpecification = () => {
     setSpecifications([...specifications, { label: '', value: '' }]);
@@ -175,7 +179,33 @@ const toggleFeature = (iconObj) => {
 
   const handleDrop = (acceptedFiles) => {
     setImageFiles(acceptedFiles);
-    handleImageUpload(acceptedFiles);
+    // Create image previews
+    const previews = acceptedFiles.map(file => URL.createObjectURL(file));
+    setImagePreviews(previews);
+  };
+
+  const uploadImagesToCloudinary = async () => {
+    const uploadedImageUrls = [];
+    
+    for (const file of imageFiles) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+      try {
+        const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+        uploadedImageUrls.push(response.data.secure_url);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+
+    setCarDetails({
+      ...carDetails,
+      images: [...carDetails.images, ...uploadedImageUrls],
+    });
+    setImageFiles([]); // Clear selected files after upload
+    setImagePreviews([]); // Clear previews
   };
 
   const handleImageDelete = (index) => {
@@ -269,19 +299,53 @@ const toggleFeature = (iconObj) => {
     setSelectedFeatures([]);
   };
 
+  const handleBrandChange = (selectedOption) => {
+    if (selectedOption.value === 'custom') {
+      setIsCustomBrand(true);
+    } else {
+      setCarDetails({
+        ...carDetails,
+        brand: selectedOption.value
+      });
+      setIsCustomBrand(false);
+    }
+  };
+
+  const handleCustomBrandSubmit = () => {
+    if (customBrand.trim()) {
+      setCarDetails({
+        ...carDetails,
+        brand: customBrand.trim()
+      });
+      setIsCustomBrand(false);
+      setCustomBrand('');
+    }
+  };
+  
+
   return (
     <div className="car-form-container">
       <h2>Add Car Details</h2>
       <form onSubmit={handleSubmit} className="car-form">
         <div className="form-section left">
-          <div className="form-group">
+        <div className="form-group">
             <label><FaCar /> Brand:</label>
             <Select
               options={carBrandOptions}
-              onChange={(selectedOption) => handleSelectChange(selectedOption, 'brand')}
+              onChange={handleBrandChange}
               placeholder="Select Brand"
             />
-            {/* <input type="text" name="brand" value={carDetails.brand} onChange={handleInputChange} required /> */}
+            {isCustomBrand && (
+              <div className="custom-brand-input">
+                <input
+                  type="text"
+                  value={customBrand}
+                  onChange={(e) => setCustomBrand(e.target.value)}
+                  placeholder="Enter new brand"
+                />
+                <button type="button" onClick={handleCustomBrandSubmit}>Add Brand</button>
+              </div>
+            )}
           </div>
           <div className="form-group">
             <label><FaCar /> Model:</label>
@@ -351,6 +415,7 @@ const toggleFeature = (iconObj) => {
                 </div>
               ))}
           </div>
+          <button style={{marginTop: '10px', marginBottom: '10px', marginRight: '10px', width:'200px', marginLeft: '10px', height: '40px', borderRadius: '5px', backgroundColor: 'blue', color: 'white', border: 'none', cursor: 'pointer', fontSize: '16px', fontWeight: 'bold'}} onClick={uploadImagesToCloudinary}>Submit Image</button>
 
           <div className="form-group feature-selection">
             <label>Features:</label>

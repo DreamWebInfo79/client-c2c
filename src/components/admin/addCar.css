@@ -209,3 +209,19 @@
     outline: none;
   }
   
+  .custom-brand-input {
+    margin-top: 10px;
+  }
+  
+  .custom-brand-input input {
+    margin-right: 10px;
+  }
+  
+  .custom-brand-input button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
