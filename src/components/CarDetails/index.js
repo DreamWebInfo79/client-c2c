@@ -5,7 +5,6 @@ import { FaRoad } from "react-icons/fa6";
 import { useParams, useNavigate } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
 import { FaRegHeart, FaTag, FaCogs, FaMapMarkerAlt, FaCar, FaTachometerAlt, FaChair, FaGasPump, FaPaintBrush, FaUser, FaHeart } from 'react-icons/fa';
-import { cars } from './cars';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { CiLocationOn } from "react-icons/ci";
@@ -16,6 +15,7 @@ import { FaUserTie } from "react-icons/fa";
 import { MdEventSeat } from "react-icons/md";
 import { FaSun, FaSnowflake, FaKey, FaCameraRetro, FaBluetooth, FaWindowMaximize } from 'react-icons/fa';
 import './index.css';
+import axios from 'axios';
 import {  FaDoorOpen, FaShapes, FaParking, FaLock } from "react-icons/fa";
 
 import { logEvent } from '../../analytics';
@@ -23,9 +23,43 @@ import { logEvent } from '../../analytics';
 const CarDetails = () => {
   const [loading, setLoading] = useState(true);
   const [car, setCar] = useState(null);
-  const { id } = useParams();
+  const [cars,setCars] = useState([]);
+  const { id, brand } = useParams();
   const navigate = useNavigate();
   const currentURL = window.location.href;
+
+  useEffect(() => {
+    const fetchCar = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`http://localhost:3001/cars/${id}`);
+        setCar(response.data.car);
+      } catch (error) {
+        console.error('Error fetching car details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCar();
+  }, [id]);
+
+    // Fetch car data from API
+    useEffect(() => {
+      const fetchCars = async () => {
+        try {
+          const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+          const fetchedCars = response.data.cars || [];
+          const allCars = Object.values(fetchedCars).flat();
+          setCars(allCars.filter((car) => car.brand.toLowerCase() === brand.toLowerCase()));
+          // setCars(fetchedCars.Tata); 
+          console.log(fetchedCars);
+        } catch (error) {
+          console.error('Failed to fetch car data', error);
+        }
+      };
+      fetchCars();
+    }, []);
 
 
 
@@ -54,45 +88,18 @@ const CarDetails = () => {
 };
 
   // const selectedCar = car.brand || "Honda";
-
-  const carFeatures = [
-    { icon: <FaSnowflake size={30} />, label: "Air Conditioning" },
-    { icon: <FaWindowMaximize size={30} />, label: "Power Windows" },
-    { icon: <FaCogs size={30} />, label: "Power Steering" },
-    { icon: <FaCar size={30} />, label: "Cruise Control" },
-    { icon: <MdEventSeat size={30} />, label: "Leather Seats" },
-    { icon: <FaMapMarkerAlt size={30} />, label: "Navigation System" },
-    { icon: <FaBluetooth size={30} />, label: "Bluetooth Connectivity" },
-    { icon: <FaKey size={30} />, label: "Keyless Entry" },
-    { icon: <FaSun size={30} />, label: "Sunroof" },
-    { icon: <MdEventSeat size={30} />, label: "Heated Seats" },
-    { icon: <FaCameraRetro size={30} />, label: "Backup Camera" }
-  ];
-
-  const carFeaturesss = [
-  { icon: <FaCar size={30} />, label: "Touchscreen Display" },
-  { icon: <FaDoorOpen size={30} />, label: "Number of Doors" },
-  { icon: <FaChair size={30} />, label: "Number of Seats" },
-  { icon: <FaShapes size={30} />, label: "Body Type"},
-  { icon: <FaParking size={30} />, label: "Parking Sensors" },
-  { icon: <FaLock size={30} />, label: "Child Safety Locks" },
-  { icon: <FaChair size={30} />, label: "Number of Seats" },
-  { icon: <FaShapes size={30} />, label: "Body Type"},
-  { icon: <FaParking size={30} />, label: "Parking Sensors" },
-  { icon: <FaLock size={30} />, label: "Child Safety Locks" }
-];
-
-  useEffect(() => {
-    const fetchCar = async () => {
-      setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const carData = cars.find(car => car.id === parseInt(id, 10));
-      setCar(carData);
-      setLoading(false);
-    };
-
-    fetchCar();
-  }, [id]);
+  const iconMapping = {
+    FaSnowflake: FaSnowflake,
+    FaWindowMaximize: FaWindowMaximize,
+    FaCogs: FaCogs,
+    FaCar: FaCar,
+    MdEventSeat: MdEventSeat,
+    FaMapMarkerAlt: FaMapMarkerAlt,
+    FaBluetooth: FaBluetooth,
+    FaKey: FaKey,
+    FaSun: FaSun,
+    FaCameraRetro: FaCameraRetro
+  };
 
   if (loading) {
     return (
@@ -106,60 +113,6 @@ const CarDetails = () => {
   if (!car) {
     return <div className="not-found">Car not found</div>;
   }
-
-  const styles = {
-    list: {
-      display: "flex",
-      listStyleType: "none",
-      padding: 0,
-      gap: '15px',
-      margin: 0,
-      flexWrap: 'wrap',
-    },
-    item: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      padding: '10px',
-      borderRadius: '5px',
-      border: '1px solid #ddd',
-      backgroundColor: '#f9f9f9',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    },
-    square: {
-      width: '30px',
-      height: '30px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: '5px',
-      backgroundColor: '#000', // Default background color
-      color: '#fff',
-      fontSize: '16px',
-      fontWeight: 'bold',
-    },
-    text: {
-      fontSize: '14px',
-    },
-  };
-  
-  // Define the car features
-  const carFeaturess = [
-    { label: "Make", value: "Toyota" },
-    { label: "Model", value: "Camry" },
-    { label: "Year", value: "2022" },
-    { label: "Price", value: "$30,000" },
-    { label: "Mileage", value: "30,000 km" },
-    { label: "Engine Size", value: "2.0L" },
-    { label: "Fuel Type", value: "Petrol" },
-    { label: "Transmission", value: "Automatic" },
-    { label: "Color", value: "Black" },
-    { label: "Number of Doors", value: "4-door" },
-    { label: "Number of Seats", value: "5" },
-    { label: "Body Type", value: "Sedan" }
-  ];
-
-
 
   const handleBookNowClick = () => {
     logEvent('book_now', { car_id: car.id }, 'jk');
@@ -193,31 +146,13 @@ const CarDetails = () => {
   <div style={{width:"70%", height:"auto"}}>
 
   <Carousel autoPlay infiniteLoop>
-                <div>
-                    <img  src={car.image} alt="car" />
-                    <p className="legend">Image 1</p>
-                </div>
-                <div>
-                    <img src={car.image} alt="car"/>
-                    <p className="legend">Image 2</p>
-                </div>
-                <div>
-                    <img src={car.image} alt="car"/>
-                    <p className="legend">Image 3</p>
-                </div>
-                <div>
-                    <img src={car.image} alt="car"/>
-                    <p className="legend">Image 4</p>
-                </div>
-                <div>
-                    <img src={car.image} alt="car"/>
-                    <p className="legend">Image 5</p>
-                </div>
-                <div>
-                    <img src={car.image} alt="car"/>
-                    <p className="legend">Image 6</p>
-                </div>
-            </Carousel>
+      {car.images.map((image, index) => (
+        <div key={index}>
+          <img src={image} alt={`Car separate ${index + 1}`} />
+          <p className="legend">{`Image ${index + 1}`}</p>
+        </div>
+      ))}
+    </Carousel>
   </div>
   <div className="car-info">
     <h1 className="car-title">{car.model}</h1>
@@ -226,7 +161,7 @@ const CarDetails = () => {
     <p className="car-detail"><strong>Year:</strong> {car.year}</p>
     <p className="car-detail"><strong>Mileage:</strong> {car.kmDriven} km</p>
     <p className="car-detail"><strong>Condition:</strong> {car.condition}</p>
-    <p className="car-detail"><strong>Location:</strong> Hyderabad</p>
+    <p className="car-detail"><strong>Location:</strong> {car.location}</p>
     <p className="car-detail"><strong>Home Test Drive:</strong> Available</p>
 
     <div className="btn-container">
@@ -250,7 +185,6 @@ const CarDetails = () => {
           <h1>{`${car.year} ${car.model}`}</h1>
           <p><CiLocationOn /> {car.location}</p>
           <p>Car is as Good Condition,Car is as Good Condition Car is as Good Condition, Car is as Good Condition</p>
-{/* <hr className='line'/> */}
          
           <ul className='car-details-main'>
   <li>
@@ -289,117 +223,49 @@ const CarDetails = () => {
       </div>
     </div>
   </li>
-  {/* <li>
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '10px' }}>
-      <FaRoad size={25} />
-      <div>
-        <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 'normal' }}>Kilometers</h2>
-        <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 'normal' }}>{car.kmDriven}</h2>
-      </div>
-    </div>
-  </li> */}
 </ul>
 <hr className='line'/>
 <div>
   <h1 className="feature-heading-text">Features</h1>
-  <ul style={{ display: "flex",justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
-    {carFeatures.map((feature, index) => (
+  <ul style={{ display: "flex", justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
+  {car.features.map((feature, index) => {
+    const IconComponent = iconMapping[feature.icon]; // Lookup the icon component
+    return (
       <li key={index} className='feature'>
-        {feature.icon}
+        {IconComponent && <IconComponent size={26} />}
         <p>{feature.label}</p>
       </li>
-    ))}
-  </ul>
+    );
+  })}
+</ul>
 </div>
 <hr className='line'/>
-{/* <div>
-  <h1 className="feature-heading-text">Technical Specifications</h1>
-  <ul style={{ display: "flex",justifyContent: "center",  listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
-    {carFeaturesss.map((feature, index) => (
-      <li key={index}  className='feature'>
-        {feature.icon}
-        <p>{feature.label}</p>
-      </li>
-    ))}
-  </ul>
-</div> */}
-<div>
-  <h1 className="feature-heading-text">Technical</h1>
-  <ul style={{ display: "flex",justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
-    {carFeaturesss.map((feature, index) => (
-      <li key={index} className='feature'>
-        {feature.icon}
-        <p>{feature.label}</p>
-      </li>
-    ))}
-  </ul>
-</div>
-          {/* <div className="car-attributes">
-            <div className="attribute">
-              <FaTag />
-              <p><strong>Price:</strong> {car.price}</p>
+<div className="specifications-card">
+      <h2 className="feature-heading-text">Technical Specifications</h2>
+      <div className="specifications-grid">
+        {car.technicalSpecifications.map((spec) => (
+          <div key={spec._id} className="specification-item">
+            {/* <div className="spec-icon">{spec.icon}</div> */}
+              <div className="spec-label">{spec.label}</div>
+            <div className="spec-content">
+              <div className="spec-value">{spec.value}</div>
             </div>
-            <div className="attribute">
-              <FaCogs />
-              <p><strong>Condition:</strong> {car.condition}</p>
-            </div>
-            <div className="attribute">
-              <FaMapMarkerAlt />
-              <p><strong>Location:</strong> {car.location}</p>
-            </div>
-            <div className="attribute">
-              <FaCar />
-              <p><strong>Brand:</strong> {car.brand}</p>
-            </div>
-            <div className="attribute">
-              <FaTachometerAlt />
-              <p><strong>Kilometers Driven:</strong> {car.kmDriven}</p>
-            </div>
-            <div className="attribute">
-              <FaChair />
-              <p><strong>Seats:</strong> {car.seats}</p>
-            </div>
-            <div className="attribute">
-              <FaGasPump />
-              <p><strong>Fuel Type:</strong> {car.fuelType}</p>
-            </div>
-            <div className="attribute">
-              <FaGears />
-              <p><strong>Transmission:</strong> {car.transmission}</p>
-            </div>
-            <div className="attribute">
-              <FaPaintBrush />
-              <p><strong>Color:</strong> {car.color}</p>
-            </div>
-            <div className="attribute">
-              <FaUser />
-              <p><strong>Owners:</strong> {car.owners}</p>
-            </div>
-            <div className="attribute">
-              <FaCar />
-              <p><strong>Engine:</strong> {car.engine}</p>
-            </div>
-            <div className="attribute">
-              <FaCogs />
-              <p><strong>Service History:</strong> {car.serviceHistory}</p>
-            </div>
-            <div className="attribute">
-              <FaTag />
-              <p><strong>Insurance:</strong> {car.insurance}</p>
-            </div>
-          </div> */}
+          </div>
+        ))}
+      </div>
+    </div>   
         </div>
         <h1 className="related-cars-heading">Related Cars</h1>
         <div className="cars-brand-container">
         {cars.map(car => (
-              <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
+              <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.brand}/${car.carId}`)} key={car.carId}>
                 <div className="image_container posR">
                   <div className="imagebox hover">
                     <img
                       height={154}
                       width={284}
                       alt={car.model}
-                      src={car.image}
+                      src={car.images[0]}
                       title={car.model}
                       className="car-image"
                     />
@@ -409,9 +275,9 @@ const CarDetails = () => {
                   <div className="title_heart_section">
                     <div className="titlebox hover">
                       <h3 className="title">
-                        <a  href="#" title={car.model} className="car-link">
-                          {`${car.year} ${car.model}`}
-                        </a>
+                        <div  title={car.model} className="car-link">
+                          <p>{`${car.year} ${car.model}`}</p>
+                        </div>
                       </h3>
                       <div className="dotsDetails">
                         {`${car.year} • ${car.condition}`}
@@ -420,9 +286,9 @@ const CarDetails = () => {
                     <div
                       id="shortlistHeartIcon"
                       className="shortlist NewUcrShortList"
-                      // onClick={() => toggleFavourite(car.id)}
+                      onClick={() => "toggleFavourite"(car.carId)}
                     >
-                      {/* {favourites[car.id] ? <FaHeart /> : <FaRegHeart />} */}
+                      {/* {"favourites"[car.carId] ? <FaHeart /> : <FaRegHeart />} */}
                       <FaRegHeart />
                     </div>
                   </div>

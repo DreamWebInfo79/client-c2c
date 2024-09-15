@@ -6,7 +6,6 @@ import AddCarForm from './AddCarForm';
 import UserTable from './UserTable';
 import AddUser from './AddUser';
 import LoginPage from './LoginPage';
-import { cars } from '../CarDetails/cars';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -41,7 +40,7 @@ const Content = styled.div`
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeSection, setActiveSection] = useState('table');
-  const [carData, setCarData] = useState(cars);
+  const [carData, setCarData] = useState(null);
 
   const handleDelete = (index) => {
     const updatedData = carData.filter((_, i) => i !== index);

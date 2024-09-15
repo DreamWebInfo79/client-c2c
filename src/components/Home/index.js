@@ -1,217 +1,36 @@
-import React, {useState} from 'react';
-import { FaChevronLeft,FaChevronRight } from "react-icons/fa6";
+import React, { useState, useEffect } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { CiLocationOn } from "react-icons/ci";
-import { BiSolidRightArrowCircle } from "react-icons/bi";
-import { FaHeart } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
+import { CiLocationOn } from 'react-icons/ci';
+import { BiSolidRightArrowCircle } from 'react-icons/bi';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-// import carVideo from '../../../public/video/c2cintro.mp4'
 import CarSearchForm from '../CarSearchForm';
-import {videoGif} from '../../statesData';
+import { videoGif } from '../../statesData';
 import { logEvent } from '../../analytics';
-
+import axios from 'axios';
 import './index.css';
-
-
-const cars = [
-  {
-    "id": 1,
-    "price": "₹3,00,000",
-    "model": "Honda City",
-    "year": 2018,
-    "condition": "Used",
-    "image": "https://stimg.cardekho.com/images/carexteriorimages/930x620/Honda/City/9710/1677914238296/front-left-side-47.jpg",
-    "brand": "Honda",
-    "location" : "Chennai"
-  },
-  {
-    "id": 2,
-    "price": "₹4,50,000",
-    "model": "Honda Civic",
-    "year": 2017,
-    "condition": "Used",
-    "image": "https://imgd.aeplcdn.com/664x374/n/cw/ec/27074/civic-exterior-right-front-three-quarter-148156.jpeg?q=80",
-    "brand": "Honda",
-    "location":"Salem"
-  },
-  {
-    "id": 3,
-    "price": "₹5,20,000",
-    "model": "Honda Accord",
-    "year": 2016,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Honda",
-    "location":"Namakkal"
-  },
-  {
-    "id": 4,
-    "price": "₹3,75,000",
-    "model": "Honda Jazz",
-    "year": 2019,
-    "condition": "Used",
-    "image": "https://imgd.aeplcdn.com/1280x720/n/cw/ec/46891/jazz-exterior-right-front-three-quarter.jpeg?q=80",
-    "brand": "Honda",
-    "location":"Karur",
-  },
-  {
-    "id": 5,
-    "price": "₹6,80,000",
-    "model": "Honda CR-V",
-    "year": 2020,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Honda",
-    "location":"Chennai",
-  },
-  {
-    "id": 6,
-    "price": "₹7,00,000",
-    "model": "Honda Amaze",
-    "year": 2021,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Honda",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 7,
-    "price": "₹3,20,000",
-    "model": "Maruti Swift",
-    "year": 2019,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Maruti",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 8,
-    "price": "₹4,75,000",
-    "model": "Maruti Baleno",
-    "year": 2020,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Maruti",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 9,
-    "price": "₹5,50,000",
-    "model": "Maruti Vitara Brezza",
-    "year": 2018,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Maruti",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 10,
-    "price": "₹3,90,000",
-    "model": "Maruti Dzire",
-    "year": 2019,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Maruti",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 11,
-    "price": "₹4,30,000",
-    "model": "Hyundai Verna",
-    "year": 2017,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Hyundai",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 12,
-    "price": "₹5,60,000",
-    "model": "Hyundai Creta",
-    "year": 2018,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Hyundai",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 13,
-    "price": "₹4,20,000",
-    "model": "Hyundai i20",
-    "year": 2019,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Hyundai",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 14,
-    "price": "₹3,80,000",
-    "model": "Hyundai Grand i10",
-    "year": 2018,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Hyundai",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 15,
-    "price": "₹6,00,000",
-    "model": "Hyundai Tucson",
-    "year": 2017,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Hyundai",
-    "location":"Chennai",
-
-  },
-  {
-    "id": 16,
-    "price": "₹7,50,000",
-    "model": "Hyundai Elantra",
-    "year": 2020,
-    "condition": "Used",
-    "image": "https://www.motortrend.com/uploads/sites/5/2021/05/2021-honda-accord-sport-2-0t-15.jpg",
-    "brand": "Hyundai",
-    "location":"Chennai",
-
-  }
-]
 
 const Home = () => {
   const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
+  const [cars, setCars] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
-  const brands = ['All', 'Honda', 'Maruti', 'Hyundai', 'Tata', 'Toyota', 'BMW', 'Mercedes', 'Audi', 'Ford'];
-
-
   const carBrands = [
-    {name:'All', logo: 'car-brand/all-car-bramd.webp'},
+    { name: 'All', logo: 'car-brand/all-car-bramd.webp' },
     { name: 'Toyota', logo: 'car-brand/toyota-logo-2020-europe-download.png' },
-    { name: 'Honda', logo: '/car-brand/honda-rm-removebg-preview.png' },
-    { name: 'Ford', logo: '/car-brand/ford-logo-2017-download.png' },
-    { name: 'BMW', logo: '/car-brand/bmw-logo-2020-gray-download.png' },
-    { name: 'Mercedes-Benz', logo: '/car-brand/benz-removebg-preview.png' },
-    { name: 'Audi', logo: '/car-brand/audi-logo-2016-download.png' },
-    { name: 'TATA', logo: '/car-brand/download-removebg-preview.png' },
-    { name: 'Mahindra', logo: '/car-brand/mahindra-logo.png' },
+    { name: 'Honda', logo: 'car-brand/honda-rm-removebg-preview.png' },
+    { name: 'Ford', logo: 'car-brand/ford-logo-2017-download.png' },
+    { name: 'BMW', logo: 'car-brand/bmw-logo-2020-gray-download.png' },
+    { name: 'Mercedes-Benz', logo: 'car-brand/benz-removebg-preview.png' },
+    { name: 'Audi', logo: 'car-brand/audi-logo-2016-download.png' },
+    { name: 'TATA', logo: 'car-brand/download-removebg-preview.png' },
+    { name: 'Mahindra', logo: 'car-brand/mahindra-logo.png' },
   ];
 
   const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);
-
-
   const navigate = useNavigate();
 
   const toggleFavourite = (carId) => {
@@ -222,86 +41,92 @@ const Home = () => {
     }));
   };
 
-  const filteredCars = activeTab === 'All' ? cars : cars.filter(car => car.brand === activeTab);
+  // Filter cars based on activeTab
+  // const filteredCars = activeTab === 'All' ? cars : cars.filter(car => car.brand === activeTab);
 
+  // Fetch car data from API
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+        const fetchedCars = response.data.cars || [];
+        const allCars = Object.values(fetchedCars).flat();
+        setCars(allCars);
+        // setCars(fetchedCars.Tata); 
+        console.log(fetchedCars);
+      } catch (error) {
+        console.error('Failed to fetch car data', error);
+      }
+    };
+    fetchCars();
+  }, []);
 
-const style = {
-  backgroundImage: `url(/video/car.gif)`,
-  backgroundSize:'cover',
-  height:'550px',
-};
-
+  const style = {
+    backgroundImage: `url(/video/car.gif)`, // Use the imported videoGif here
+    backgroundSize: 'cover',
+    height: '550px',
+  };
 
   return (
     <div className="home-container">
-      {/* <div className="gif-container">
-        <img
-          src="/video/car.gif"
-          alt="Description of the GIF"
-          width="100%"
-          height="auto"
-        />
-      </div> */}
-        <div className="car-search-form-container"  style={style}>
-          <CarSearchForm />
-        </div>
-        <div className="car-container-main">
+      <div className="car-search-form-container" style={style}>
+        <CarSearchForm />
+      </div>
+      <div className="car-container-main">
         <h1 className="car-container-heading">Popular Cars</h1>
         <div>
-        <div className="tabs-container desktop">
-        {visibleBrands.map((brand) => (
-          <div
-            key={brand}
-            className={`tab ${activeTab === brand ? 'active' : ''}`}
-            onClick={() => setActiveTab(brand.name)}
-          >
-            {brand.name === 'All' ? 'All CARS' : brand.name}
+          <div className="tabs-container desktop">
+            {visibleBrands.map((brand) => (
+              <div
+                key={brand.name}
+                className={`tab ${activeTab === brand.name ? 'active' : ''}`}
+                onClick={() => setActiveTab(brand.name)}
+              >
+                {brand.name === 'All' ? 'All CARS' : brand.name}
+              </div>
+            ))}
+            {!showAll && (
+              <div className="tab show-more" onClick={() => setShowAll(true)}>
+                Show More
+              </div>
+            )}
           </div>
-        ))}
-        {!showAll && (
-          <div className="tab show-more" onClick={() => setShowAll(true)}>
-            Show More
-          </div>
-        )}
-      </div>
 
-{/* Mobile Container */}
-<div className="tabs-container-mobile">
-  <div className="brands-grid">
-    {visibleBrands.map((brand) => (
-      <div
-        key={brand.name}
-        className={`brand-tab ${activeTab === brand.name ? 'active' : ''}`}
-        onClick={() => setActiveTab(brand.name)}
-      >
-      <div>
-        <img className="brand-logo" src={brand.logo} alt={`${brand.name} logo`} />
+          {/* Mobile Container */}
+          <div className="tabs-container-mobile">
+            <div className="brands-grid">
+              {visibleBrands.map((brand) => (
+                <div
+                  key={brand.name}
+                  className={`brand-tab ${activeTab === brand.name ? 'active' : ''}`}
+                  onClick={() => setActiveTab(brand.name)}
+                >
+                  <img className="brand-logo" src={brand.logo} alt={`${brand.name} logo`} />
+                  <span className="brand-name">{brand.name}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="toggle-button" onClick={() => setShowAll(!showAll)}>
+              {showAll ? 'View Less Brands' : 'View More Brands'}
+            </div>
+          </div>
         </div>
-        <div>
-        <span className="brand-name">{brand.name}</span>
-      </div>
-      </div>
-    ))}
-  </div>
-  
-  <div className="toggle-button" onClick={() => setShowAll(!showAll)}>
-    {showAll ? 'View Less Brands' : 'View More Brands'}
-  </div>
-</div>
-
-
-    </div>
         <div className="cars-brand-container-home">
-          {/* <h2>{brand} Cars</h2> */}
-            {filteredCars.map(car => (
-              <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.id}`)} key={car.id}>
+          {cars.length > 0 ? (
+            cars.map((car) => (
+              <div
+                className="NewUcExCard posR"
+                onClick={() => navigate(`/car/${car.brand}/${car.carId}`)}
+                key={car.carId}
+              >
                 <div className="image_container posR">
                   <div className="imagebox hover">
                     <img
                       height={154}
                       width={284}
                       alt={car.model}
-                      src={car.image}
+                      src={car.images[0]}
                       title={car.model}
                       className="car-image"
                     />
@@ -322,7 +147,10 @@ const style = {
                     <div
                       id="shortlistHeartIcon"
                       className="shortlist NewUcrShortList"
-                      onClick={() => toggleFavourite(car.id)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent click event from propagating to the card
+                        toggleFavourite(car.id);
+                      }}
                     >
                       {favourites[car.id] ? <FaHeart /> : <FaRegHeart />}
                     </div>
@@ -345,10 +173,12 @@ const style = {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <p>No cars available for this brand.</p>
+          )}
         </div>
-      {/* ))} */}
-    </div>
+      </div>
     </div>
   );
 };
