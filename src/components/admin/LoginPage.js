@@ -51,7 +51,6 @@ const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  onLogin();
 
 
   const handleSubmit = async (e) => {
@@ -66,6 +65,8 @@ const LoginPage = ({ onLogin }) => {
 
       // If login is successful, trigger onLogin and handle success response
       if (response.data.message === 'Login successful!') {
+          onLogin();
+
       }
     } catch (error) {
       // Handle error response

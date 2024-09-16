@@ -1,11 +1,10 @@
-// CarTable.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { Snackbar, Alert } from '@mui/material';
 
-// Styling components remain the same
 
 const ModalContent = styled.div`
   padding: 20px;
@@ -14,6 +13,7 @@ const ModalContent = styled.div`
   width: 80%;
   max-width: 600px;
   margin: auto;
+  margin-top: 20px;
 `;
 
 
@@ -82,17 +82,120 @@ const PageButton = styled.button`
   }
 `;
 
-const CarTable = ({ carData }) => {
+const ModalHeader = styled.h2`
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+`;
+
+const ModalForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const Label = styled.label`
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  /* justify-content: space-between; */
+  margin-top: 20px;
+`;
+
+const SaveButton = styled.button`
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+const CancelButton = styled.button`
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  &:hover {
+    background-color: #c82333;
+  }
+`;
+
+const ConfirmationModalContent = styled.div`
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  text-align: center;
+  /* width: 80%; */
+  height: 150px;
+  margin-top: 70px;
+`;
+
+const ConfirmationText = styled.p`
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+`;
+
+
+const CarTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [editCar, setEditCar] = useState(null); // State for the car to edit
   const [modalIsOpen, setModalIsOpen] = useState(false); // State to control modal visibility
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false); // State for delete confirmation modal
+  const [carToDelete, setCarToDelete] = useState(null); // Track car to delete
+  const [carData, setCarData] = useState({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
   const carsPerPage = 10;
+
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+        const fetchedCars = response.data.cars || [];
+        const allCars = Object.values(fetchedCars).flat();
+        setCarData(allCars);
+      } catch (error) {
+        console.error('Failed to fetch car data', error);
+      }
+    };
+
+  useEffect(() => {
+    fetchCars();
+  },[])
 
   const allCars = Object.values(carData).flatMap(brandCars => brandCars);
 
   // Filter car data based on search term
-  const filteredCars = carData.filter(
+  const filteredCars = allCars.filter(
     (car) =>
       car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
       car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -111,8 +214,13 @@ const CarTable = ({ carData }) => {
   const openModal = (carEditId) => {
     const foundCar = allCars.find(car => car.carId === carEditId);
     setEditCar(foundCar);
-    // console.log(foundCar);
     setModalIsOpen(true);
+  };
+
+    const openDeleteModal = (carId) => {
+    const foundCar = allCars.find(car => car.carId === carId);
+    setCarToDelete(foundCar);
+    setDeleteModalIsOpen(true);
   };
 
   const closeModal = () => {
@@ -128,29 +236,45 @@ const CarTable = ({ carData }) => {
         updateData: editCar // Send editCar directly
       });
       closeModal();
-      // Optionally, refresh carData or show a success message
+      fetchCars();
+      showSnackbar('Car details updated successfully', 'success'); 
     } catch (error) {
       console.error('Error updating car:', error);
-      // Handle error
+      showSnackbar('Failed to update car details', 'error'); 
     }
   };
 
-  const handleDelete = async (carId) => {
+  const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3001/cars/${carId}`, {
+      await axios.delete(`http://localhost:3001/cars/${carToDelete.carId}`, {
         data: {
           uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3" // Include the uniqueId in the body
         }
       });
-      // Optionally, refresh carData or show a success message
-      // e.g., fetchCars(); to refresh the list of cars
+      setDeleteModalIsOpen(false);
+      fetchCars();
+      showSnackbar('Car deleted successfully', 'success'); 
     } catch (error) {
+      showSnackbar('Failed to delete car', 'error');
       console.error('Error deleting car:', error);
-      // Handle error
     }
   };
+
+    const closeDeleteModal = () => {
+    setCarToDelete(null);
+    setDeleteModalIsOpen(false);
+  };
   
+  const showSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
   
+  // Function to close snackbar
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <div>
@@ -183,7 +307,7 @@ const CarTable = ({ carData }) => {
                   <ActionButton onClick={() => openModal(car.carId)}>
                     <FaEdit />
                   </ActionButton>
-                  <ActionButton delete onClick={() => handleDelete(car.carId)}>
+                  <ActionButton delete onClick={() => openDeleteModal(car.carId)}>
                     <FaTrashAlt />
                   </ActionButton>
                 </TableData>
@@ -221,134 +345,165 @@ const CarTable = ({ carData }) => {
         contentLabel="Edit Car Modal"
         ariaHideApp={false}
       >
-               <ModalContent>
-          <h2>Edit Car Details</h2>
-          {editCar && (
-            <div>
-              <label>Brand:</label>
-              <input
-                type="text"
-                value={editCar.brand}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, brand: e.target.value })
-                }
-              />
-              <br />
-              <label>Model:</label>
-              <input
-                type="text"
-                value={editCar.model}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, model: e.target.value })
-                }
-              />
-              <br />
-              <label>Year:</label>
-              <input
-                type="text"
-                value={editCar.year}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, year: e.target.value })
-                }
-              />
-              <br />
-              <label>Price:</label>
-              <input
-                type="text"
-                value={editCar.price}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, price: e.target.value })
-                }
-              />
-              <br />
-              <label>KM Driven:</label>
-              <input
-                type="text"
-                value={editCar.kmDriven}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, kmDriven: e.target.value })
-                }
-              />
-              <br />
-              <label>Fuel Type:</label>
-              <input
-                type="text"
-                value={editCar.fuelType}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, fuelType: e.target.value })
-                }
-              />
-              <br />
-              <label>Transmission:</label>
-              <input
-                type="text"
-                value={editCar.transmission}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, transmission: e.target.value })
-                }
-              />
-              <br />
-              <label>Condition:</label>
-              <input
-                type="text"
-                value={editCar.condition}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, condition: e.target.value })
-                }
-              />
-              <br />
-              <label>Location:</label>
-              <input
-                type="text"
-                value={editCar.location}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, location: e.target.value })
-                }
-              />
-              <br />
-              <label>Images (comma separated):</label>
-              <input
-                type="text"
-                value={editCar.images.join(', ')}
-                onChange={(e) =>
-                  setEditCar({ ...editCar, images: e.target.value.split(', ') })
-                }
-              />
-              <br />
-              <label>Features (comma separated):</label>
-              <input
-                type="text"
-                value={editCar.features.map(f => f.label).join(', ')}
-                onChange={(e) => {
-                  const newFeatures = e.target.value.split(', ').map(label => ({
-                    label,
-                    // You might want to handle icons as well
-                    icon: 'FaQuestionCircle', // default icon if needed
-                  }));
-                  setEditCar({ ...editCar, features: newFeatures });
-                }}
-              />
-              <br />
-              <label>Technical Specifications (label: value):</label>
-              <input
-                type="text"
-                value={editCar.technicalSpecifications.map(ts => `${ts.label}: ${ts.value}`).join(', ')}
-                onChange={(e) => {
-                  const newSpecs = e.target.value.split(', ').map(spec => {
-                    const [label, value] = spec.split(': ');
-                    return { label, value };
-                  });
-                  setEditCar({ ...editCar, technicalSpecifications: newSpecs });
-                }}
-              />
-              <br />
-              <button onClick={handleEdit}>Save Changes</button>
-              <button onClick={closeModal}>Cancel</button>
-            </div>
-          )}
-        </ModalContent>
+            <ModalContent>
+  <ModalHeader>Edit Car Details</ModalHeader>
+  {editCar && (
+    <ModalForm>
+      <Label>Brand:</Label>
+      <Input
+        type="text"
+        value={editCar.brand}
+        onChange={(e) =>
+          setEditCar({ ...editCar, brand: e.target.value })
+        }
+      />
+
+      <Label>Model:</Label>
+      <Input
+        type="text"
+        value={editCar.model}
+        onChange={(e) =>
+          setEditCar({ ...editCar, model: e.target.value })
+        }
+      />
+
+      <Label>Year:</Label>
+      <Input
+        type="text"
+        value={editCar.year}
+        onChange={(e) =>
+          setEditCar({ ...editCar, year: e.target.value })
+        }
+      />
+
+      <Label>Price:</Label>
+      <Input
+        type="text"
+        value={editCar.price}
+        onChange={(e) =>
+          setEditCar({ ...editCar, price: e.target.value })
+        }
+      />
+
+      <Label>KM Driven:</Label>
+      <Input
+        type="text"
+        value={editCar.kmDriven}
+        onChange={(e) =>
+          setEditCar({ ...editCar, kmDriven: e.target.value })
+        }
+      />
+
+      <Label>Fuel Type:</Label>
+      <Input
+        type="text"
+        value={editCar.fuelType}
+        onChange={(e) =>
+          setEditCar({ ...editCar, fuelType: e.target.value })
+        }
+      />
+
+      <Label>Transmission:</Label>
+      <Input
+        type="text"
+        value={editCar.transmission}
+        onChange={(e) =>
+          setEditCar({ ...editCar, transmission: e.target.value })
+        }
+      />
+
+      <Label>Condition:</Label>
+      <Input
+        type="text"
+        value={editCar.condition}
+        onChange={(e) =>
+          setEditCar({ ...editCar, condition: e.target.value })
+        }
+      />
+
+      <Label>Location:</Label>
+      <Input
+        type="text"
+        value={editCar.location}
+        onChange={(e) =>
+          setEditCar({ ...editCar, location: e.target.value })
+        }
+      />
+
+      <Label>Images (comma separated):</Label>
+      <Input
+        type="text"
+        value={editCar.images.join(', ')}
+        onChange={(e) =>
+          setEditCar({ ...editCar, images: e.target.value.split(', ') })
+        }
+      />
+
+      <Label>Features (comma separated):</Label>
+      <Input
+        type="text"
+        value={editCar.features.map(f => f.label).join(', ')}
+        onChange={(e) => {
+          const newFeatures = e.target.value.split(', ').map(label => ({
+            label,
+            icon: 'FaQuestionCircle',
+          }));
+          setEditCar({ ...editCar, features: newFeatures });
+        }}
+      />
+
+      <Label>Technical Specifications (label: value):</Label>
+      <Input
+        type="text"
+        value={editCar.technicalSpecifications.map(ts => `${ts.label}: ${ts.value}`).join(', ')}
+        onChange={(e) => {
+          const newSpecs = e.target.value.split(', ').map(spec => {
+            const [label, value] = spec.split(': ');
+            return { label, value };
+          });
+          setEditCar({ ...editCar, technicalSpecifications: newSpecs });
+        }}
+      />
+
+      <ButtonContainer>
+        <SaveButton onClick={handleEdit}>Save Changes</SaveButton>
+        <CancelButton onClick={closeModal}>Cancel</CancelButton>
+      </ButtonContainer>
+    </ModalForm>
+  )}
+</ModalContent>
+
+      </Modal>
+    <div style={{ height: '100px', width: '100%',marginTop: '30px' }}>
+       <Modal
+        isOpen={deleteModalIsOpen}
+        onRequestClose={closeDeleteModal}
+        contentLabel="Delete Confirmation Modal"
+        ariaHideApp={false}
+      >
+        <ConfirmationModalContent>
+          <ConfirmationText>
+            Are you sure you want to delete {carToDelete?.brand} {carToDelete?.model}?
+          </ConfirmationText>
+          <ButtonContainer>
+            <SaveButton onClick={handleDelete}>Yes</SaveButton>
+            <CancelButton onClick={closeDeleteModal}>No</CancelButton>
+          </ButtonContainer>
+        </ConfirmationModalContent>
       </Modal>
     </div>
+    <Snackbar
+  open={snackbarOpen}
+  autoHideDuration={3000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+>
+  <Alert onClose={handleCloseSnackbar} sx={{ width: '100%' }} severity={snackbarSeverity}>
+    {snackbarMessage}
+  </Alert>
+</Snackbar>
+
+  </div>
   );
 };
 

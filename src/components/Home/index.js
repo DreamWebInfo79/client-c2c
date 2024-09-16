@@ -51,8 +51,6 @@ const Home = () => {
         const fetchedCars = response.data.cars || [];
         const allCars = Object.values(fetchedCars).flat();
         setCars(allCars);
-        // setCars(fetchedCars.Tata); 
-        console.log(fetchedCars);
       } catch (error) {
         console.error('Failed to fetch car data', error);
       }

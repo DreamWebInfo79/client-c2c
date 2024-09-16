@@ -41,32 +41,6 @@ const Content = styled.div`
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeSection, setActiveSection] = useState('table');
-  const [carData, setCarData] = useState([]);
-
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
-        const fetchedCars = response.data.cars || [];
-        const allCars = Object.values(fetchedCars).flat();
-        setCarData(allCars);
-        // setCars(fetchedCars.Tata); 
-        console.log(fetchedCars);
-      } catch (error) {
-        console.error('Failed to fetch car data', error);
-      }
-    };
-    fetchCars();
-  }, []);
-
-  const handleDelete = (index) => {
-    const updatedData = carData.filter((_, i) => i !== index);
-    setCarData(updatedData);
-  };
-
-  const handleAddCar = (newCar) => {
-    setCarData([...carData, newCar]);
-  };
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -94,8 +68,8 @@ const Admin = () => {
       </Sidebar>
 
       <Content>
-        {activeSection === 'table' && <CarTable carData={carData} handleDelete={handleDelete} />}
-        {activeSection === 'addCar' && <AddCarForm onSubmit={handleAddCar} />}
+        {activeSection === 'table' && <CarTable />}
+        {activeSection === 'addCar' && <AddCarForm />}
         {activeSection === 'userTable' && <UserTable />}
         {activeSection === 'addUser' && <AddUser />}
       </Content>

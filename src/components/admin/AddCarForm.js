@@ -295,7 +295,6 @@ const toggleFeature = (iconObj) => {
         images: [...carDetails.images, ...uploadedImageUrls],
       };
       
-      console.log('Updated carDetails with images:', updatedCarDetails);
   
       // Update state
       setCarDetails(updatedCarDetails);
@@ -310,7 +309,6 @@ const toggleFeature = (iconObj) => {
       };
   
       // Log carData to verify its content
-      console.log('Submitting car data:', carData);
   
       // Ensure images are included before submitting
       if (carData.car.images && carData.car.images.length > 0) {
@@ -339,7 +337,7 @@ const toggleFeature = (iconObj) => {
           console.error('Error submitting form:', error);
         }
       } else {
-        console.log('No images found to submit.');
+        console.error('No images found to submit.');
       }
   
     } catch (error) {
@@ -564,7 +562,11 @@ const toggleFeature = (iconObj) => {
 
         <button className='add-car-button' type="submit">Submit</button>
       </form>
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+      <Snackbar
+       open={snackbarOpen}
+        autoHideDuration={6000}
+         onClose={handleSnackbarClose}
+         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
         <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
