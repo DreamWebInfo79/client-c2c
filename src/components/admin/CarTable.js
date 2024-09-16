@@ -2,6 +2,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import Modal from 'react-modal';
+import axios from 'axios';
+
+// Styling components remain the same
+
+const ModalContent = styled.div`
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  margin: auto;
+`;
+
 
 const Table = styled.table`
   width: 100%;
@@ -68,10 +82,14 @@ const PageButton = styled.button`
   }
 `;
 
-const CarTable = ({ carData, handleDelete }) => {
+const CarTable = ({ carData }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [editCar, setEditCar] = useState(null); // State for the car to edit
+  const [modalIsOpen, setModalIsOpen] = useState(false); // State to control modal visibility
   const carsPerPage = 10;
+
+  const allCars = Object.values(carData).flatMap(brandCars => brandCars);
 
   // Filter car data based on search term
   const filteredCars = carData.filter(
@@ -89,6 +107,50 @@ const CarTable = ({ carData, handleDelete }) => {
   const totalPages = Math.ceil(filteredCars.length / carsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const openModal = (carEditId) => {
+    const foundCar = allCars.find(car => car.carId === carEditId);
+    setEditCar(foundCar);
+    // console.log(foundCar);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setEditCar(null);
+    setModalIsOpen(false);
+  };
+
+  const handleEdit = async () => {
+    try {
+      // Directly send editCar and uniqueId in the body
+      await axios.put(`http://localhost:3001/cars/${editCar.carId}`, {
+        uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3", // Add uniqueId here
+        updateData: editCar // Send editCar directly
+      });
+      closeModal();
+      // Optionally, refresh carData or show a success message
+    } catch (error) {
+      console.error('Error updating car:', error);
+      // Handle error
+    }
+  };
+
+  const handleDelete = async (carId) => {
+    try {
+      await axios.delete(`http://localhost:3001/cars/${carId}`, {
+        data: {
+          uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3" // Include the uniqueId in the body
+        }
+      });
+      // Optionally, refresh carData or show a success message
+      // e.g., fetchCars(); to refresh the list of cars
+    } catch (error) {
+      console.error('Error deleting car:', error);
+      // Handle error
+    }
+  };
+  
+  
 
   return (
     <div>
@@ -118,10 +180,10 @@ const CarTable = ({ carData, handleDelete }) => {
                 <TableData>{car.year}</TableData>
                 <TableData>{car.price}</TableData>
                 <TableData>
-                  <ActionButton>
+                  <ActionButton onClick={() => openModal(car.carId)}>
                     <FaEdit />
                   </ActionButton>
-                  <ActionButton delete onClick={() => handleDelete(index)}>
+                  <ActionButton delete onClick={() => handleDelete(car.carId)}>
                     <FaTrashAlt />
                   </ActionButton>
                 </TableData>
@@ -151,6 +213,141 @@ const CarTable = ({ carData, handleDelete }) => {
           ))}
         </PaginationContainer>
       )}
+
+      {/* Edit Car Modal */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Edit Car Modal"
+        ariaHideApp={false}
+      >
+               <ModalContent>
+          <h2>Edit Car Details</h2>
+          {editCar && (
+            <div>
+              <label>Brand:</label>
+              <input
+                type="text"
+                value={editCar.brand}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, brand: e.target.value })
+                }
+              />
+              <br />
+              <label>Model:</label>
+              <input
+                type="text"
+                value={editCar.model}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, model: e.target.value })
+                }
+              />
+              <br />
+              <label>Year:</label>
+              <input
+                type="text"
+                value={editCar.year}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, year: e.target.value })
+                }
+              />
+              <br />
+              <label>Price:</label>
+              <input
+                type="text"
+                value={editCar.price}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, price: e.target.value })
+                }
+              />
+              <br />
+              <label>KM Driven:</label>
+              <input
+                type="text"
+                value={editCar.kmDriven}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, kmDriven: e.target.value })
+                }
+              />
+              <br />
+              <label>Fuel Type:</label>
+              <input
+                type="text"
+                value={editCar.fuelType}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, fuelType: e.target.value })
+                }
+              />
+              <br />
+              <label>Transmission:</label>
+              <input
+                type="text"
+                value={editCar.transmission}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, transmission: e.target.value })
+                }
+              />
+              <br />
+              <label>Condition:</label>
+              <input
+                type="text"
+                value={editCar.condition}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, condition: e.target.value })
+                }
+              />
+              <br />
+              <label>Location:</label>
+              <input
+                type="text"
+                value={editCar.location}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, location: e.target.value })
+                }
+              />
+              <br />
+              <label>Images (comma separated):</label>
+              <input
+                type="text"
+                value={editCar.images.join(', ')}
+                onChange={(e) =>
+                  setEditCar({ ...editCar, images: e.target.value.split(', ') })
+                }
+              />
+              <br />
+              <label>Features (comma separated):</label>
+              <input
+                type="text"
+                value={editCar.features.map(f => f.label).join(', ')}
+                onChange={(e) => {
+                  const newFeatures = e.target.value.split(', ').map(label => ({
+                    label,
+                    // You might want to handle icons as well
+                    icon: 'FaQuestionCircle', // default icon if needed
+                  }));
+                  setEditCar({ ...editCar, features: newFeatures });
+                }}
+              />
+              <br />
+              <label>Technical Specifications (label: value):</label>
+              <input
+                type="text"
+                value={editCar.technicalSpecifications.map(ts => `${ts.label}: ${ts.value}`).join(', ')}
+                onChange={(e) => {
+                  const newSpecs = e.target.value.split(', ').map(spec => {
+                    const [label, value] = spec.split(': ');
+                    return { label, value };
+                  });
+                  setEditCar({ ...editCar, technicalSpecifications: newSpecs });
+                }}
+              />
+              <br />
+              <button onClick={handleEdit}>Save Changes</button>
+              <button onClick={closeModal}>Cancel</button>
+            </div>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

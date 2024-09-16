@@ -5,7 +5,7 @@ import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake,
 import { MdPhotoCamera, MdDelete, MdAdd } from 'react-icons/md';
 import { FaCarBattery, FaGasPump, FaMusic, FaTachometerAlt, FaFan, FaShieldAlt, FaHandsHelping, FaLightbulb, FaChargingStation, FaRulerCombined, FaOilCan, FaLeaf } from 'react-icons/fa';
 import Select from 'react-select';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, CircularProgress } from '@mui/material';
 import Indian_states_cities_list from "indian-states-cities-list";
 import { v4 as uuidv4 } from 'uuid';
 import './addCar.css';
@@ -316,8 +316,26 @@ const toggleFeature = (iconObj) => {
       if (carData.car.images && carData.car.images.length > 0) {
         try {
           const response = await axios.post('http://localhost:3001/cars', carData);
-          console.log('Form submitted successfully:', response.data);
+          setCarDetails({
+            carId: uuidv4(),
+            brand: '',
+            model: '',
+            year: '',
+            price: '',
+            kmDriven: '',
+            fuelType: '',
+            transmission: '',
+            condition: '',
+            location: '',
+            images: [],
+            features: [],
+            technicalSpecifications: defaultTechnicalSpecifications,
+          });
+          setImageFiles([]);
+          setImagePreviews([]);
+          showSnackbar('Car details submitted successfully!');
         } catch (error) {
+          showSnackbar('Failed to submit car details. Please try again.', 'error');
           console.error('Error submitting form:', error);
         }
       } else {
@@ -325,6 +343,7 @@ const toggleFeature = (iconObj) => {
       }
   
     } catch (error) {
+      showSnackbar('Failed to submit car details. Please try again.', 'error');
       console.error('Error uploading images to Cloudinary or submitting form:', error);
     } finally {
       setLoading(false); // Stop loading in both success and failure cases
@@ -382,6 +401,14 @@ const toggleFeature = (iconObj) => {
   return (
     <div className="car-form-container">
       <h2>Add Car Details</h2>
+      {loading && (
+        <div className="loader-overlay">
+          <div className="loading-spinner-container">
+            <img src="/video/car-loader.gif" alt="car-loader" className="car-loader"/>
+            <h1>Loading.....Please wait!!</h1>
+          </div>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="car-form">
         <div className="form-section left">
         <div className="form-group">
