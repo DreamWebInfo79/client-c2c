@@ -7,6 +7,7 @@ import { FaCarBattery, FaGasPump, FaMusic, FaTachometerAlt, FaFan, FaShieldAlt, 
 import Select from 'react-select';
 import { Snackbar, Alert } from '@mui/material';
 import Indian_states_cities_list from "indian-states-cities-list";
+import { v4 as uuidv4 } from 'uuid';
 import './addCar.css';
 
 const CLOUDINARY_UPLOAD_PRESET = 'oaniufcx';
@@ -82,6 +83,7 @@ const defaultTechnicalSpecifications = [
 
 const CarForm = () => {
   const [carDetails, setCarDetails] = useState({
+    carId: uuidv4(),
     brand: '',
     model: '',
     year: '',
@@ -93,7 +95,7 @@ const CarForm = () => {
     location: '',
     images: [],
     features: [],
-    technicalSpecifications: [],
+    technicalSpecifications: defaultTechnicalSpecifications,
   });
 
   const [imageFiles, setImageFiles] = useState([]);
@@ -106,20 +108,35 @@ const CarForm = () => {
   const [specifications, setSpecifications] = useState(defaultTechnicalSpecifications);
   const [customBrand, setCustomBrand] = useState('');
   const [isCustomBrand, setIsCustomBrand] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const handleAddSpecification = () => {
-    setSpecifications([...specifications, { label: '', value: '' }]);
+    const updatedSpecifications = [...specifications, { label: '', value: '' }];
+    setSpecifications(updatedSpecifications);
+    setCarDetails({
+      ...carDetails,
+      technicalSpecifications: updatedSpecifications,
+    });
   };
 
   const handleSpecificationChange = (index, field, value) => {
     const updatedSpecs = [...specifications];
     updatedSpecs[index] = { ...updatedSpecs[index], [field]: value };
     setSpecifications(updatedSpecs);
+    setCarDetails({
+      ...carDetails,
+      technicalSpecifications: updatedSpecs,
+    });
   };
 
   const handleDeleteSpecification = (index) => {
-    setSpecifications(specifications.filter((_, i) => i !== index));
+    const updatedSpecs = specifications.filter((_, i) => i !== index);
+    setSpecifications(updatedSpecs);
+    setCarDetails({
+      ...carDetails,
+      technicalSpecifications: updatedSpecs,
+    });
   };
 
 
@@ -145,38 +162,6 @@ const toggleFeature = (iconObj) => {
     });
   };
 
-  const handleImageUpload = async (files) => {
-    const uploadedImageUrls = [];
-    const previews = [];
-
-    for (const file of files) {
-      // Create image preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        previews.push(reader.result);
-        setImagePreviews([...previews]);
-      };
-      reader.readAsDataURL(file);
-
-      // Upload image to Cloudinary
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-      try {
-        const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
-        uploadedImageUrls.push(response.data.secure_url);
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      }
-    }
-
-    setCarDetails({
-      ...carDetails,
-      images: [...carDetails.images, ...uploadedImageUrls],
-    });
-  };
-
   const handleDrop = (acceptedFiles) => {
     setImageFiles(acceptedFiles);
     // Create image previews
@@ -184,29 +169,35 @@ const toggleFeature = (iconObj) => {
     setImagePreviews(previews);
   };
 
-  const uploadImagesToCloudinary = async () => {
-    const uploadedImageUrls = [];
+  // const uploadImagesToCloudinary = async () => {
+  //   const uploadedImageUrls = [];
     
-    for (const file of imageFiles) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  //   for (const file of imageFiles) {
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+  //     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-      try {
-        const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
-        uploadedImageUrls.push(response.data.secure_url);
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      }
-    }
+  //     const customImageName = `${carDetails.brand}-${carDetails.model}-${Date.now()}`;
 
-    setCarDetails({
-      ...carDetails,
-      images: [...carDetails.images, ...uploadedImageUrls],
-    });
-    setImageFiles([]); // Clear selected files after upload
-    setImagePreviews([]); // Clear previews
-  };
+  //     // const customImageName="image_testing_by_jk_1";
+
+  //     formData.append('public_id', customImageName);
+
+  //     try {
+  //       const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+  //       uploadedImageUrls.push(response.data.secure_url);
+  //     } catch (error) {
+  //       console.error('Error uploading image:', error);
+  //     }
+  //   }
+
+  //   setCarDetails({
+  //     ...carDetails,
+  //     images: [...carDetails.images, ...uploadedImageUrls],
+  //   });
+  //   setImageFiles([]); // Clear selected files after upload
+  //   setImagePreviews([]); // Clear previews
+  // };
 
   const handleImageDelete = (index) => {
     setCarDetails({
@@ -265,16 +256,81 @@ const toggleFeature = (iconObj) => {
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Assuming validation is successful
-    if (carDetails.brand && carDetails.model && carDetails.year) {
-      showSnackbar('Car details added successfully!', 'success');
-      console.log('Car details submitted:', carDetails);
-    } else {
-      showSnackbar('Error adding car details. Please fill all required fields.', 'error');
+    setLoading(true); // Start loading
+  
+    try {
+      // Function to upload images to Cloudinary and collect URLs
+      const uploadImagesToCloudinary = async () => {
+        const uploadedImageUrls = [];
+  
+        for (const file of imageFiles) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  
+          const customImageName = `${carDetails.brand}-${carDetails.model}-${Date.now()}`;
+          formData.append('public_id', customImageName);
+  
+          try {
+            const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
+            const imageLink = response.data.secure_url;
+            uploadedImageUrls.push(imageLink);
+          } catch (error) {
+            console.error('Error uploading image:', error);
+            throw new Error('Image upload failed');
+          }
+        }
+  
+        return uploadedImageUrls;
+      };
+  
+      // Invoke the Cloudinary image upload function and get URLs
+      const uploadedImageUrls = await uploadImagesToCloudinary();
+  
+      // Temporarily update carDetails and log the result
+      const updatedCarDetails = {
+        ...carDetails,
+        images: [...carDetails.images, ...uploadedImageUrls],
+      };
+      
+      console.log('Updated carDetails with images:', updatedCarDetails);
+  
+      // Update state
+      setCarDetails(updatedCarDetails);
+  
+      // Use a short delay to ensure state is updated (if needed)
+      await new Promise(resolve => setTimeout(resolve, 100));
+  
+      // Prepare carData for submission
+      const carData = {
+        uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3", // Assuming uniqueId is available from some state or context
+        car: updatedCarDetails // Use updatedCarDetails here
+      };
+  
+      // Log carData to verify its content
+      console.log('Submitting car data:', carData);
+  
+      // Ensure images are included before submitting
+      if (carData.car.images && carData.car.images.length > 0) {
+        try {
+          const response = await axios.post('http://localhost:3001/cars', carData);
+          console.log('Form submitted successfully:', response.data);
+        } catch (error) {
+          console.error('Error submitting form:', error);
+        }
+      } else {
+        console.log('No images found to submit.');
+      }
+  
+    } catch (error) {
+      console.error('Error uploading images to Cloudinary or submitting form:', error);
+    } finally {
+      setLoading(false); // Stop loading in both success and failure cases
     }
   };
+  
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -415,7 +471,7 @@ const toggleFeature = (iconObj) => {
                 </div>
               ))}
           </div>
-          <button style={{marginTop: '10px', marginBottom: '10px', marginRight: '10px', width:'200px', marginLeft: '10px', height: '40px', borderRadius: '5px', backgroundColor: 'blue', color: 'white', border: 'none', cursor: 'pointer', fontSize: '16px', fontWeight: 'bold'}} onClick={uploadImagesToCloudinary}>Submit Image</button>
+          {/* <button style={{marginTop: '10px', marginBottom: '10px', marginRight: '10px', width:'200px', marginLeft: '10px', height: '40px', borderRadius: '5px', backgroundColor: 'blue', color: 'white', border: 'none', cursor: 'pointer', fontSize: '16px', fontWeight: 'bold'}} onClick={uploadImagesToCloudinary}>Submit Image</button> */}
 
           <div className="form-group feature-selection">
             <label>Features:</label>
@@ -473,7 +529,7 @@ const toggleFeature = (iconObj) => {
           />
         </div>
       ))}
-      <button onClick={handleAddSpecification} className="add-specification-button">
+      <button type="button" onClick={handleAddSpecification} className="add-specification-button">
         <MdAdd size={20} /> Add More
       </button>
     </div>
