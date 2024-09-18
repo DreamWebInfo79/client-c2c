@@ -1,0 +1,75 @@
+
+.cars-brand-container-my-cars{
+    height: 100vh;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #333;
+  }
+
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+  }
+    
+  .text-center h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .text-center p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .text-center .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .text-center .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .empty-cart-image {
+    max-width: 100%; /* Ensures image scales within its container */
+    height: auto; /* Keeps the aspect ratio */
+    margin-bottom: 20px; /* Space below the image */
+  }
+  
+  /* Desktop (min-width: 1024px) */
+  @media (min-width: 1024px) {
+    .empty-cart-image {
+      width: 200px; /* Set a fixed width for larger screens */
+    }
+  }
+  
+  /* Tablet (min-width: 768px and max-width: 1023px) */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .empty-cart-image {
+      width: 180px; /* Slightly smaller for tablets */
+    }
+  }
+  
+  /* Mobile (max-width: 767px) */
+  @media (max-width: 767px) {
+    .empty-cart-image {
+      width: 150px; /* Smaller width for mobile devices */
+    }
+  }
+  

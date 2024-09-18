@@ -349,7 +349,7 @@ const resendOtp = async () => {
     </div>
             {/* </div> */}
             <div className="icons">
-                <Link to ="/my-cars" className="nav-item">
+                <Link to ="/my-cars">
             <div className="location">
               <div className="location-icon">
                   <FaHeart size={24} />
