@@ -16,7 +16,7 @@ import { MdEventSeat } from "react-icons/md";
 import { FaSun, FaSnowflake, FaKey, FaCameraRetro, FaBluetooth, FaWindowMaximize } from 'react-icons/fa';
 import './index.css';
 import axios from 'axios';
-import {  FaDoorOpen, FaShapes, FaParking, FaLock } from "react-icons/fa";
+import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 
 import { logEvent } from '../../analytics';
 
@@ -25,8 +25,16 @@ const CarDetails = () => {
   const [car, setCar] = useState(null);
   const [cars,setCars] = useState([]);
   const { id, brand } = useParams();
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [formLoading, setFormLoading] = useState(false);
+  const [formSubmitted, SetFormSubmitted] = useState(false);
   const navigate = useNavigate();
   const currentURL = window.location.href;
+
 
   useEffect(() => {
     const fetchCar = async () => {
@@ -59,6 +67,42 @@ const CarDetails = () => {
       fetchCars();
     }, []);
 
+
+    const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
+
+const handleSubmit = async () => {
+  // Validation
+  let valid = true;
+  if (name.length < 2) {
+    setNameError('Name must be at least 2 letters.');
+    valid = false;
+  } else {
+    setNameError('');
+  }
+
+  if (phoneNumber.length < 10) {
+    setPhoneError('Phone number must be at least 10 digits.');
+    valid = false;
+  } else {
+    setPhoneError('');
+  }
+
+  if (!valid) return;
+
+  setFormLoading(true);
+  try {
+    await axios.post('http://localhost:3001/submit-contact', { name, phoneNumber });
+    handleClose();
+    SetFormSubmitted(true);
+    // Handle success (e.g., show a success message or redirect)
+  } catch (error) {
+    console.error('Error submitting contact info:', error);
+    // Handle error (e.g., show an error message)
+  } finally {
+    setFormLoading(false);
+  }
+};
 
 
   const handleShareClick = (platform) => {
@@ -163,8 +207,8 @@ const CarDetails = () => {
     <p className="car-detail"><strong>Home Test Drive:</strong> Available</p>
 
     <div className="btn-container">
-        <button className="book-now" onClick={() => handleBookNowClick()}>Book Now <br/>Contact us</button>
-        <button className="free-test-drive" onClick={() => handleFreeTestDriveClick()} >Free Test Drive</button>
+    <button className="book-now" onClick={handleOpen}>Book Now <br/>Contact us</button>
+        {/* <button className="free-test-drive" onClick={() => handleFreeTestDriveClick()} >Free Test Drive</button> */}
     </div>
     
     <div className="share-container">
@@ -311,6 +355,90 @@ const CarDetails = () => {
             ))}
         </div>
       </div>
+      <Modal
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="modal-title"
+  aria-describedby="modal-description"
+>
+  <Box
+    sx={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 400,
+      bgcolor: 'background.paper',
+      boxShadow: 24,
+      borderRadius: 2,
+      p: 4,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}
+  >
+    {formSubmitted ? (
+      <>
+        <img
+          src="/path-to-thank-you-image.jpg" // Replace with your image path
+          alt="Thank You"
+          style={{ width: '100px', height: '100px', marginBottom: '16px' }}
+        />
+        <Typography variant="h6" id="modal-title" gutterBottom>
+          Thank You!
+        </Typography>
+        <Typography variant="body1">
+          We will contact you shortly.
+        </Typography>
+      </>
+    ) : (
+      <>
+        <Typography variant="h6" id="modal-title" gutterBottom>
+          Contact Us
+        </Typography>
+        {formLoading ? (
+          <div className="loader-container">
+            <TailSpin height={50} width={50} color="#1976d2" />
+            <Typography variant="body2">Submitting...</Typography>
+          </div>
+        ) : (
+          <>
+            <TextField
+              fullWidth
+              label="Name"
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              margin="normal"
+              error={!!nameError}
+              helperText={nameError}
+            />
+            <TextField
+              fullWidth
+              label="Phone Number"
+              variant="outlined"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              margin="normal"
+              error={!!phoneError}
+              helperText={phoneError}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              sx={{ mt: 2 }}
+            >
+              Submit
+            </Button>
+          </>
+        )}
+      </>
+    )}
+  </Box>
+</Modal>
+
+
     </>
   );
 };

@@ -6,6 +6,7 @@ import AddCarForm from './AddCarForm';
 import UserTable from './UserTable';
 import AddUser from './AddUser';
 import LoginPage from './LoginPage';
+import ContactTable from './ContactTable';
 import axios from 'axios';
 
 const PageWrapper = styled.div`
@@ -65,6 +66,9 @@ const Admin = () => {
         <SidebarItem active={activeSection === 'addUser'} onClick={() => setActiveSection('addUser')}>
           Add Users
         </SidebarItem>
+        <SidebarItem active={activeSection === 'contactTable'} onClick={() => setActiveSection('contactTable')}>
+          Contact Users
+        </SidebarItem>
       </Sidebar>
 
       <Content>
@@ -72,6 +76,7 @@ const Admin = () => {
         {activeSection === 'addCar' && <AddCarForm />}
         {activeSection === 'userTable' && <UserTable />}
         {activeSection === 'addUser' && <AddUser />}
+        {activeSection === 'contactTable' && <ContactTable />}
       </Content>
     </PageWrapper>
   );

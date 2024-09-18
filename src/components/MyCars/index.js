@@ -38,15 +38,13 @@ const MyCars = () => {
     fetchFavoriteCars(); // Fetch favorite cars on component mount
   }, [userId]);
 
-  // Toggle favourite and unfavourite
   const toggleFavourite = (carId, isFavourite) => {
     if (isFavourite) {
-      // Unfavorite car API call
       axios
         .post(`http://localhost:3001/car/unfavorite`, { userId, carId })
         .then((response) => {
           console.log('Car unfavorited:', response.data);
-          fetchFavoriteCars(); // Refetch favorite cars after unfavoriting
+          fetchFavoriteCars();
         })
         .catch((error) => {
           console.error('Error unfavoriting car:', error);
