@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Importing icons
 import { logEvent } from '../../analytics';
 import axios from 'axios'; 
+import Cookies from 'js-cookie';
 import "./index.css";
 
 export default function Navbar() {
@@ -32,6 +33,13 @@ export default function Navbar() {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [showResendOtp, setShowResendOtp] = useState(false);
   const [otpTimer, setOtpTimer] = useState(30);
+  const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false);
+  const [otpSentMessage, setOtpSentMessage] = useState('');
+  const [otpErrorMessage, setOtpErrorMessage] = useState('');
+  const [isOtpResendAvailable, setIsOtpResendAvailable] = useState(true);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+
+
 
 
 
@@ -153,38 +161,46 @@ const handleForgotPassword = async (e) => {
   }
 };
 
-
-// Handle register with OTP verification
-const handleRegister = async (e) => {
-  e.preventDefault();
-  if (password.length < 7) {
-    alert("Password must contain at least 7 characters.");
-    return;
-  }
-  if (password !== confirmPassword) {
-    alert("Passwords do not match.");
-    return;
-  }
-  if (!isOtpSent || !otp) {
-    alert("Please enter the OTP sent to your email.");
-    return;
-  }
+const handleOtpVerification = async () => {
   try {
-    const otpVerificationResponse = await axios.post("http://localhost:3001/api/verify-otp", { email, otp });
-    if (otpVerificationResponse.data.success) {
-      const response = await axios.post("/api/register", { email, password });
-      if (response.data.success) {
-        alert("Registration successful!");
-      } else {
-        alert("Registration failed. Please try again.");
-      }
+    const response = await axios.post('/api/verify-otp', { email, otp }); // Replace with actual API
+    if (response.data.success) {
+      setIsOtpVerified(true);
+      setOtpErrorMessage('');
     } else {
-      alert("Invalid OTP. Please try again.");
+      setOtpErrorMessage('Invalid OTP, please try again.');
     }
   } catch (error) {
-    console.error("Error during registration:", error);
+    console.error('Error verifying OTP:', error);
   }
 };
+
+
+// Handle register with OTP verification
+const handleRegister = async (event) => {
+  event.preventDefault();
+  try {
+    const response = await axios.post('http://localhost:3001/user/register', {
+      email,
+      password,
+      otp
+    });
+
+    Cookies.set('c2cUserId', response.data.userId); 
+    Cookies.set('c2cEmail', email);
+
+    // Handle successful registration
+    setEmail('');
+    setPassword('');
+    setOtp('');
+    console.log('Registration successful:', response.data);
+    setRegisterModalIsOpen(false); // Close the modal upon successful registration
+  } catch (error) {
+    // Handle error during registration
+    console.error('Registration error:', error.response?.data?.error || error.message);
+  }
+};
+
 
 const handleLogin = async (e) => {
   e.preventDefault();
@@ -196,13 +212,15 @@ const handleLogin = async (e) => {
 
   try {
     // Send login request
-    const response = await axios.post("http://localhost:3001/api/login", { email, password });
+    const response = await axios.post("http://localhost:3001/user/login", { email, password });
 
-    if (response.data.success) {
+    if (response.data.message) {
+      Cookies.set('c2cUserId', response.data.userId); // Expires in 7 days
+      Cookies.set('c2cEmail', email);
       alert("Login successful!");
-      // You can save the token or user details in localStorage or context if needed
-      localStorage.setItem("token", response.data.token); // Example for storing token
-      // Redirect or handle post-login logic here
+      setEmail('');
+      setPassword('');
+      setLoginModalIsOpen(false);
     } else {
       alert("Login failed. Please check your credentials.");
     }
@@ -212,11 +230,60 @@ const handleLogin = async (e) => {
   }
 };
 
-  const trendingCars = [
-    { name: "Tata Curvv", icon: <AiOutlineClockCircle /> },
-    { name: "Hyundai Alcazar", icon: <AiOutlineClockCircle /> },
-    { name: "Jeep Compass", icon: <AiOutlineClockCircle /> },
-  ];
+const handlePasswordReset = async () => {
+  try {
+    const response = await axios.post('/api/reset-password', {
+      email,
+      otp,
+      password,
+      confirmPassword,
+    }); // Replace with actual API
+    if (response.data.success) {
+      alert('Password successfully reset.');
+      setLoginModalIsOpen(false); // Close modal after successful reset
+    }
+  } catch (error) {
+    console.error('Error resetting password:', error);
+  }
+};
+
+const handleRegisterModalOpen=()=>{
+  setLoginModalIsOpen(false);
+  setRegisterModalIsOpen(true);
+}
+
+// API call to send OTP to the email
+const handleVerifyEmail = async () => {
+  try {
+
+    const response = await axios.post('http://localhost:3001/user/request-otp', { email });
+    console.log(response)
+    if(response.data.message) {
+      setOtpSent(true);
+    }
+    else{
+      alert("Failed to send OTP. Please try again.");
+    }
+  } catch (error) {
+    console.error('Error sending OTP:', error);
+  }
+};
+
+const resendOtp = async () => {
+  try {
+    const response = await axios.post('http://localhost:3001/user/request-otp', { email });
+    console.log(response)
+    if(response.data.message) {
+      setOtpSent(true);
+    }
+    else{
+      alert("Failed to send OTP. Please try again.");
+    }
+  } catch (error) {
+    console.error('Error resending OTP:', error);
+  }
+};
+
 
 
   return (
@@ -301,8 +368,8 @@ const handleLogin = async (e) => {
                 </div>
               </div>
 
-              <div className="location">
-              <div className="location-icon" title="Language" onClick={openLoginModal}>
+              <div className="location" onClick={openLoginModal}>
+              <div className="location-icon" title="Language" >
                 <FaUser size={24} />
               </div>
               <div className="location-text">
@@ -351,140 +418,255 @@ const handleLogin = async (e) => {
         )}
       </Modal>
 
-        {/* Login/Registration Modal */}
-        <Modal
-        isOpen={loginModalIsOpen}
-        onRequestClose={() => setLoginModalIsOpen(false)}
-        className="modal-login"
-        overlayClassName="modal-overlay"
-        contentLabel="User Login"
-      >
-        <button className="modal-close-button" onClick={() => setLoginModalIsOpen(false)}>
-          <IoClose />
-        </button>
-        <div className="modal-content">
-          <h2>{isRegister ? "Register" : "Login"}</h2>
-          <form onSubmit={isRegister ? handleRegister : null}>
+     {/* Login Modal */}
+     <Modal
+      isOpen={loginModalIsOpen}
+      onRequestClose={() => setLoginModalIsOpen(false)}
+      className="modal-login"
+      overlayClassName="modal-overlay"
+      contentLabel="User Login"
+    >
+      <button className="modal-close-button" onClick={() => setLoginModalIsOpen(false)}>
+        <IoClose />
+      </button>
+      <div className="modal-content">
+        <h2>Login</h2>
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            className="modal-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          {/* Password field with eye icon */}
+          <div className="password-container">
             <input
-              type="email"
-              placeholder="Email"
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
               required
               className="modal-input"
-              value={email}
-              onChange={handleEmailChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            <span className="eye-icon" onClick={() => setPasswordVisible(!passwordVisible)}>
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
-            {/* OTP field */}
-            {isOtpFieldVisible && (
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                required
-                className="modal-input"
-                value={otp}
-                onChange={handleOtpChange}
-              />
-            )}
+          {!forgotPasswordMode && (
+            <button type="submit" className="modal-button">
+              Login
+            </button>
+          )}
+        </form>
 
-            {/* Password field with eye icon */}
-            <div className="password-container">
-              <input
-                type={passwordVisible ? "text" : "password"}
-                placeholder="Password"
-                required
-                className="modal-input"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-              <span className="eye-icon" onClick={togglePasswordVisibility}>
-                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
+        <p  style={{ marginTop: "20px" }}>
+          Don't have an account?{" "}
+          <span className="modal-toggle" onClick={() => handleRegisterModalOpen()}>
+            Register now
+          </span>
+        </p>
 
-{forgotPasswordMode && isOtpSent && (
-  <div>
-    <input
-      type="text"
-      placeholder="Enter OTP"
-      required
-      className="modal-input"
-      value={otp}
-      onChange={(e) => setOtp(e.target.value)}
-    />
-    <button type="button" onClick={verifyOtp} className="modal-button">
-      Verify OTP
-    </button>
-    {isEmailVerified && (
-      <div>
-        <input
-          type={passwordVisible ? "text" : "password"}
-          placeholder="New Password"
-          required
-          className="modal-input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <span className="eye-icon" onClick={() => setPasswordVisible(!passwordVisible)}>
-          {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-        </span>
-        <input
-          type={confirmPasswordVisible ? "text" : "password"}
-          placeholder="Confirm Password"
-          required
-          className="modal-input"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <span className="eye-icon" onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
-          {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-        </span>
-        <button type="button" onClick={handleRegister} className="modal-button">
-          Reset Password
-        </button>
-      </div>
-    )}
-  </div>
-)}
-
-
-            {isRegister && (
-              <div className="password-container">
-                <input
-                  type={confirmPasswordVisible ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  required
-                  className="modal-input"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                />
-                <span className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
-                  {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-                </span>
-              </div>
-            )}
-
-            <div className="modal-buttons-container">
-              
-              {isRegister && <button type="button" className="modal-button" onClick={sendOtp}>
-                Send OTP
-              </button>}
-              <button type="submit" className="modal-button">
-                {isRegister ? "Register" : "Login"}
-              </button>
-            </div>
-          </form>
-
-          <p>
-            {isRegister ? "Already have an account? " : "Don't have an account? "}
-            <span
-              className="modal-toggle"
-              onClick={() => setIsRegister(!isRegister)}
-            >
-              {isRegister ? "Login here" : "Register now"}
+        {!forgotPasswordMode && (
+          <p style={{ marginTop: "20px" }}>
+            Forgot password?{" "}
+            <span className="modal-toggle" onClick={handleForgotPassword}>
+              Click here
             </span>
           </p>
+        )}
+
+        {/* OTP Section */}
+        {forgotPasswordMode && isOtpSent && (
+          <div>
+            <p>{otpSentMessage}</p>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              required
+              className="modal-input"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            <button type="button" onClick={handleOtpVerification} className="modal-button">
+              Verify OTP
+            </button>
+
+            {otpErrorMessage && <p className="error-message">{otpErrorMessage}</p>}
+
+            {/* Resend OTP */}
+            {!isOtpResendAvailable ? (
+              <p>Resend OTP in 30 seconds</p>
+            ) : (
+              <button type="button" onClick={handleForgotPassword} className="modal-button">
+                Resend OTP
+              </button>
+            )}
+
+            {/* Password and Confirm Password fields */}
+            {isOtpVerified && (
+              <div>
+                <div className="password-container">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="New Password"
+                    required
+                    className="modal-input"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <span className="eye-icon" onClick={() => setPasswordVisible(!passwordVisible)}>
+                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+
+                <div className="password-container">
+                  <input
+                    type={confirmPasswordVisible ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    required
+                    className="modal-input"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <span className="eye-icon" onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
+                    {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+
+                <button type="button" onClick={handlePasswordReset} className="modal-button">
+                  Reset Password
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </Modal>
+
+{/* Registration Modal */}
+<Modal
+  isOpen={registerModalIsOpen}
+  onRequestClose={() => setRegisterModalIsOpen(false)}
+  className="modal-register"
+  overlayClassName="modal-overlay"
+  contentLabel="User Register"
+>
+  <button className="modal-close-button" onClick={() => setRegisterModalIsOpen(false)}>
+    <IoClose />
+  </button>
+  <div className="modal-content">
+    <h2>Register</h2>
+    <form onSubmit={handleRegister}>
+      <div className="email-container">
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          className="modal-input"
+          value={email}
+          onChange={handleEmailChange}
+          disabled={isEmailVerified} // Disable email input after verification
+        />
+        {!isEmailVerified && (
+          <button
+            type="button"
+            className="modal-button-verify"
+            onClick={handleVerifyEmail}
+          >
+            Verify Email
+          </button>
+        )}
+      </div>
+
+      {/* Message indicating OTP sent or email verified */}
+      {isOtpSent && !isEmailVerified && (
+        <p className="success-message">OTP sent to your email</p>
+      )}
+      {isEmailVerified && <p className="success-message">Email Verified</p>}
+
+      {/* OTP Input field */}
+      {isOtpSent && !isEmailVerified && (
+        <div className="otp-container">
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            required
+            className="modal-input"
+            value={otp}
+            onChange={handleOtpChange}
+          />
         </div>
-      </Modal>
+      )}
+
+      {/* Resend OTP button */}
+      {isOtpSent && !isEmailVerified && (
+        <div className="resend-otp-container">
+          <p className="modal-toggle" onClick={resendOtp}>
+            Resend OTP
+          </p>
+        </div>
+      )}
+
+      {/* Password fields appear only after OTP verification */}
+      {isOtpSent && !isEmailVerified && (
+        <>
+          {/* Password field with eye icon */}
+          <div className="password-container">
+            <input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
+              required
+              className="modal-input"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <span className="eye-icon" onClick={togglePasswordVisibility}>
+              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          {/* Confirm Password field */}
+          <div className="password-container">
+            <input
+              type={confirmPasswordVisible ? "text" : "password"}
+              placeholder="Confirm Password"
+              required
+              className="modal-input"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+            />
+            <span className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
+              {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          <button type="submit" className="modal-button">
+            Register
+          </button>
+        </>
+      )}
+    </form>
+
+    <p>
+      Already have an account?{" "}
+      <span
+        className="modal-toggle"
+        onClick={() => {
+          setRegisterModalIsOpen(false);
+          setLoginModalIsOpen(true);
+        }}
+      >
+        Login here
+      </span>
+    </p>
+  </div>
+</Modal>
+
+
     </>
   );
 }

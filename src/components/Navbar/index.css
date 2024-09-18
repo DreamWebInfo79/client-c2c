@@ -220,132 +220,6 @@ body {
   }
 }
 
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed; /* Fix to the viewport */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
-  animation: fadeIn 0.3s ease-out;
-}
-
-/* Modal Container */
-.modal {
-  /* position: fixed; 
-  top: 50%; 
-  left: 50%;
-  transform: translate(-50%, -50%); 
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 80%;
-  max-width: 600px;
-  max-height: 80vh;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  animation: slideDown 0.4s ease-out;
-  z-index: 1060;
-  overflow-y: auto;
-  scrollbar-width: thin; 
-  scrollbar-color: #c4c4c4 #ffffff; */
-  position: fixed; /* Ensure it's fixed to the viewport */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Translate back to make it perfectly centered */
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 80%;
-  max-width: 600px;
-  max-height: 80vh;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 1060;
-  overflow-y: auto;
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: #c4c4c4 #ffffff; /* For Firefox */
-  /* Disable animations temporarily */
-  /* animation: slideDown 0.4s ease-out; */ 
-}
-
-.modal::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal::-webkit-scrollbar-thumb {
-  background-color: #c4c4c4; 
-  border-radius: 10px;
-}
-
-.modal::-webkit-scrollbar-track {
-  background: #ffffff; 
-}
-
-.modal::-webkit-scrollbar-thumb:hover {
-  background-color: #888; 
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-30%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Modal Close Button */
-.modal-close-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: #ffdddd; /* Light red background */
-  border: none;
-  border-radius: 50%; /* Circular button */
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 20px;
-  color: #ff0000; /* Red color for the icon */
-  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  z-index: 1061; /* Ensure this is higher than the modal content */
-}
-
-.modal-close-button:hover {
-  background: #ffcccc; 
-  color: #cc0000; 
-  transform: scale(1.1); /* Slightly increase size on hover */
-}
-
-.modal-close-button:focus {
-  outline: none; /* Remove default focus outline */
-}
-
-/* Modal Header */
-.modal-header {
-  margin-bottom: 20px;
-}
 
 .state-search {
   width: 90%;
@@ -492,148 +366,6 @@ body {
   width: 100%;
 }
 
-
-
-/* Modal Styles */
-.modal-login {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 500px; /* Set a maximum width for the modal */
-  height: auto;
-  padding: 30px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  z-index: 1000;
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.modal-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-close-button {
-  background: none;
-  border: none;
-  color: #333;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  font-size: 24px;
-}
-/* 
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
-.modal-login h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #0886f4;
-}
-/* 
-.modal-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  box-sizing: border-box;
-} */
-
-.modal-input {
-  width: 250px; /* Ensure input takes full width */
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 16px;
-}
-
-.password-container {
-  position: relative;
-  width: 100%; /* Full width of input */
-}
-
-.modal-button {
-  width: 150px;
-  padding: 12px;
-  background-color: #5326f7;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s ease;
-  gap: 8px;
-  margin-bottom: 9px;
-}
-
-.modal-button:hover {
-  background-color: #28a745;
-}
-
-.modal p {
-  margin-top: 15px;
-  color: #555;
-}
-
-.modal-toggle {
-  color: #007bff;
-  cursor: pointer;
-}
-
-.modal-toggle:hover {
-  color: #0056b3;
-}
-
-/* Responsive Styles */
-@media (max-width: 600px) {
-  .modal-login {
-    width: 90%;
-    padding: 15px;
-  }
-}
-
-.modal-buttons-container{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  /* justify-content: space-between; */
-  width: 100%;
-}
-/* 
-.password-container {
-  position: relative;
-} */
 .eye-icon {
   position: absolute;
   right: 10px;
@@ -673,18 +405,6 @@ body {
   }
 }
 
-/* Modal Overlay Styling */
-.modal-overlay {
-  background-color: rgba(0, 0, 0, 0.6); /* Darker background for better focus */
-  overflow-y: auto; /* Scroll only within modal if content is large */
-}
-
-/* Improved Password Container Styling */
-.password-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
 
 .eye-icon {
   position: absolute;
@@ -692,10 +412,6 @@ body {
   cursor: pointer;
 }
 
-.modal-input {
-  width: 100%; /* Ensure input width is consistent */
-  padding-right: 30px; /* Adjust padding to fit the eye icon */
-}
 
 
 
@@ -867,3 +583,261 @@ body {
   }
 }
 
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal container */
+.modal-login {
+  background: #fff;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+/* Close button */
+.modal-close-button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Modal content */
+.modal-content {
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Input fields */
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.password-container {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+/* Buttons */
+.modal-button {
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.modal-button:hover {
+  background-color: #45a049;
+}
+
+/* Resend OTP and error messages */
+.modal-toggle {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.modal-toggle:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.success-message {
+  color: green;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+/* Utility: Animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Modal container */
+.modal-register {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin: 50px auto;
+  z-index: 1001;
+}
+
+/* Modal content */
+.modal-content {
+  text-align: center;
+}
+
+/* Modal header */
+.modal-content h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Input fields */
+.modal-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.modal-input:focus {
+  border-color: #007bff;
+}
+
+/* Button styles */
+.modal-button,
+.modal-button-verify {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.modal-button:hover,
+.modal-button-verify:hover {
+  background-color: #0056b3;
+}
+
+/* Success message */
+.success-message {
+  color: #28a745;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Eye icon for password visibility toggle */
+.eye-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Password container */
+.password-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+/* Modal close button */
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Toggle links */
+.modal-toggle {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.modal-toggle:hover {
+  color: #0056b3;
+}
+
+/* OTP container */
+.otp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.otp-container input {
+  width: calc(100% - 100px);
+  margin-bottom: 10px;
+}
+
+/* Resend OTP container */
+.resend-otp-container {
+  margin-top: 10px;
+  text-align: right;
+}
