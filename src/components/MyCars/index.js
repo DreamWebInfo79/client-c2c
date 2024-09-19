@@ -47,8 +47,9 @@ const MyCars = () => {
 
   const toggleFavourite = (carId, isFavourite) => {
     if (isFavourite) {
+      console.log(carId,uniqueId);
       axios
-        .delete(`http://localhost:3001/favorites/remove`, { uniqueId, carId })
+        .post(`http://localhost:3001/favorites/remove`, { uniqueId, carId })
         .then((response) => {
           console.log('Car unfavorited:', response.data);
           fetchFavoriteCars(); // Refetch after removing favorite

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -9,16 +9,18 @@ import { useNavigate } from 'react-router-dom';
 import CarSearchForm from '../CarSearchForm';
 import { logEvent } from '../../analytics';
 import axios from 'axios';
+import { UserContext } from '../UserContext';
 import './index.css';
 
 const Home = () => {
+  const { user, clearUser } = useContext(UserContext);
   const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
   const [cars, setCars] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
   // Simulating user uniqueId for example purposes.
-  const uniqueId = '67c5dac4-febd-4b0d-a458-45f01ee01c69';
+  // const uniqueId = '67c5dac4-febd-4b0d-a458-45f01ee01c69';
 
   const carBrands = [
     { name: 'All', logo: 'car-brand/all-car-bramd.webp' },
@@ -47,7 +49,7 @@ const Home = () => {
         // API call to remove the car from favorites
         await axios.delete('http://localhost:3001/favorites/remove', {
           params: {
-            uniqueId,
+            uniqueId: user.c2cUserId,
             carId,
           },
           headers: {
@@ -65,7 +67,7 @@ const Home = () => {
         await axios.post(
           'http://localhost:3001/favorites/add',
           {
-            uniqueId,
+            uniqueId: user.c2cUserId,
             carId,
           },
           {

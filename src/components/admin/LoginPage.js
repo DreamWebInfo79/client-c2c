@@ -1,8 +1,9 @@
 // LoginPage.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { UserContext } from '../UserContext';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -49,12 +50,14 @@ const Button = styled.button`
 `;
 
 const LoginPage = ({ onLogin }) => {
+  const { saveUserToCookies } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const adminId = Cookies.get('c2cAdminId');
-    if (adminId) {
+    const adminId = Cookies.get('c2cUserId');
+    const role = Cookies.get('c2cAdminRole');
+    if (adminId && role === 'admin') {
       onLogin(); // Redirect or handle the logged-in state
     }
   }, [onLogin]);
@@ -73,8 +76,7 @@ const LoginPage = ({ onLogin }) => {
 
       // If login is successful, trigger onLogin and handle success response
       if (response.data.message === 'Login successful!') {
-        Cookies.set('c2cAdminId', response.data.uniqueId);
-        Cookies.remove('c2cUserId');
+        saveUserToCookies(response.data.email, response.data.uniqueId, response.data.role);
         onLogin();
 
       }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar, FaHeart} from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
@@ -8,6 +8,7 @@ import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Impor
 import { logEvent } from '../../analytics';
 import axios from 'axios'; 
 import Cookies from 'js-cookie';
+import { UserContext } from '../UserContext';
 import "./index.css";
 
 export default function Navbar() {
@@ -40,6 +41,7 @@ export default function Navbar() {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState('');
+  const { saveUserToCookies } = useContext(UserContext);
 
 
 
@@ -188,8 +190,7 @@ const handleRegister = async (event) => {
       otp
     });
 
-    Cookies.set('c2cUserId', response.data.userId); 
-    Cookies.set('c2cEmail', email);
+    saveUserToCookies(email, response.data.uniqueId);
 
     // Handle successful registration
     setEmail('');
@@ -217,8 +218,7 @@ const handleLogin = async (e) => {
     const response = await axios.post("http://localhost:3001/user/login", { email, password });
 
     if (response.data.message) {
-      Cookies.set('c2cUserId', response.data.uniqueId); 
-      Cookies.set('c2cEmail', email);
+      saveUserToCookies(email, response.data.uniqueId);
       setUserId(response.data.uniqueId);
       setUserName(response.data.email);
       alert("Login successful!");
