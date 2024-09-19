@@ -226,7 +226,7 @@ const handleSubmit = async () => {
         <div className="car-details">
           <h1>{`${car.year} ${car.model}`}</h1>
           <p><CiLocationOn /> {car.location}</p>
-          <p>Car is as Good Condition,Car is as Good Condition Car is as Good Condition, Car is as Good Condition</p>
+          {car.paragraph && <p>{car.paragraph}</p>}
          
           <ul className='car-details-main'>
   <li>

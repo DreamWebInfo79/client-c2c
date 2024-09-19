@@ -60,7 +60,7 @@ const LoginPage = ({ onLogin }) => {
     if (adminId && role === 'admin') {
       onLogin(); // Redirect or handle the logged-in state
     }
-  }, [onLogin]);
+  }, []);
 
 
 

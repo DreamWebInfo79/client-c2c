@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
-import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro, FaCamera } from 'react-icons/fa';
+import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro, FaExclamationCircle } from 'react-icons/fa';
 import { MdPhotoCamera, MdDelete, MdAdd } from 'react-icons/md';
 import { FaCarBattery, FaGasPump, FaMusic, FaTachometerAlt, FaFan, FaShieldAlt, FaHandsHelping, FaLightbulb, FaChargingStation, FaRulerCombined, FaOilCan, FaLeaf } from 'react-icons/fa';
 import Select from 'react-select';
@@ -91,6 +91,7 @@ const CarForm = () => {
     kmDriven: '',
     fuelType: '',
     transmission: '',
+    paragraph:'',
     condition: '',
     location: '',
     images: [],
@@ -321,6 +322,7 @@ const toggleFeature = (iconObj) => {
             year: '',
             price: '',
             kmDriven: '',
+            paragraph:'',
             fuelType: '',
             transmission: '',
             condition: '',
@@ -448,7 +450,12 @@ const toggleFeature = (iconObj) => {
             <label><FaRoad /> KM Driven:</label>
             <input type="text" name="kmDriven" value={carDetails.kmDriven} onChange={handleInputChange} required />
           </div>
+          <div className="form-group">
+            <label><FaExclamationCircle /> Description:</label>
+            <textarea className="description-textarea" type="text" name="kmDriven" value={carDetails.paragraph} onChange={handleInputChange} required />
+          </div>
         </div>
+        
 
         <div className="form-section right">
           <div className="form-group">

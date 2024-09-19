@@ -394,6 +394,15 @@ const CarTable = () => {
         }
       />
 
+<Label>Description:</Label>
+      <Input
+        type="text"
+        value={editCar.paragraph}
+        onChange={(e) =>
+          setEditCar({ ...editCar, paragraph: e.target.value })
+        }
+      />
+
       <Label>Fuel Type:</Label>
       <Input
         type="text"

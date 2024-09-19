@@ -251,4 +251,11 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .description-textarea {
+    width: 100%; /* Adjust as needed */
+    height: 150px; /* Adjust as needed */
+    resize: vertical; /* Allows users to resize vertically */
+  }
+  
   
