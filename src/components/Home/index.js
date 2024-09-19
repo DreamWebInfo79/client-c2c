@@ -17,6 +17,9 @@ const Home = () => {
   const [cars, setCars] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
+  // Simulating user uniqueId for example purposes.
+  const uniqueId = '67c5dac4-febd-4b0d-a458-45f01ee01c69';
+
   const carBrands = [
     { name: 'All', logo: 'car-brand/all-car-bramd.webp' },
     { name: 'Toyota', logo: 'car-brand/toyota-logo-2020-europe-download.png' },
@@ -31,17 +34,57 @@ const Home = () => {
 
   const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);
   const navigate = useNavigate();
+  console.log(favourites)
 
-  const toggleFavourite = (carId) => {
+  const toggleFavourite = async (carId) => {
+    const isFavourite = favourites[carId];
     logEvent('Car', 'Favourite', carId);
-    setFavourites((prevFavourites) => ({
-      ...prevFavourites,
-      [carId]: !prevFavourites[carId],
-    }));
-  };
+    
+    
 
-  // Filter cars based on activeTab
-  // const filteredCars = activeTab === 'All' ? cars : cars.filter(car => car.brand === activeTab);
+    try {
+      if (isFavourite) {
+        // API call to remove the car from favorites
+        await axios.delete('http://localhost:3001/favorites/remove', {
+          params: {
+            uniqueId,
+            carId,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // Update the local state to remove from favorites
+        setFavourites((prevFavourites) => ({
+          ...prevFavourites,
+          [carId]: !prevFavourites[carId],
+        }));
+      } else {
+        // API call to add the car to favorites
+        await axios.post(
+          'http://localhost:3001/favorites/add',
+          {
+            uniqueId,
+            carId,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        // Update the local state to add to favorites
+        setFavourites((prevFavourites) => ({
+          ...prevFavourites,
+          [carId]: !prevFavourites[carId],
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to toggle favorite status', error);
+    }
+  };
 
   // Fetch car data from API
   useEffect(() => {
@@ -146,10 +189,10 @@ const Home = () => {
                       className="shortlist NewUcrShortList"
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent click event from propagating to the card
-                        toggleFavourite(car.id);
+                        toggleFavourite(car.carId);
                       }}
                     >
-                      {favourites[car.id] ? <FaHeart /> : <FaRegHeart />}
+                      {favourites[car.carId] ? <FaHeart /> : <FaRegHeart />}
                     </div>
                   </div>
                   <div className="Price hover">
