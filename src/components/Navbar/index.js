@@ -38,6 +38,8 @@ export default function Navbar() {
   const [otpErrorMessage, setOtpErrorMessage] = useState('');
   const [isOtpResendAvailable, setIsOtpResendAvailable] = useState(true);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState('');
 
 
 
@@ -215,8 +217,10 @@ const handleLogin = async (e) => {
     const response = await axios.post("http://localhost:3001/user/login", { email, password });
 
     if (response.data.message) {
-      Cookies.set('c2cUserId', response.data.userId); // Expires in 7 days
+      Cookies.set('c2cUserId', response.data.uniqueId); 
       Cookies.set('c2cEmail', email);
+      setUserId(response.data.uniqueId);
+      setUserName(response.data.email);
       alert("Login successful!");
       setEmail('');
       setPassword('');
@@ -284,6 +288,21 @@ const resendOtp = async () => {
   }
 };
 
+const handleLogout =()=>{
+  Cookies.remove('c2cUserId');
+  Cookies.remove('c2cEmail');
+  setUserId(null);
+  setUserName(null);
+}
+
+useEffect(() => {
+  const id = Cookies.get('c2cUserId');
+  const email = Cookies.get('c2cEmail');
+  if (id) {
+    setUserId(id);
+    setUserName(email); // Replace with actual API call if needed
+  }
+}, []);
 
 
   return (
@@ -368,15 +387,30 @@ const resendOtp = async () => {
                 </div>
               </div>
 
-              <div className="location" onClick={openLoginModal}>
-              <div className="location-icon" title="Language" >
-                <FaUser size={24} />
-              </div>
-              <div className="location-text">
-                <p>Profile</p>
-                </div>
 
-              </div>
+              <div className="location">
+      {userId ? (
+        <>
+        {/* <div className="user-container-details"> */}
+          <div className="user-text">
+            <p>Hello, {userName && userName.slice(0, 1).toUpperCase() + userName.slice(1,8)} </p>
+          </div>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+          {/* </div> */}
+        </>
+      ) : (
+        <div className="location" onClick={openLoginModal}>
+          <div className="location-icon" title="Profile">
+            <FaUser size={24} />
+          </div>
+          <div className="location-text">
+            <p>Profile</p>
+          </div>
+        </div>
+      )}
+    </div>
               
             </div>
           </div>

@@ -1,7 +1,8 @@
 // LoginPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -51,6 +52,13 @@ const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    const adminId = Cookies.get('c2cAdminId');
+    if (adminId) {
+      onLogin(); // Redirect or handle the logged-in state
+    }
+  }, [onLogin]);
+
 
 
   const handleSubmit = async (e) => {
@@ -65,7 +73,9 @@ const LoginPage = ({ onLogin }) => {
 
       // If login is successful, trigger onLogin and handle success response
       if (response.data.message === 'Login successful!') {
-          onLogin();
+        Cookies.set('c2cAdminId', response.data.uniqueId);
+        Cookies.remove('c2cUserId');
+        onLogin();
 
       }
     } catch (error) {

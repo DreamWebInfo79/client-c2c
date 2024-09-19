@@ -841,3 +841,38 @@ body {
   margin-top: 10px;
   text-align: right;
 }
+
+.user-text {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff; /* Blue background */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #d4875d; /* Darker blue for hover effect */
+}
+
+.logout-button:active {
+  background-color: #004080; /* Even darker blue for active state */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.logout-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Blue outline for focus */
+}
+
+.logout-button{
+
+}
