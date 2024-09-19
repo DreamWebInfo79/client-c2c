@@ -14,15 +14,22 @@ const MyCars = () => {
   const navigate = useNavigate();
 
   // Get userId from cookies
-  const userId = Cookies.get('c2cUserId'); // Assuming 'c2cUserId' is stored in cookies
+  // const uniqueId = Cookies.get('c2cUserId');
+  const uniqueId = "67c5dac4-febd-4b0d-a458-45f01ee01c69";
 
   // Fetch favorite cars
   const fetchFavoriteCars = () => {
-    if (userId) {
+    if (uniqueId) {
       axios
-        .get(`http://localhost:3001/car/favoriteCars/${userId}`)
+        .get(`http://localhost:3001/car/favorites/${uniqueId}`)
         .then((response) => {
-          setCars(response.data);
+          setCars(response.data.favorites || []); // Assuming API returns { favorites: [] }
+          // Update favorites state
+          const favState = response.data.favorites.reduce((acc, car) => {
+            acc[car.carId] = true;
+            return acc;
+          }, {});
+          setFavourites(favState);
           setLoading(false);
         })
         .catch((error) => {
@@ -36,26 +43,25 @@ const MyCars = () => {
 
   useEffect(() => {
     fetchFavoriteCars(); // Fetch favorite cars on component mount
-  }, [userId]);
+  }, []);
 
   const toggleFavourite = (carId, isFavourite) => {
     if (isFavourite) {
       axios
-        .post(`http://localhost:3001/car/unfavorite`, { userId, carId })
+        .delete(`http://localhost:3001/favorites/remove`, { uniqueId, carId })
         .then((response) => {
           console.log('Car unfavorited:', response.data);
-          fetchFavoriteCars();
+          fetchFavoriteCars(); // Refetch after removing favorite
         })
         .catch((error) => {
           console.error('Error unfavoriting car:', error);
         });
     } else {
-      // Add to favorite API call (if needed)
       axios
-        .post(`http://localhost:3001/car/favorite`, { userId, carId })
+        .post(`http://localhost:3001/favorites/add`, { uniqueId, carId })
         .then((response) => {
           console.log('Car favorited:', response.data);
-          fetchFavoriteCars(); // Refetch favorite cars after favoriting
+          fetchFavoriteCars(); // Refetch after adding favorite
         })
         .catch((error) => {
           console.error('Error favoriting car:', error);
