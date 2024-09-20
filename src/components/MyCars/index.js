@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie'; // Import js-cookie for handling cookies
+import Cookies from 'js-cookie';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { BiSolidRightArrowCircle } from 'react-icons/bi';
 import { CiLocationOn } from 'react-icons/ci';
+import { UserContext } from '../UserContext';
 import './index.css';
 
 const MyCars = () => {
+  const { user, updateUser } = useContext(UserContext);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favourites, setFavourites] = useState({});
   const navigate = useNavigate();
 
   // Get userId from cookies
-  // const uniqueId = Cookies.get('c2cUserId');
-  const uniqueId = "67c5dac4-febd-4b0d-a458-45f01ee01c69";
-
   // Fetch favorite cars
   const fetchFavoriteCars = () => {
-    if (uniqueId) {
+    if (user) {
       axios
-        .get(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/car/favorites/${uniqueId}`)
+        .get(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/car/favorites/${user.c2cUserId}`)
         .then((response) => {
-          setCars(response.data.favorites || []); // Assuming API returns { favorites: [] }
-          // Update favorites state
+          setCars(response.data.favorites || []); 
+          
           const favState = response.data.favorites.reduce((acc, car) => {
             acc[car.carId] = true;
             return acc;
           }, {});
-          setFavourites(favState);
+          updateUser({favouriteCar:favState});
           setLoading(false);
         })
         .catch((error) => {
@@ -47,22 +46,23 @@ const MyCars = () => {
 
   const toggleFavourite = (carId, isFavourite) => {
     if (isFavourite) {
-      console.log(carId,uniqueId);
       axios
-        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`, { uniqueId, carId })
+        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`, { uniqueId:user.c2cUserId, carId })
         .then((response) => {
+          updateUser({ favouriteCar: response.data.favorites });
           console.log('Car unfavorited:', response.data);
-          fetchFavoriteCars(); // Refetch after removing favorite
+          // fetchFavoriteCars(); // Refetch after removing favorite
         })
         .catch((error) => {
           console.error('Error unfavoriting car:', error);
         });
     } else {
       axios
-        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add`, { uniqueId, carId })
+        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add`, { uniqueId:user.c2cUserId, carId })
         .then((response) => {
+          updateUser({ favouriteCar: response.data.favorites });
           console.log('Car favorited:', response.data);
-          fetchFavoriteCars(); // Refetch after adding favorite
+          // fetchFavoriteCars(); // Refetch after adding favorite
         })
         .catch((error) => {
           console.error('Error favoriting car:', error);

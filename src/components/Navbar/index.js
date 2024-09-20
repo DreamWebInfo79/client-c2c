@@ -40,11 +40,11 @@ export default function Navbar() {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState('');
-  const { saveUserToCookies } = useContext(UserContext);
+  const { user, updateUser } = useContext(UserContext);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const { cars , setCars } = useContext(CarContext);
-  console.log(cars);
+  console.log(user);
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
@@ -53,8 +53,10 @@ export default function Navbar() {
     setSearch(event.target.value);
   };
 
-  const handleCarClick = (carId) => {
-    navigate(`/my-cars/${carId}`);
+  const handleCarClick = (brand,carId) => {
+    navigate(`/car/${brand}/${carId}`);
+    setSearch('');
+    setIsSearchOpen(false);
   };
 
   const filteredCars = cars.filter((car) => 
@@ -164,16 +166,18 @@ const handleRegister = async (event) => {
       otp
     });
 
-    saveUserToCookies(email, response.data.uniqueId);
+    updateUser({ 
+      c2cUserEmail: email, 
+      c2cUserId: response.data.uniqueId, 
+      favouriteCar:response.data.favorites, 
+    });
 
-    // Handle successful registration
     setEmail('');
     setPassword('');
     setOtp('');
     console.log('Registration successful:', response.data);
     setRegisterModalIsOpen(false); // Close the modal upon successful registration
   } catch (error) {
-    // Handle error during registration
     console.error('Registration error:', error.response?.data?.error || error.message);
   }
 };
@@ -192,7 +196,11 @@ const handleLogin = async (e) => {
     const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/user/login", { email, password });
 
     if (response.data.message) {
-      saveUserToCookies(email, response.data.uniqueId);
+      updateUser({ 
+        c2cUserEmail: email, 
+        c2cUserId: response.data.uniqueId, 
+        favouriteCar:response.data.favorites, 
+      });
       setUserId(response.data.uniqueId);
       setUserName(email);
       alert("Login successful!");
@@ -271,7 +279,7 @@ const handleLogout =()=>{
 
 useEffect(() => {
   const id = Cookies.get('c2cUserId');
-  const email = Cookies.get('c2cEmail');
+  const email = Cookies.get('c2cUserEmail');
   if (id) {
     setUserId(id);
     setUserName(email); // Replace with actual API call if needed
@@ -316,6 +324,7 @@ useEffect(() => {
             <FaSearch /> Search
           </button>
         )}
+        <div>
           <input 
         className={`search-input ${isSearchOpen ? "visible" : ""}`}
         type="text" 
@@ -326,12 +335,13 @@ useEffect(() => {
       {search && (
         <ul className="dropdown">
           {filteredCars.map((car) => (
-            <li key={car.id} onClick={() => handleCarClick(car.id)}>
-              {car.brand} - {car.model}
+            <li key={car.id} onClick={() => handleCarClick(car.brand, car.carId)}>
+             <FaCar/> {car.brand} - {car.model}
             </li>
           ))}
         </ul>
       )}
+      </div>
       </div>
       {isSearchOpen && (
         <div className="trending-cars">

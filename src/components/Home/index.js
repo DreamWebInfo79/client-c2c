@@ -14,14 +14,12 @@ import { CarContext } from '../CarContext';
 import './index.css';
 
 const Home = () => {
-  const { user, clearUser } = useContext(UserContext);
-  // const [favourites, setFavourites] = useState({});
+  const { user, clearUser, updateUser } = useContext(UserContext);
+  const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
   const { cars } = useContext(CarContext);
   const [showAll, setShowAll] = useState(false);
 
-  // Simulating user uniqueId for example purposes.
-  // const uniqueId = '67c5dac4-febd-4b0d-a458-45f01ee01c69';
 
   const carBrands = [
     { name: 'All', logo: 'car-brand/all-car-bramd.webp' },
@@ -38,17 +36,23 @@ const Home = () => {
   const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);
   const navigate = useNavigate();
 
+  const getFilteredCars = () => {
+    if (activeTab === 'All') {
+      return cars; // Return all cars if 'All' is selected
+    }
+    return cars.filter(car => car.brand === activeTab); // Filter cars based on selected brand
+  };
+
+  const filteredCars = getFilteredCars();
+
   const toggleFavourite = async (carId) => {
-    // const isFavourite = favourites[carId];
+    const isFavourite = favourites[carId];
     logEvent('Car', 'Favourite', carId);
-    console.log(isFavourite)
-    
-    
 
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
-        await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
+       const response = await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
           params: {
             uniqueId: user.c2cUserId,
             carId,
@@ -57,15 +61,10 @@ const Home = () => {
             'Content-Type': 'application/json',
           },
         });
-
-        // Update the local state to remove from favorites
-        setFavourites((prevFavourites) => ({
-          ...prevFavourites,
-          [carId]: !prevFavourites[carId],
-        }));
+        updateUser({favouriteCar : response.data.favorites})
       } else {
         // API call to add the car to favorites
-        await axios.post(
+       const response = await axios.post(
           'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add',
           {
             uniqueId: user.c2cUserId,
@@ -78,34 +77,16 @@ const Home = () => {
           }
         );
 
-        // Update the local state to add to favorites
-        setFavourites((prevFavourites) => ({
-          ...prevFavourites,
-          [carId]: !prevFavourites[carId],
-        }));
+        updateUser({favouriteCar : response.data.favorites})
+
       }
     } catch (error) {
       console.error('Failed to toggle favorite status', error);
     }
   };
 
-  // // Fetch car data from API
-  // useEffect(() => {
-  //   const fetchCars = async () => {
-  //     try {
-  //       const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/all-cars'); // Adjust the API URL as per your backend
-  //       const fetchedCars = response.data.cars || [];
-  //       const allCars = Object.values(fetchedCars).flat();
-  //       setCars(allCars);
-  //     } catch (error) {
-  //       console.error('Failed to fetch car data', error);
-  //     }
-  //   };
-  //   fetchCars();
-  // }, []);
-
   const style = {
-    backgroundImage: `url(/video/car.gif)`, // Use the imported videoGif here
+    backgroundImage: `url(/video/car.gif)`,
     backgroundSize: 'cover',
     height: '550px',
   };
@@ -156,8 +137,8 @@ const Home = () => {
           </div>
         </div>
         <div className="cars-brand-container-home">
-          {cars.length > 0 ? (
-            cars.map((car) => (
+          {filteredCars.length > 0 ? (
+            filteredCars.map((car) => (
               <div
                 className="NewUcExCard posR"
                 onClick={() => navigate(`/car/${car.brand}/${car.carId}`)}

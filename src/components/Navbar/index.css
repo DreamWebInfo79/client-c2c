@@ -887,7 +887,7 @@ body {
 
 /* Dropdown container */
 .dropdown {
-  margin-top: 250px !important;
+  /* margin-top: 250px !important; */
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -901,6 +901,7 @@ body {
   z-index: 1000;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
+  width: 400px;
 }
 
 /* Dropdown item */
