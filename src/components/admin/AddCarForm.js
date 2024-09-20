@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
-import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro, FaCamera } from 'react-icons/fa';
+import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro, FaExclamationCircle } from 'react-icons/fa';
 import { MdPhotoCamera, MdDelete, MdAdd } from 'react-icons/md';
 import { FaCarBattery, FaGasPump, FaMusic, FaTachometerAlt, FaFan, FaShieldAlt, FaHandsHelping, FaLightbulb, FaChargingStation, FaRulerCombined, FaOilCan, FaLeaf } from 'react-icons/fa';
 import Select from 'react-select';
@@ -25,8 +25,35 @@ const carBrandOptions = [
   { value: 'Honda', label: 'Honda' },
   { value: 'Hyundai', label: 'Hyundai' },
   { value: 'Ford', label: 'Ford' },
-  { value: 'custom', label: 'Add New Brand...' }
+  { value: 'Maruti Suzuki', label: 'Maruti Suzuki' },
+  { value: 'Tata Motors', label: 'Tata Motors' },
+  { value: 'Mahindra', label: 'Mahindra' },
+  { value: 'Kia', label: 'Kia' },
+  { value: 'Nissan', label: 'Nissan' },
+  { value: 'Volkswagen', label: 'Volkswagen' },
+  { value: 'Skoda', label: 'Skoda' },
+  { value: 'MG Motor', label: 'MG Motor' },
+  { value: 'Renault', label: 'Renault' },
+  { value: 'Peugeot', label: 'Peugeot' },
+  { value: 'Datsun', label: 'Datsun' },
+  { value: 'Subaru', label: 'Subaru' },
+  { value: 'Chevrolet', label: 'Chevrolet' },
+  { value: 'Isuzu', label: 'Isuzu' },
+  { value: 'Porsche', label: 'Porsche' },
+  { value: 'BMW', label: 'BMW' },
+  { value: 'Mercedes-Benz', label: 'Mercedes-Benz' },
+  { value: 'Audi', label: 'Audi' },
+  { value: 'Lexus', label: 'Lexus' },
+  { value: 'Jaguar', label: 'Jaguar' },
+  { value: 'Land Rover', label: 'Land Rover' },
+  { value: 'Volvo', label: 'Volvo' },
+  { value: 'Fiat', label: 'Fiat' },
+  { value: 'Mitsubishi', label: 'Mitsubishi' },
+  { value: 'Chrysler', label: 'Chrysler' },
+  { value: 'Rolls-Royce', label: 'Rolls-Royce' },
+  { value: 'Add New Brand...', label: 'Add New Brand...' }
 ];
+
 
 const yearOptions = Array.from({ length: 30 }, (_, i) => {
   const year = new Date().getFullYear() - i;
@@ -91,6 +118,7 @@ const CarForm = () => {
     kmDriven: '',
     fuelType: '',
     transmission: '',
+    paragraph:'',
     condition: '',
     location: '',
     images: [],
@@ -313,7 +341,7 @@ const toggleFeature = (iconObj) => {
       // Ensure images are included before submitting
       if (carData.car.images && carData.car.images.length > 0) {
         try {
-          const response = await axios.post('http://localhost:3001/cars', carData);
+          const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars', carData);
           setCarDetails({
             carId: uuidv4(),
             brand: '',
@@ -321,6 +349,7 @@ const toggleFeature = (iconObj) => {
             year: '',
             price: '',
             kmDriven: '',
+            paragraph:'',
             fuelType: '',
             transmission: '',
             condition: '',
@@ -448,7 +477,12 @@ const toggleFeature = (iconObj) => {
             <label><FaRoad /> KM Driven:</label>
             <input type="text" name="kmDriven" value={carDetails.kmDriven} onChange={handleInputChange} required />
           </div>
+          <div className="form-group">
+            <label><FaExclamationCircle /> Description:</label>
+            <textarea className="description-textarea" type="text" name="paragraph" value={carDetails.paragraph} onChange={handleInputChange} required />
+          </div>
         </div>
+        
 
         <div className="form-section right">
           <div className="form-group">

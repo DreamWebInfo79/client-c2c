@@ -10,13 +10,14 @@ import CarSearchForm from '../CarSearchForm';
 import { logEvent } from '../../analytics';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
+import { CarContext } from '../CarContext';
 import './index.css';
 
 const Home = () => {
   const { user, clearUser } = useContext(UserContext);
   // const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
-  const [cars, setCars] = useState([]);
+  const { cars } = useContext(CarContext);
   const [showAll, setShowAll] = useState(false);
 
   // Simulating user uniqueId for example purposes.
@@ -36,7 +37,6 @@ const Home = () => {
 
   const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);
   const navigate = useNavigate();
-  console.log(favourites)
 
   const toggleFavourite = async (carId) => {
     // const isFavourite = favourites[carId];
@@ -48,7 +48,7 @@ const Home = () => {
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
-        await axios.post('http://localhost:3001/favorites/remove', {
+        await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
           params: {
             uniqueId: user.c2cUserId,
             carId,
@@ -66,7 +66,7 @@ const Home = () => {
       } else {
         // API call to add the car to favorites
         await axios.post(
-          'http://localhost:3001/favorites/add',
+          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add',
           {
             uniqueId: user.c2cUserId,
             carId,
@@ -89,20 +89,20 @@ const Home = () => {
     }
   };
 
-  // Fetch car data from API
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
-        const fetchedCars = response.data.cars || [];
-        const allCars = Object.values(fetchedCars).flat();
-        setCars(allCars);
-      } catch (error) {
-        console.error('Failed to fetch car data', error);
-      }
-    };
-    fetchCars();
-  }, []);
+  // // Fetch car data from API
+  // useEffect(() => {
+  //   const fetchCars = async () => {
+  //     try {
+  //       const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/all-cars'); // Adjust the API URL as per your backend
+  //       const fetchedCars = response.data.cars || [];
+  //       const allCars = Object.values(fetchedCars).flat();
+  //       setCars(allCars);
+  //     } catch (error) {
+  //       console.error('Failed to fetch car data', error);
+  //     }
+  //   };
+  //   fetchCars();
+  // }, []);
 
   const style = {
     backgroundImage: `url(/video/car.gif)`, // Use the imported videoGif here

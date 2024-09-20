@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import 'rc-slider/assets/index.css';
 import './index.css';
 import { logEvent } from '../../analytics';
+import { CarContext } from '../CarContext';
 
 const CarSearchForm = () => {
+  const { cars , setCars } = useContext(CarContext);
   const [budget, setBudget] = useState([1, 50]);
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
@@ -72,7 +74,15 @@ const CarSearchForm = () => {
   const handleSubmit = (event) => {
     logEvent('search_car', { brand: selectBrandValue, city: cityValue, budget: budget[0] },'jk');
     event.preventDefault();
-    // Your submit logic
+    const filteredCars = cars.filter((car) => {
+      const isWithinBudget = car.price >= budget[0] && car.price <= budget[1];
+      const matchesBrand = selectBrandValue ? car.brand === selectBrandValue : true;
+      const matchesCity = cityValue ? car.city === cityValue : true;
+
+      return isWithinBudget && matchesBrand && matchesCity;
+    });
+
+    setCars(filteredCars);
   };
 
   const handleChange = (event, newValue) => {

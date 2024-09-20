@@ -7,6 +7,7 @@ import Admin from './components/admin/Admin';
 import ScrollToTop from './components/ScrollToTop';
 import usePageTracking from './hooks/usePageTracking';
 import MyCars from './components/MyCars';
+import { CarProvider } from './components/CarContext';
 import { UserProvider } from './components/UserContext';
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
   return (
       <div className="App">
        <UserProvider>
+       <CarProvider>
         <Navbar />
         <ScrollToTop />
         <Routes>
@@ -28,6 +30,7 @@ function App() {
           <Route path="/my-cars" element={<MyCars/>} />
         </Routes>
         <Footer />
+       </CarProvider>
         </UserProvider>
       </div>
   );
