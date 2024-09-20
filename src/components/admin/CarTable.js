@@ -352,149 +352,148 @@ const CarTable = () => {
 
       {/* Edit Car Modal */}
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Edit Car Modal"
-        ariaHideApp={false}
-      >
-            <ModalContent>
-  <ModalHeader>Edit Car Details</ModalHeader>
-  {editCar && (
-    <ModalForm>
-      <Label>Brand:</Label>
-      <Input
-        type="text"
-        value={editCar.brand}
-        onChange={(e) =>
-          setEditCar({ ...editCar, brand: e.target.value })
-        }
-      />
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+      contentLabel="Edit Car Modal"
+      ariaHideApp={false}
+    >
+  <ModalContent>
+    <ModalHeader>Edit Car Details</ModalHeader>
+    {editCar && (
+      <ModalForm>
+        <Label>Brand:</Label>
+        <Input
+          type="text"
+          value={editCar.brand}
+          onChange={(e) =>
+            setEditCar({ ...editCar, brand: e.target.value })
+          }
+        />
 
-      <Label>Model:</Label>
-      <Input
-        type="text"
-        value={editCar.model}
-        onChange={(e) =>
-          setEditCar({ ...editCar, model: e.target.value })
-        }
-      />
+        <Label>Model:</Label>
+        <Input
+          type="text"
+          value={editCar.model}
+          onChange={(e) =>
+            setEditCar({ ...editCar, model: e.target.value })
+          }
+        />
 
-      <Label>Year:</Label>
-      <Input
-        type="text"
-        value={editCar.year}
-        onChange={(e) =>
-          setEditCar({ ...editCar, year: e.target.value })
-        }
-      />
+        <Label>Year:</Label>
+        <Input
+          type="number"
+          value={editCar.year}
+          onChange={(e) =>
+            setEditCar({ ...editCar, year: e.target.value })
+          }
+        />
 
-      <Label>Price:</Label>
-      <Input
-        type="text"
-        value={editCar.price}
-        onChange={(e) =>
-          setEditCar({ ...editCar, price: e.target.value })
-        }
-      />
+        <Label>Price:</Label>
+        <Input
+          type="number"
+          value={editCar.price}
+          onChange={(e) =>
+            setEditCar({ ...editCar, price: e.target.value })
+          }
+        />
 
-      <Label>KM Driven:</Label>
-      <Input
-        type="text"
-        value={editCar.kmDriven}
-        onChange={(e) =>
-          setEditCar({ ...editCar, kmDriven: e.target.value })
-        }
-      />
+        <Label>KM Driven:</Label>
+        <Input
+          type="number"
+          value={editCar.kmDriven}
+          onChange={(e) =>
+            setEditCar({ ...editCar, kmDriven: e.target.value })
+          }
+        />
 
-<Label>Description:</Label>
-      <TextareaAutosize
-        type="text"
-        value={editCar.paragraph}
-        onChange={(e) =>
-          setEditCar({ ...editCar, paragraph: e.target.value })
-        }
-      />
+        <Label>Description:</Label>
+        <TextareaAutosize
+          value={editCar.paragraph}
+          onChange={(e) =>
+            setEditCar({ ...editCar, paragraph: e.target.value })
+          }
+        />
 
-      <Label>Fuel Type:</Label>
-      <Input
-        type="text"
-        value={editCar.fuelType}
-        onChange={(e) =>
-          setEditCar({ ...editCar, fuelType: e.target.value })
-        }
-      />
+        <Label>Fuel Type:</Label>
+        <Input
+          type="text"
+          value={editCar.fuelType}
+          onChange={(e) =>
+            setEditCar({ ...editCar, fuelType: e.target.value })
+          }
+        />
 
-      <Label>Transmission:</Label>
-      <Input
-        type="text"
-        value={editCar.transmission}
-        onChange={(e) =>
-          setEditCar({ ...editCar, transmission: e.target.value })
-        }
-      />
+        <Label>Transmission:</Label>
+        <Input
+          type="text"
+          value={editCar.transmission}
+          onChange={(e) =>
+            setEditCar({ ...editCar, transmission: e.target.value })
+          }
+        />
 
-      <Label>Condition:</Label>
-      <Input
-        type="text"
-        value={editCar.condition}
-        onChange={(e) =>
-          setEditCar({ ...editCar, condition: e.target.value })
-        }
-      />
+        <Label>Condition:</Label>
+        <Input
+          type="text"
+          value={editCar.condition}
+          onChange={(e) =>
+            setEditCar({ ...editCar, condition: e.target.value })
+          }
+        />
 
-      <Label>Location:</Label>
-      <Input
-        type="text"
-        value={editCar.location}
-        onChange={(e) =>
-          setEditCar({ ...editCar, location: e.target.value })
-        }
-      />
+        <Label>Location:</Label>
+        <Input
+          type="text"
+          value={editCar.location}
+          onChange={(e) =>
+            setEditCar({ ...editCar, location: e.target.value })
+          }
+        />
 
-      <Label>Images (comma separated):</Label>
-      <Input
-        type="text"
-        value={editCar.images.join(', ')}
-        onChange={(e) =>
-          setEditCar({ ...editCar, images: e.target.value.split(', ') })
-        }
-      />
+        <Label>Images (comma separated):</Label>
+        <Input
+          type="text"
+          value={editCar.images.join(', ')}
+          onChange={(e) =>
+            setEditCar({ ...editCar, images: e.target.value.split(', ') })
+          }
+        />
 
-      <Label>Features (comma separated):</Label>
-      <Input
-        type="text"
-        value={editCar.features.map(f => f.label).join(', ')}
-        onChange={(e) => {
-          const newFeatures = e.target.value.split(', ').map(label => ({
-            label,
-            icon: 'FaQuestionCircle',
-          }));
-          setEditCar({ ...editCar, features: newFeatures });
-        }}
-      />
+        <Label>Features (comma separated):</Label>
+        <Input
+          type="text"
+          value={editCar.features.map(f => f.label).join(', ')}
+          onChange={(e) => {
+            const newFeatures = e.target.value.split(', ').map(label => ({
+              label,
+              icon: 'FaQuestionCircle',
+            }));
+            setEditCar({ ...editCar, features: newFeatures });
+          }}
+        />
 
-      <Label>Technical Specifications (label: value):</Label>
-      <Input
-        type="text"
-        value={editCar.technicalSpecifications.map(ts => `${ts.label}: ${ts.value}`).join(', ')}
-        onChange={(e) => {
-          const newSpecs = e.target.value.split(', ').map(spec => {
-            const [label, value] = spec.split(': ');
-            return { label, value };
-          });
-          setEditCar({ ...editCar, technicalSpecifications: newSpecs });
-        }}
-      />
+        <Label>Technical Specifications (label: value):</Label>
+        <Input
+          type="text"
+          value={editCar.technicalSpecifications.map(ts => `${ts.label}: ${ts.value}`).join(', ')}
+          onChange={(e) => {
+            const newSpecs = e.target.value.split(', ').map(spec => {
+              const [label, value] = spec.split(': ');
+              return { label, value };
+            });
+            setEditCar({ ...editCar, technicalSpecifications: newSpecs });
+          }}
+        />
 
-      <ButtonContainer>
-        <SaveButton onClick={handleEdit}>Save Changes</SaveButton>
-        <CancelButton onClick={closeModal}>Cancel</CancelButton>
-      </ButtonContainer>
-    </ModalForm>
-  )}
-</ModalContent>
+        <ButtonContainer>
+          <SaveButton onClick={handleEdit}>Save Changes</SaveButton>
+          <CancelButton onClick={closeModal}>Cancel</CancelButton>
+        </ButtonContainer>
+      </ModalForm>
+    )}
+  </ModalContent>
+</Modal>
 
-      </Modal>
     <div style={{ height: '100px', width: '100%',marginTop: '30px' }}>
        <Modal
         isOpen={deleteModalIsOpen}

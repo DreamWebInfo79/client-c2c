@@ -21,6 +21,12 @@ body {
   z-index: 1000; /* Adjust z-index if needed */
 }
 
+@media screen and (max-width:778px){
+  .header{
+  padding: 15px 30px;
+  }
+}
+
 /* Container */
 .container {
   display: flex;
@@ -123,6 +129,22 @@ body {
   display: flex;
   align-items: center;
 
+}
+
+.location-search {
+  display: none;
+}
+
+@media screen and (max-width:778px){
+  .location-search{
+    display: flex;
+    align-items: center;
+    margin-left: 25px;
+    cursor: pointer;
+    color: #333333;
+    transition: color 0.3s ease, transform 0.3s ease;
+    flex-direction: column !important;
+  }
 }
 
 .location {
@@ -442,7 +464,6 @@ body {
 .search-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 10px 0;
 }
 
@@ -466,7 +487,7 @@ body {
 
 /* For mobile: toggle search bar */
 .search-input.visible {
-  width: 100%;
+  width: 100% !important;
   opacity: 1;
   visibility: visible;
 }
@@ -955,4 +976,71 @@ body {
 
 .dropdown::-webkit-scrollbar-thumb:hover {
   background: #888;
+}
+
+.car-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 5px;     /* Rounded corners */
+  margin: 5px 0;          /* Space between items */
+  cursor: pointer;         /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.car-item:hover {
+  background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+.car-item-icon {
+  margin-right: 10px; /* Space between icon and text */
+  color: #007bff;     /* Icon color */
+  font-size: 24px;    /* Icon size */
+}
+
+.car-item-text {
+  font-size: 16px;    /* Text size */
+  color: #333;        /* Text color */
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .car-item {
+    padding: 15px;         /* Increased padding for touch targets */
+    /* flex-direction: column; Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .car-item-icon {
+    margin-bottom: 5px;    /* Space below icon */
+    font-size: 28px;       /* Slightly larger icon on mobile */
+  }
+
+  .car-item-text {
+    font-size: 18px;       /* Larger text for readability */
+  }
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000; /* Ensure the overlay is on top */
+}
+
+.modal {
+  background-color: #fff; /* White background for modal */
+  border-radius: 8px;     /* Rounded corners */
+  padding: 20px;          /* Padding inside modal */
+  max-width: 600px;       /* Max width for the modal */
+  width: 90%;              /* Responsive width */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  position: relative;      /* Position relative for close button */
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCar, FaHeart} from "react-icons/fa";
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
+import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import { logEvent } from '../../analytics';
@@ -49,6 +50,12 @@ export default function Navbar() {
     setIsSearchOpen(!isSearchOpen);
   };
 
+  const trendingCars = [
+    { name: "Tata Curvv", icon: <AiOutlineClockCircle /> },
+    { name: "Hyundai Alcazar", icon: <AiOutlineClockCircle /> },
+    { name: "Jeep Compass", icon: <AiOutlineClockCircle /> },
+  ];
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -67,12 +74,6 @@ export default function Navbar() {
   const closeSearch = () => {
     setIsSearchOpen(false);
   };
-
-  useEffect(() => {
-    if (isSearchOpen) {
-      searchInputRef.current.focus(); // Focus on the input when search opens
-    }
-  }, [isSearchOpen]);
 
   const handleSearchClick = () => {
     setSearchVisible(!isSearchVisible);
@@ -218,7 +219,7 @@ const handleLogin = async (e) => {
 
 const handlePasswordReset = async () => {
   try {
-    const response = await axios.post('/api/reset-password', {
+    const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/api/reset-password', {
       email,
       otp,
       password,
@@ -320,9 +321,14 @@ useEffect(() => {
             <FaArrowLeft />
           </button>
         ) : (
-          <button className="search-icon" onClick={toggleSearch}>
-            <FaSearch /> Search
-          </button>
+          <div className="location-search" onClick={toggleSearch}>
+              <div className="location-icon">
+                  <FaSearch size={24} />
+              </div>
+              <div className="location-text">
+                <p className="navbar-heading">Search</p>
+                </div>
+                </div>
         )}
         <div>
           <input 
@@ -335,8 +341,9 @@ useEffect(() => {
       {search && (
         <ul className="dropdown">
           {filteredCars.map((car) => (
-            <li key={car.id} onClick={() => handleCarClick(car.brand, car.carId)}>
-             <FaCar/> {car.brand} - {car.model}
+            <li key={car.id} className="car-item" onClick={() => handleCarClick(car.brand, car.carId)}>
+              <FaCar className="car-item-icon" />
+              <span className="car-item-text">{car.brand} - {car.model}</span>
             </li>
           ))}
         </ul>
