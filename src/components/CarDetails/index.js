@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { MdLocationOn } from "react-icons/md";
 import { FaWhatsapp, FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import { FaRoad } from "react-icons/fa6";
@@ -18,10 +18,11 @@ import './index.css';
 import { v4 as jk } from 'uuid';
 import axios from 'axios';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
-
+import { UserContext } from '../UserContext';
 import { logEvent } from '../../analytics';
 
-const CarDetails = () => {
+const CarDetails = () => {  
+  const { user, clearUser, updateUser } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [car, setCar] = useState(null);
   const [cars,setCars] = useState([]);
@@ -108,6 +109,47 @@ const handleSubmit = async () => {
 };
 
 
+const toggleFavourite = async (carId) => {
+  const isFavourite = user.favouriteCar[carId];
+  logEvent('Car', 'Favourite', carId);
+
+  try {
+    if (isFavourite) {
+      // API call to remove the car from favorites
+     const response = await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
+        params: {
+          uniqueId: user.c2cUserId,
+          carId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      updateUser({favouriteCar : response.data.favorites})
+    } else {
+      // API call to add the car to favorites
+     const response = await axios.post(
+        'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add',
+        {
+          uniqueId: user.c2cUserId,
+          carId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      updateUser({favouriteCar : response.data.favorites})
+
+    }
+  } catch (error) {
+    console.error('Failed to toggle favorite status', error);
+  }
+};
+
+
   const handleShareClick = (platform) => {
     logEvent('Share Car', { platform }, 'jk');
     let shareURL = "";
@@ -182,7 +224,16 @@ const handleSubmit = async () => {
     <p className='car-infos'>{car.kmDriven}</p>
   </div>
   <div className='car-header-right'>
-    <FaRegHeart className='favourite-icon' />
+  <div
+                      id="shortlistHeartIcon"
+                      className="shortlist NewUcrShortList"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent click event from propagating to the card
+                        toggleFavourite(car.carId);
+                      }}
+                    >
+                      {user.favouriteCar[car.carId] ? <FaHeart /> : <FaRegHeart />}
+                    </div>
     <p> Add to favourite</p>
   </div>
 </div>

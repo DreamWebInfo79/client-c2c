@@ -15,7 +15,7 @@ import './index.css';
 
 const Home = () => {
   const { user, clearUser, updateUser } = useContext(UserContext);
-  const [favourites, setFavourites] = useState({});
+  // const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
   const { cars } = useContext(CarContext);
   const [showAll, setShowAll] = useState(false);
@@ -46,21 +46,22 @@ const Home = () => {
   const filteredCars = getFilteredCars();
 
   const toggleFavourite = async (carId) => {
-    const isFavourite = favourites[carId];
+    const isFavourite = user.favouriteCar[carId];
     logEvent('Car', 'Favourite', carId);
 
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
        const response = await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
-          params: {
+          
             uniqueId: user.c2cUserId,
             carId,
           },
+          {
           headers: {
             'Content-Type': 'application/json',
           },
-        });
+      });
         updateUser({favouriteCar : response.data.favorites})
       } else {
         // API call to add the car to favorites
@@ -176,7 +177,7 @@ const Home = () => {
                         toggleFavourite(car.carId);
                       }}
                     >
-                      {favourites[car.carId] ? <FaHeart /> : <FaRegHeart />}
+                      {user.favouriteCar[car.carId] ? <FaHeart /> : <FaRegHeart />}
                     </div>
                   </div>
                   <div className="Price hover">
