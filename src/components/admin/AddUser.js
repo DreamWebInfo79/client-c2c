@@ -95,7 +95,7 @@ const AddUser = ({ onAddUser }) => {
 
     try {
       // Send the data to the backend to add the user
-      const response = await axios.post('http://localhost:3001/admin/register', formData);
+      const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/admin/register', formData);
 
       if (response.data.message) {
         setSnackbarMessage('User added successfully!');

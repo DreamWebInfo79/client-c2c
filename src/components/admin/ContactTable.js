@@ -80,7 +80,7 @@ const ContactTable = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/contacts');
+      const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/contacts');
       setContacts(response.data);
     } catch (error) {
       console.error('Failed to fetch contacts:', error);

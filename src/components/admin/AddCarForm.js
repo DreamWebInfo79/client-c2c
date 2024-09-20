@@ -314,7 +314,7 @@ const toggleFeature = (iconObj) => {
       // Ensure images are included before submitting
       if (carData.car.images && carData.car.images.length > 0) {
         try {
-          const response = await axios.post('http://localhost:3001/cars', carData);
+          const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars', carData);
           setCarDetails({
             carId: uuidv4(),
             brand: '',
@@ -452,7 +452,7 @@ const toggleFeature = (iconObj) => {
           </div>
           <div className="form-group">
             <label><FaExclamationCircle /> Description:</label>
-            <textarea className="description-textarea" type="text" name="kmDriven" value={carDetails.paragraph} onChange={handleInputChange} required />
+            <textarea className="description-textarea" type="text" name="paragraph" value={carDetails.paragraph} onChange={handleInputChange} required />
           </div>
         </div>
         

@@ -121,7 +121,7 @@ const UserTable = () => {
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/admin/all');
+        const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/admin/all');
         setUsers(response.data);
       } catch (error) {
         console.error('Failed to fetch users:', error);
@@ -165,7 +165,7 @@ const UserTable = () => {
     }
   
     try {
-      const response = await axios.put(`http://localhost:3001/admin/${selectedUser.uniqueId}`, updatedFormData);
+      const response = await axios.put(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/admin/${selectedUser.uniqueId}`, updatedFormData);
   
       if (response.data.message) {
         fetchUsers();
@@ -190,7 +190,7 @@ const UserTable = () => {
   const handleDeleteModalConfirm = async () => {
     try {
       // API call to delete user
-      const response = await axios.delete(`http://localhost:3001/admin/${selectedUser.uniqueId}`,{
+      const response = await axios.delete(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/admin/${selectedUser.uniqueId}`,{
         data: { uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3" }
     });
 

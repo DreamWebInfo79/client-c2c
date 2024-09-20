@@ -47,7 +47,7 @@ const Home = () => {
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
-        await axios.delete('http://localhost:3001/favorites/remove', {
+        await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
           params: {
             uniqueId: user.c2cUserId,
             carId,
@@ -65,7 +65,7 @@ const Home = () => {
       } else {
         // API call to add the car to favorites
         await axios.post(
-          'http://localhost:3001/favorites/add',
+          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add',
           {
             uniqueId: user.c2cUserId,
             carId,
@@ -92,7 +92,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+        const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/all-cars'); // Adjust the API URL as per your backend
         const fetchedCars = response.data.cars || [];
         const allCars = Object.values(fetchedCars).flat();
         setCars(allCars);

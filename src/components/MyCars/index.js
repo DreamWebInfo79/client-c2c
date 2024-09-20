@@ -21,7 +21,7 @@ const MyCars = () => {
   const fetchFavoriteCars = () => {
     if (uniqueId) {
       axios
-        .get(`http://localhost:3001/car/favorites/${uniqueId}`)
+        .get(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/car/favorites/${uniqueId}`)
         .then((response) => {
           setCars(response.data.favorites || []); // Assuming API returns { favorites: [] }
           // Update favorites state
@@ -49,7 +49,7 @@ const MyCars = () => {
     if (isFavourite) {
       console.log(carId,uniqueId);
       axios
-        .post(`http://localhost:3001/favorites/remove`, { uniqueId, carId })
+        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`, { uniqueId, carId })
         .then((response) => {
           console.log('Car unfavorited:', response.data);
           fetchFavoriteCars(); // Refetch after removing favorite
@@ -59,7 +59,7 @@ const MyCars = () => {
         });
     } else {
       axios
-        .post(`http://localhost:3001/favorites/add`, { uniqueId, carId })
+        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add`, { uniqueId, carId })
         .then((response) => {
           console.log('Car favorited:', response.data);
           fetchFavoriteCars(); // Refetch after adding favorite

@@ -56,7 +56,7 @@ const LoginPage = ({ onLogin }) => {
 
   useEffect(() => {
     const adminId = Cookies.get('c2cUserId');
-    const role = Cookies.get('c2cAdminRole');
+    const role = Cookies.get('c2cUserRole');
     if (adminId && role === 'admin') {
       onLogin(); // Redirect or handle the logged-in state
     }
@@ -69,7 +69,7 @@ const LoginPage = ({ onLogin }) => {
     
     try {
       // Send POST request to the login route
-      const response = await axios.post('http://localhost:3001/admin/login', {
+      const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/admin/login', {
         email,    // Send email and password in the request body
         password,
       });

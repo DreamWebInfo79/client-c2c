@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import Modal from 'react-modal';
 import axios from 'axios';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, TextareaAutosize } from '@mui/material';
 
 
 const ModalContent = styled.div`
@@ -179,7 +179,7 @@ const CarTable = () => {
 
     const fetchCars = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+        const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/all-cars'); // Adjust the API URL as per your backend
         const fetchedCars = response.data.cars || [];
         const allCars = Object.values(fetchedCars).flat();
         setCarData(allCars);
@@ -231,7 +231,7 @@ const CarTable = () => {
   const handleEdit = async () => {
     try {
       // Directly send editCar and uniqueId in the body
-      await axios.put(`http://localhost:3001/cars/${editCar.carId}`, {
+      await axios.put(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars/${editCar.carId}`, {
         uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3", // Add uniqueId here
         updateData: editCar // Send editCar directly
       });
@@ -246,7 +246,7 @@ const CarTable = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3001/cars/${carToDelete.carId}`, {
+      await axios.delete(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars/${carToDelete.carId}`, {
         data: {
           uniqueId: "1569a6bb-8b4b-43d1-92b6-e46767588bd3" // Include the uniqueId in the body
         }
@@ -395,7 +395,7 @@ const CarTable = () => {
       />
 
 <Label>Description:</Label>
-      <Input
+      <TextareaAutosize
         type="text"
         value={editCar.paragraph}
         onChange={(e) =>

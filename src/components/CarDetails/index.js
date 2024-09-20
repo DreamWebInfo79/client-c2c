@@ -15,6 +15,7 @@ import { FaUserTie } from "react-icons/fa";
 import { MdEventSeat } from "react-icons/md";
 import { FaSun, FaSnowflake, FaKey, FaCameraRetro, FaBluetooth, FaWindowMaximize } from 'react-icons/fa';
 import './index.css';
+import { v4 as jk } from 'uuid';
 import axios from 'axios';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 
@@ -40,7 +41,7 @@ const CarDetails = () => {
     const fetchCar = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3001/cars/${id}`);
+        const response = await axios.get(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars/${id}`);
         setCar(response.data.car);
       } catch (error) {
         console.error('Error fetching car details:', error);
@@ -56,7 +57,7 @@ const CarDetails = () => {
     useEffect(() => {
       const fetchCars = async () => {
         try {
-          const response = await axios.get('http://localhost:3001/all-cars'); // Adjust the API URL as per your backend
+          const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/all-cars'); // Adjust the API URL as per your backend
           const fetchedCars = response.data.cars || [];
           const allCars = Object.values(fetchedCars).flat();
           setCars(allCars.filter((car) => car.brand.toLowerCase() === brand.toLowerCase()));
@@ -92,7 +93,9 @@ const handleSubmit = async () => {
 
   setFormLoading(true);
   try {
-    await axios.post('http://localhost:3001/submit-contact', { name, phoneNumber });
+    const uniqueCarId = jk();
+    await axios.post('http://localhost:3001/cars/bookings', { username:name, phoneNumber, carId:car.carId, carName:car.brand });
+    // await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/submit-contact', { name, phoneNumber });
     handleClose();
     SetFormSubmitted(true);
     // Handle success (e.g., show a success message or redirect)
@@ -207,7 +210,7 @@ const handleSubmit = async () => {
     <p className="car-detail"><strong>Home Test Drive:</strong> Available</p>
 
     <div className="btn-container">
-    <button className="book-now" onClick={handleOpen}>Book Now <br/>Contact us</button>
+    <button className="book-now" onClick={handleOpen}>Contact us</button>
         {/* <button className="free-test-drive" onClick={() => handleFreeTestDriveClick()} >Free Test Drive</button> */}
     </div>
     

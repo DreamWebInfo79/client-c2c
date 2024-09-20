@@ -115,7 +115,7 @@ export default function Navbar() {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3001/api/send-otp", { email });
+      const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/api/send-otp", { email });
       if (response.data.success) {
         setOtpSent(true);
         setOtpFieldVisible(true);
@@ -132,7 +132,7 @@ export default function Navbar() {
   // Verify OTP function
 const verifyOtp = async () => {
   try {
-    const response = await axios.post("http://localhost:3001/api/verify-otp", { email, otp });
+    const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/api/verify-otp", { email, otp });
     if (response.data.success) {
       setIsEmailVerified(true);
       alert("OTP verified! Proceed with next steps.");
@@ -152,7 +152,7 @@ const handleForgotPassword = async (e) => {
     return;
   }
   try {
-    const response = await axios.post("http://localhost:3001/api/send-otp", { email });
+    const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/api/send-otp", { email });
     if (response.data.success) {
       setOtpSent(true);
       setForgotPasswordMode(true);
@@ -184,7 +184,7 @@ const handleOtpVerification = async () => {
 const handleRegister = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post('http://localhost:3001/user/register', {
+    const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/user/register', {
       email,
       password,
       otp
@@ -215,7 +215,7 @@ const handleLogin = async (e) => {
 
   try {
     // Send login request
-    const response = await axios.post("http://localhost:3001/user/login", { email, password });
+    const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/user/login", { email, password });
 
     if (response.data.message) {
       saveUserToCookies(email, response.data.uniqueId);
@@ -260,7 +260,7 @@ const handleRegisterModalOpen=()=>{
 const handleVerifyEmail = async () => {
   try {
 
-    const response = await axios.post('http://localhost:3001/user/request-otp', { email });
+    const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/user/request-otp', { email });
     console.log(response)
     if(response.data.message) {
       setOtpSent(true);
@@ -275,7 +275,7 @@ const handleVerifyEmail = async () => {
 
 const resendOtp = async () => {
   try {
-    const response = await axios.post('http://localhost:3001/user/request-otp', { email });
+    const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/user/request-otp', { email });
     console.log(response)
     if(response.data.message) {
       setOtpSent(true);
