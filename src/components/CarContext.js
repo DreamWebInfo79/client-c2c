@@ -20,8 +20,16 @@ export const CarProvider = ({ children }) => {
     fetchCars();
   }, []);
 
+  const handleStateSelect = (state) => {
+    console.log(state)
+    console.log(cars);
+    const filteredCars = cars.filter((car) => car.location.toLowerCase() === state.toLowerCase());
+    setCars(filteredCars);
+    console.log(filteredCars);
+  };
+
   return (
-    <CarContext.Provider value={{ cars }}>
+    <CarContext.Provider value={{ cars, handleStateSelect }}>
       {children}
     </CarContext.Provider>
   );
