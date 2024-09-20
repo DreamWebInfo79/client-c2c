@@ -873,6 +873,14 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Blue outline for focus */
 }
 
-.logout-button{
+.navbar-heading{
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
 
+@media screen and (max-width: 768px) {
+  .navbar-heading{
+    font-size: 10px;
+  }
 }

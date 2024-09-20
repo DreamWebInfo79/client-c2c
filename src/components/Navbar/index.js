@@ -374,7 +374,7 @@ useEffect(() => {
                   <FaHeart size={24} />
               </div>
               <div className="location-text">
-                <p>My Cars</p>
+                <p className="navbar-heading">My Cars</p>
                 </div>
                 </div>
                 </Link>
@@ -383,7 +383,7 @@ useEffect(() => {
                   <FaMapMarkerAlt size={24} />
                 </div>
                 <div className="location-text">
-                <p>Choose Location</p>
+                <p className="navbar-heading">Choose Location</p>
                 </div>
               </div>
 
@@ -406,7 +406,7 @@ useEffect(() => {
             <FaUser size={24} />
           </div>
           <div className="location-text">
-            <p>Profile</p>
+            <p className="navbar-heading">Profile</p>
           </div>
         </div>
       )}

@@ -93,11 +93,11 @@ const handleSubmit = async () => {
 
   setFormLoading(true);
   try {
-    const uniqueCarId = jk();
-    await axios.post('http://localhost:3001/cars/bookings', { username:name, phoneNumber, carId:car.carId, carName:car.brand });
+    // const uniqueCarId = jk();
+    await axios.post('http://localhost:3001/cars/bookings', { username:name, phoneNumber, contactId:car.carId, carName:car.brand });
     // await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/submit-contact', { name, phoneNumber });
-    handleClose();
     SetFormSubmitted(true);
+    handleClose();
     // Handle success (e.g., show a success message or redirect)
   } catch (error) {
     console.error('Error submitting contact info:', error);

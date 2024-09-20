@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Modal from 'react-modal';
 import axios from 'axios';
 import Select from 'react-select';
+import { FaTrash } from 'react-icons/fa';
 
 // Styled Components
 const PageWrapper = styled.div`
@@ -80,8 +81,11 @@ const ContactTable = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/contacts');
+      const response = await axios.get('http://localhost:3001/carsBooked/bookings');
+
+      // const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/contacts');
       setContacts(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error('Failed to fetch contacts:', error);
     }
@@ -95,32 +99,64 @@ const ContactTable = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSelectChange = (selectedOption, contactId) => {
-    // Update the status of the contact in the state
-    setContacts((prevContacts) =>
-      prevContacts.map((contact) =>
-        contact.id === contactId ? { ...contact, status: selectedOption } : contact
-      )
-    );
+  const handleSelectChange = async (selectedOption, contactId) => {
+
+    // Make an API call to update the status
+    try {
+      await axios.put(`http://localhost:3001/carsBooked/bookings/${contactId}`, {
+        status: selectedOption.value,
+      });
+      fetchContacts();
+      console.log('Status updated successfully');
+    } catch (error) {
+      console.error('Failed to update status:', error);
+    }
   };
+
+  const handleDelete = async (contactId) => {
+    try {
+      await axios.delete(`http://localhost:3001/carsBooked/bookings/${contactId}`);
+      fetchContacts();
+      console.log('Contact deleted successfully');
+    } catch (error) {
+      console.error('Failed to delete contact:', error);
+    }
+  };
+
+ 
 
   const indexOfLastContact = currentPage * contactsPerPage;
   const indexOfFirstContact = indexOfLastContact - contactsPerPage;
   const filteredContacts = contacts.filter(
     (contact) =>
-      contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.phoneNumber.includes(searchTerm)
   );
   const currentContacts = filteredContacts.slice(indexOfFirstContact, indexOfLastContact);
 
   const options = [
-    { value: 'contact', label: 'Contact' },
+    {value:'pending', label:'pending'},
     { value: 'ended', label: 'Ended' },
     { value: 'purchased', label: 'Purchased' },
     { value: 'in_touch', label: 'In Touch' },
   ];
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  function extractDate(dateString) {
+    const date = new Date(dateString);
+    
+    // Check if date is valid
+    if (isNaN(date)) {
+        return 'Invalid date';
+    }
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}
 
   return (
     <PageWrapper>
@@ -135,23 +171,34 @@ const ContactTable = () => {
         <thead>
           <tr>
             <TableHeader>Name</TableHeader>
+            <TableHeader>Car Name</TableHeader>
+            <TableHeader>Date</TableHeader>
             <TableHeader>Phone Number</TableHeader>
             <TableHeader>Status</TableHeader>
+            <TableHeader>Delete</TableHeader>
           </tr>
         </thead>
         <tbody>
           {currentContacts.map((contact) => (
             <TableRow key={contact.id}>
-              <TableCell>{contact.name}</TableCell>
+              <TableCell>{contact.username}</TableCell>
+              <TableCell>{contact.carName}</TableCell>
+              <TableCell>{extractDate(contact.createdAt)}</TableCell>
               <TableCell>{contact.phoneNumber}</TableCell>
               <TableCell>
                 <SelectWrapper>
                   <Select
                     options={options}
-                    value={contact.status}
-                    onChange={(selectedOption) => handleSelectChange(selectedOption, contact.id)}
+                    value={options.find(option => option.value === contact.status)}
+                    onChange={(selectedOption) => handleSelectChange(selectedOption, contact.carId)}
                   />
                 </SelectWrapper>
+              </TableCell>
+              <TableCell>
+                <FaTrash 
+                  style={{ cursor: 'pointer', color: 'red' }} 
+                  onClick={() => handleDelete(contact.carId)} 
+                />
               </TableCell>
             </TableRow>
           ))}
