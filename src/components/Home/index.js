@@ -59,22 +59,14 @@ const Home = () => {
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
-        const response = await axios.delete(
-          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove',
-          {
-            params: {
-              uniqueId: user.c2cUserId,
-              carId,
-            },
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
+        const response = await axios.post(
+          `https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`,
+          { uniqueId: user.c2cUserId, carId }
         );
 
         const updatedFavourites = { ...favourites, [carId]: false };
         setFavourites(updatedFavourites); // Update local state
-        updateUser({ favouriteCar: updatedFavourites }); // Sync with user context
+        updateUser({ favouriteCar: response.data.favorites }); // Sync with user context
       } else {
         // API call to add the car to favorites
         const response = await axios.post(

@@ -60,6 +60,10 @@ export default function Navbar() {
     setSearch(event.target.value);
   };
 
+  const handleLocationSearch =(e)=>{
+    setSearchQuery(e.target.value);
+  }
+
   const handleCarClick = (brand,carId) => {
     navigate(`/car/${brand}/${carId}`);
     setSearch('');
@@ -431,7 +435,7 @@ useEffect(() => {
             type="text"
             className="state-search"
             placeholder="Enter state"
-            onChange={handleSearch}
+            onChange={handleLocationSearch}
           />
         </div>
         <div className="states-list">
