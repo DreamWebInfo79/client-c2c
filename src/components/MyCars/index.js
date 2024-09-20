@@ -41,8 +41,12 @@ const MyCars = () => {
   };
 
   useEffect(() => {
-    fetchFavoriteCars(); // Fetch favorite cars on component mount
-  }, []);
+    if (user && cars.length === 0) {
+      fetchFavoriteCars();  // Fetch favorite cars when the user is available and the cars list is empty
+    } else {
+      setLoading(false); // If no user, stop loading
+    }
+  }, [user]);
 
   const toggleFavourite = async (carId, isFavourite) => {
     try {
