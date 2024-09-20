@@ -269,12 +269,14 @@ body {
 
 @media screen and (max-width: 768px) {
 .state-name-text{
-  .font-size: 10px;
+  font-size: 10px;
 }
+
 .state-image{
   height: 100px !important;
   width: 100px !important;
 }
+
 }
 
 .states-list::-webkit-scrollbar {
