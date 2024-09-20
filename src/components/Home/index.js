@@ -14,7 +14,7 @@ import './index.css';
 
 const Home = () => {
   const { user, clearUser } = useContext(UserContext);
-  const [favourites, setFavourites] = useState({});
+  // const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
   const [cars, setCars] = useState([]);
   const [showAll, setShowAll] = useState(false);
@@ -39,15 +39,16 @@ const Home = () => {
   console.log(favourites)
 
   const toggleFavourite = async (carId) => {
-    const isFavourite = favourites[carId];
+    // const isFavourite = favourites[carId];
     logEvent('Car', 'Favourite', carId);
+    console.log(isFavourite)
     
     
 
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
-        await axios.delete('http://localhost:3001/favorites/remove', {
+        await axios.post('http://localhost:3001/favorites/remove', {
           params: {
             uniqueId: user.c2cUserId,
             carId,
