@@ -77,16 +77,19 @@ const ContactTable = () => {
   const [contacts, setContacts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false)
   const contactsPerPage = 10;
 
   const fetchContacts = async () => {
+    setLoading(true);
     try {
       const response = await axios.get('http://localhost:3001/carsBooked/bookings');
 
       // const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/contacts');
       setContacts(response.data);
-      console.log(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('Failed to fetch contacts:', error);
     }
   };
@@ -160,6 +163,14 @@ const ContactTable = () => {
 
   return (
     <PageWrapper>
+    {loading && (
+        <div className="loader-overlay">
+          <div className="loading-spinner-container">
+            <img src="/video/car-loader.gif" alt="car-loader" className="car-loader"/>
+            <h1>Loading.....Please wait!!</h1>
+          </div>
+        </div>
+      )}
       <SearchInput
         type="text"
         placeholder="Search contacts..."

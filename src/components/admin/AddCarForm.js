@@ -25,8 +25,35 @@ const carBrandOptions = [
   { value: 'Honda', label: 'Honda' },
   { value: 'Hyundai', label: 'Hyundai' },
   { value: 'Ford', label: 'Ford' },
-  { value: 'custom', label: 'Add New Brand...' }
+  { value: 'Maruti Suzuki', label: 'Maruti Suzuki' },
+  { value: 'Tata Motors', label: 'Tata Motors' },
+  { value: 'Mahindra', label: 'Mahindra' },
+  { value: 'Kia', label: 'Kia' },
+  { value: 'Nissan', label: 'Nissan' },
+  { value: 'Volkswagen', label: 'Volkswagen' },
+  { value: 'Skoda', label: 'Skoda' },
+  { value: 'MG Motor', label: 'MG Motor' },
+  { value: 'Renault', label: 'Renault' },
+  { value: 'Peugeot', label: 'Peugeot' },
+  { value: 'Datsun', label: 'Datsun' },
+  { value: 'Subaru', label: 'Subaru' },
+  { value: 'Chevrolet', label: 'Chevrolet' },
+  { value: 'Isuzu', label: 'Isuzu' },
+  { value: 'Porsche', label: 'Porsche' },
+  { value: 'BMW', label: 'BMW' },
+  { value: 'Mercedes-Benz', label: 'Mercedes-Benz' },
+  { value: 'Audi', label: 'Audi' },
+  { value: 'Lexus', label: 'Lexus' },
+  { value: 'Jaguar', label: 'Jaguar' },
+  { value: 'Land Rover', label: 'Land Rover' },
+  { value: 'Volvo', label: 'Volvo' },
+  { value: 'Fiat', label: 'Fiat' },
+  { value: 'Mitsubishi', label: 'Mitsubishi' },
+  { value: 'Chrysler', label: 'Chrysler' },
+  { value: 'Rolls-Royce', label: 'Rolls-Royce' },
+  { value: 'Add New Brand...', label: 'Add New Brand...' }
 ];
+
 
 const yearOptions = Array.from({ length: 30 }, (_, i) => {
   const year = new Date().getFullYear() - i;

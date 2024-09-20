@@ -175,15 +175,19 @@ const CarTable = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); 
+  const [loading, setLoading] = useState(false)
   const carsPerPage = 10;
 
     const fetchCars = async () => {
+      setLoading(true);
       try {
         const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/all-cars'); // Adjust the API URL as per your backend
         const fetchedCars = response.data.cars || [];
         const allCars = Object.values(fetchedCars).flat();
+        setLoading(false);
         setCarData(allCars);
       } catch (error) {
+        setLoading(false);
         console.error('Failed to fetch car data', error);
       }
     };
@@ -278,6 +282,14 @@ const CarTable = () => {
 
   return (
     <div>
+    {loading && (
+        <div className="loader-overlay">
+          <div className="loading-spinner-container">
+            <img src="/video/car-loader.gif" alt="car-loader" className="car-loader"/>
+            <h1>Loading.....Please wait!!</h1>
+          </div>
+        </div>
+      )}
       <h2>Car List</h2>
       <SearchInput
         type="text"

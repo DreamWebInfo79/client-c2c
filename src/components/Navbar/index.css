@@ -678,9 +678,9 @@ body {
   cursor: pointer;
 }
 
-.modal-toggle:hover {
+/* .modal-toggle:hover {
   text-decoration: underline;
-}
+} */
 
 .error-message {
   color: red;
@@ -816,7 +816,7 @@ body {
 .modal-toggle {
   color: #007bff;
   cursor: pointer;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .modal-toggle:hover {
@@ -883,4 +883,75 @@ body {
   .navbar-heading{
     font-size: 10px;
   }
+}
+
+/* Dropdown container */
+.dropdown {
+  margin-top: 250px !important;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+/* Dropdown item */
+.dropdown li {
+  padding: 15px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Hover effect for dropdown item */
+.dropdown li:hover {
+  background-color: #f2f6f9;
+}
+
+/* Styling for the last dropdown item (no border) */
+.dropdown li:last-child {
+  border-bottom: none;
+}
+
+/* Active selection style */
+.dropdown li.active {
+  background-color: #3498db;
+  color: white;
+}
+
+/* When the dropdown is empty */
+.dropdown.empty {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #999;
+}
+
+/* Scrollbar styling for better UX */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+
+.dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 8px;
+}
+
+.dropdown::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }

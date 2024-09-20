@@ -3,12 +3,12 @@ import { FaSearch, FaMapMarkerAlt, FaUser, FaEye, FaEyeSlash, FaArrowLeft , FaCa
 import Modal from "react-modal";
 import { statesData } from "../../statesData";
 import { IoClose } from "react-icons/io5";
-import { Link } from 'react-router-dom';
-import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai"; // Importing icons
+import { Link, useNavigate } from 'react-router-dom';
 import { logEvent } from '../../analytics';
 import axios from 'axios'; 
 import Cookies from 'js-cookie';
 import { UserContext } from '../UserContext';
+import { CarContext } from '../CarContext';
 import "./index.css";
 
 export default function Navbar() {
@@ -17,7 +17,6 @@ export default function Navbar() {
   const [showAll, setShowAll] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedState, setSelectedState] = useState(null);
-  const [isRegister, setIsRegister] = useState(false); // Toggle between login and register
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [password, setPassword] = useState('');
@@ -42,14 +41,26 @@ export default function Navbar() {
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState('');
   const { saveUserToCookies } = useContext(UserContext);
-
-
-
-
-
+  const [search, setSearch] = useState('');
+  const navigate = useNavigate();
+  const { cars , setCars } = useContext(CarContext);
+  console.log(cars);
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
+
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleCarClick = (carId) => {
+    navigate(`/my-cars/${carId}`);
+  };
+
+  const filteredCars = cars.filter((car) => 
+    car.model.toLowerCase().includes(search.toLowerCase()) || 
+    car.brand.toLowerCase().includes(search.toLowerCase())
+  );
 
   const closeSearch = () => {
     setIsSearchOpen(false);
@@ -73,9 +84,6 @@ export default function Navbar() {
     setShowAll(true);
   };
 
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const filteredStates = statesData.filter(state =>
     state.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -93,6 +101,8 @@ export default function Navbar() {
   const handleStateSelect = (state) => {
     logEvent('select_state', { state }, 'jk');
     setSelectedState(state);
+    const filteredCars=cars.filter((car) => car.location === state);
+    setCars(filteredCars);
     setModalIsOpen(false);
   };
 
@@ -107,42 +117,6 @@ export default function Navbar() {
   const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
 
-
-   // Simulate sending OTP API request
-   const sendOtp = async () => {
-    if (!email) {
-      alert('Please enter your email.');
-      return;
-    }
-    try {
-      const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/api/send-otp", { email });
-      if (response.data.success) {
-        setOtpSent(true);
-        setOtpFieldVisible(true);
-        setShowResendOtp(true);
-        alert("OTP sent to your email!");
-      } else {
-        alert("Failed to send OTP. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-    }
-  };
-
-  // Verify OTP function
-const verifyOtp = async () => {
-  try {
-    const response = await axios.post("https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/api/verify-otp", { email, otp });
-    if (response.data.success) {
-      setIsEmailVerified(true);
-      alert("OTP verified! Proceed with next steps.");
-    } else {
-      alert("Invalid OTP. Please try again.");
-    }
-  } catch (error) {
-    console.error("Error verifying OTP:", error);
-  }
-};
 
 //function used for forgot password
 const handleForgotPassword = async (e) => {
@@ -220,7 +194,7 @@ const handleLogin = async (e) => {
     if (response.data.message) {
       saveUserToCookies(email, response.data.uniqueId);
       setUserId(response.data.uniqueId);
-      setUserName(response.data.email);
+      setUserName(email);
       alert("Login successful!");
       setEmail('');
       setPassword('');
@@ -342,12 +316,22 @@ useEffect(() => {
             <FaSearch /> Search
           </button>
         )}
-        <input
-          ref={searchInputRef}
-          type="text"
-          className={`search-input ${isSearchOpen ? "visible" : ""}`}
-          placeholder="Search..."
-        />
+          <input 
+        className={`search-input ${isSearchOpen ? "visible" : ""}`}
+        type="text" 
+        placeholder="Search cars..." 
+        value={search} 
+        onChange={handleSearch} 
+      />
+      {search && (
+        <ul className="dropdown">
+          {filteredCars.map((car) => (
+            <li key={car.id} onClick={() => handleCarClick(car.id)}>
+              {car.brand} - {car.model}
+            </li>
+          ))}
+        </ul>
+      )}
       </div>
       {isSearchOpen && (
         <div className="trending-cars">
@@ -386,8 +370,6 @@ useEffect(() => {
                 <p className="navbar-heading">Choose Location</p>
                 </div>
               </div>
-
-
               <div className="location">
       {userId ? (
         <>
