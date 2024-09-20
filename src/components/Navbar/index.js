@@ -44,8 +44,8 @@ export default function Navbar() {
   const { user, updateUser } = useContext(UserContext);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
-  const { cars , setCars } = useContext(CarContext);
-  console.log(user);
+  const { cars , setCars, handleStateSelect } = useContext(CarContext);
+  console.log(user.favouriteCar);
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
@@ -105,11 +105,10 @@ export default function Navbar() {
   const openLoginModal = () => setLoginModalIsOpen(true);
   const closeLoginModal = () => setLoginModalIsOpen(false);
 
-  const handleStateSelect = (state) => {
+  const handleStateSelectModal = (state) => {
     logEvent('select_state', { state }, 'jk');
     setSelectedState(state);
-    const filteredCars=cars.filter((car) => car.location === state);
-    setCars(filteredCars);
+    handleStateSelect(state.name);
     setModalIsOpen(false);
   };
 
@@ -440,7 +439,7 @@ useEffect(() => {
         </div>
         <div className="states-list">
           {filteredStates.slice(0, showAll ? filteredStates.length : 9).map((state, index) => (
-            <div className="state-item" key={index} onClick={() => handleStateSelect(state)}>
+            <div className="state-item" key={index} onClick={() => handleStateSelectModal(state)}>
               <img src={state.image} alt={state.name} className="state-image" />
               <div className="state-name">
               <h6 className="state-name-text">{state.name}</h6>
