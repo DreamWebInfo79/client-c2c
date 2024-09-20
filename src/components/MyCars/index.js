@@ -15,26 +15,26 @@ const MyCars = () => {
   const [favourites, setFavourites] = useState({});
   const navigate = useNavigate();
 
-  // Get userId from cookies
   // Fetch favorite cars
-  const fetchFavoriteCars = () => {
+  const fetchFavoriteCars = async () => {
     if (user) {
-      axios
-        .get(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/car/favorites/${user.c2cUserId}`)
-        .then((response) => {
-          setCars(response.data.favorites || []); 
-          
-          const favState = response.data.favorites.reduce((acc, car) => {
-            acc[car.carId] = true;
-            return acc;
-          }, {});
-          updateUser({favouriteCar:favState});
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching favorite cars:', error);
-          setLoading(false);
-        });
+      try {
+        const response = await axios.get(
+          `https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/car/favorites/${user.c2cUserId}`
+        );
+        setCars(response.data.favorites || []);
+
+        const favState = response.data.favorites.reduce((acc, car) => {
+          acc[car.carId] = true;
+          return acc;
+        }, {});
+        setFavourites(favState);
+        updateUser({ favouriteCar: favState });
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching favorite cars:', error);
+        setLoading(false);
+      }
     } else {
       setLoading(false);
     }
@@ -44,29 +44,27 @@ const MyCars = () => {
     fetchFavoriteCars(); // Fetch favorite cars on component mount
   }, []);
 
-  const toggleFavourite = (carId, isFavourite) => {
-    if (isFavourite) {
-      axios
-        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`, { uniqueId:user.c2cUserId, carId })
-        .then((response) => {
-          updateUser({ favouriteCar: response.data.favorites });
-          console.log('Car unfavorited:', response.data);
-          // fetchFavoriteCars(); // Refetch after removing favorite
-        })
-        .catch((error) => {
-          console.error('Error unfavoriting car:', error);
-        });
-    } else {
-      axios
-        .post(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add`, { uniqueId:user.c2cUserId, carId })
-        .then((response) => {
-          updateUser({ favouriteCar: response.data.favorites });
-          console.log('Car favorited:', response.data);
-          // fetchFavoriteCars(); // Refetch after adding favorite
-        })
-        .catch((error) => {
-          console.error('Error favoriting car:', error);
-        });
+  const toggleFavourite = async (carId, isFavourite) => {
+    try {
+      if (isFavourite) {
+        const response = await axios.post(
+          `https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`,
+          { uniqueId: user.c2cUserId, carId }
+        );
+        const updatedFavourites = { ...favourites, [carId]: false };
+        setFavourites(updatedFavourites);
+        updateUser({ favouriteCar: response.data.favorites || [] });
+      } else {
+        const response = await axios.post(
+          `https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add`,
+          { uniqueId: user.c2cUserId, carId }
+        );
+        const updatedFavourites = { ...favourites, [carId]: true };
+        setFavourites(updatedFavourites);
+        updateUser({ favouriteCar: response.data.favorites || [] });
+      }
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
     }
   };
 

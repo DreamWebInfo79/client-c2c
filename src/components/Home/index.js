@@ -14,13 +14,14 @@ import { CarContext } from '../CarContext';
 import './index.css';
 
 const Home = () => {
-  const { user, clearUser, updateUser } = useContext(UserContext);
-  // const [favourites, setFavourites] = useState({});
+  const { user, updateUser } = useContext(UserContext);
+  const [favourites, setFavourites] = useState({});
   const [activeTab, setActiveTab] = useState('All');
   const { cars } = useContext(CarContext);
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
 
-
+  // Car brands array
   const carBrands = [
     { name: 'All', logo: 'car-brand/all-car-bramd.webp' },
     { name: 'Toyota', logo: 'car-brand/toyota-logo-2020-europe-download.png' },
@@ -34,7 +35,13 @@ const Home = () => {
   ];
 
   const visibleBrands = showAll ? carBrands : carBrands.slice(0, 6);
-  const navigate = useNavigate();
+
+  // Initialize favorite cars on mount
+  useEffect(() => {
+    if (user?.favouriteCar) {
+      setFavourites(user.favouriteCar);
+    }
+  }, [user]);
 
   const getFilteredCars = () => {
     if (activeTab === 'All') {
@@ -52,20 +59,25 @@ const Home = () => {
     try {
       if (isFavourite) {
         // API call to remove the car from favorites
-       const response = await axios.delete('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove', {
-          
-            uniqueId: user.c2cUserId,
-            carId,
-          },
+        const response = await axios.delete(
+          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove',
           {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-      });
-        updateUser({favouriteCar : response.data.favorites})
+            params: {
+              uniqueId: user.c2cUserId,
+              carId,
+            },
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        const updatedFavourites = { ...favourites, [carId]: false };
+        setFavourites(updatedFavourites); // Update local state
+        updateUser({ favouriteCar: updatedFavourites }); // Sync with user context
       } else {
         // API call to add the car to favorites
-       const response = await axios.post(
+        const response = await axios.post(
           'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add',
           {
             uniqueId: user.c2cUserId,
@@ -78,8 +90,9 @@ const Home = () => {
           }
         );
 
-        updateUser({favouriteCar : response.data.favorites})
-
+        const updatedFavourites = { ...favourites, [carId]: true };
+        setFavourites(updatedFavourites); // Update local state
+        updateUser({ favouriteCar: updatedFavourites }); // Sync with user context
       }
     } catch (error) {
       console.error('Failed to toggle favorite status', error);
