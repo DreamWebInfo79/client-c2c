@@ -467,13 +467,26 @@
 
 .car-search-form-container{
   display: flex;
-  justify-content: left;
+  justify-content: right;
   align-items: center;
-  height: 400px;
+  /* height: 400px; */
+  height: 550px;
+  background-position: center bottom;
   width: 100%;
+  background-size: cover;
   background-color: #f9f9f9 !important;
-  border-radius: 15px;
+  /* border-radius: 15px; */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+  .car-search-form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 100%;
+  }
 }
 
 .car-container-heading {

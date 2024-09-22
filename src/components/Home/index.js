@@ -92,9 +92,7 @@ const Home = () => {
   };
 
   const style = {
-    backgroundImage: `url(/video/car.gif)`,
-    backgroundSize: 'cover',
-    height: '550px',
+    backgroundImage: `url("/assets/CarBG.jpg")`,
   };
 
   return (

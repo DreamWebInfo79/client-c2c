@@ -9,6 +9,8 @@ import usePageTracking from './hooks/usePageTracking';
 import MyCars from './components/MyCars';
 import { CarProvider } from './components/CarContext';
 import { UserProvider } from './components/UserContext';
+import WhatsAppMenu from './components/WhatsAppMenu';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import BottomNav from './components/BottomNav';
 
@@ -20,6 +22,7 @@ function App() {
 
   return (
       <div className="App">
+      <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
        <UserProvider>
        <CarProvider>
         <Navbar />
@@ -31,9 +34,11 @@ function App() {
           <Route path="/my-cars" element={<MyCars/>} />
         </Routes>
         <Footer />
-        {/* <BottomNav/> */}
+        <WhatsAppMenu />
+        <BottomNav/>
        </CarProvider>
         </UserProvider>
+        </GoogleOAuthProvider>
       </div>
   );
 }
