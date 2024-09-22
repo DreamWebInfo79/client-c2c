@@ -83,7 +83,7 @@ const ContactTable = () => {
   const fetchContacts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3001/carsBooked/bookings');
+      const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/carsBooked/bookings');
 
       // const response = await axios.get('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/contacts');
       setContacts(response.data);
@@ -106,7 +106,7 @@ const ContactTable = () => {
 
     // Make an API call to update the status
     try {
-      await axios.put(`http://localhost:3001/carsBooked/bookings/${contactId}`, {
+      await axios.put(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/carsBooked/bookings/${contactId}`, {
         status: selectedOption.value,
       });
       fetchContacts();
@@ -118,7 +118,7 @@ const ContactTable = () => {
 
   const handleDelete = async (contactId) => {
     try {
-      await axios.delete(`http://localhost:3001/carsBooked/bookings/${contactId}`);
+      await axios.delete(`https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/carsBooked/bookings/${contactId}`);
       fetchContacts();
       console.log('Contact deleted successfully');
     } catch (error) {

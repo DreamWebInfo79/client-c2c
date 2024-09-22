@@ -95,7 +95,7 @@ const handleSubmit = async () => {
   setFormLoading(true);
   try {
     // const uniqueCarId = jk();
-    await axios.post('http://localhost:3001/cars/bookings', { username:name, phoneNumber, contactId:car.carId, carName:car.brand });
+    await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars/bookings', { username:name, phoneNumber, contactId:car.carId, carName:car.brand });
     // await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/submit-contact', { name, phoneNumber });
     SetFormSubmitted(true);
     handleClose();

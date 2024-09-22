@@ -10,6 +10,7 @@ import MyCars from './components/MyCars';
 import { CarProvider } from './components/CarContext';
 import { UserProvider } from './components/UserContext';
 import './App.css';
+import BottomNav from './components/BottomNav';
 
 function App() {
   
@@ -30,6 +31,7 @@ function App() {
           <Route path="/my-cars" element={<MyCars/>} />
         </Routes>
         <Footer />
+        {/* <BottomNav/> */}
        </CarProvider>
         </UserProvider>
       </div>
