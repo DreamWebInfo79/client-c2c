@@ -126,12 +126,17 @@ export default function Navbar() {
   const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
 
+
+  // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+
+
   const handleLoginSuccess = async (response) => {
     setIsLoading(true);
     try {
       const { credential } = response;
       const googleResponse = await axios.post(
-        'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+        'http://localhost:3001/auth/google/callback',        
+        // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
         { token: credential },
         { withCredentials: true }
       );
