@@ -5,11 +5,13 @@ import { statesData } from "../../statesData";
 import { AiOutlineSearch, AiOutlineClockCircle } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
+import { Oval } from 'react-loader-spinner';
 import { logEvent } from '../../analytics';
 import axios from 'axios'; 
 import Cookies from 'js-cookie';
 import { UserContext } from '../UserContext';
 import { CarContext } from '../CarContext';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import "./index.css";
 
 export default function Navbar() {
@@ -43,6 +45,7 @@ export default function Navbar() {
   const [userName, setUserName] = useState('');
   const { user, updateUser } = useContext(UserContext);
   const [search, setSearch] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { cars , setCars, handleStateSelect } = useContext(CarContext);
   console.log(user.favouriteCar);
@@ -123,6 +126,39 @@ export default function Navbar() {
   const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
 
+  const handleLoginSuccess = async (response) => {
+    setIsLoading(true);
+    try {
+      const { credential } = response;
+      const googleResponse = await axios.post(
+        'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+        { token: credential },
+        { withCredentials: true }
+      );
+
+      const userData = googleResponse.data;
+      updateUser({ 
+        c2cUserEmail: userData.email, 
+        c2cUserId: userData.uniqueId, 
+        favouriteCar:userData.favorites, 
+      });
+      setUserId(userData.uniqueId);
+      setUserName(userData.email);
+      console.log(userData);
+      setIsLoading(false);
+
+
+      setLoginModalIsOpen(false);
+    } catch (error) {
+      console.error('Login failed', error);
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleLoginFailure = (response) => {
+    console.error('Login failed', response);
+  };
 
 //function used for forgot password
 const handleForgotPassword = async (e) => {
@@ -437,21 +473,18 @@ useEffect(() => {
             onChange={handleLocationSearch}
           />
         </div>
-        <div className="states-list">
-          {filteredStates.slice(0, showAll ? filteredStates.length : 9).map((state, index) => (
-            <div className="state-item" key={index} onClick={() => handleStateSelectModal(state)}>
-              <img src={state.image} alt={state.name} className="state-image" />
-              <div className="state-name">
-              <h6 className="state-name-text">{state.name}</h6>
-              </div>
-            </div>
-          ))}
+        <div className="location-container">
+  <div className="location-content">
+    <div className="location-list">
+      {filteredStates.map((state, index) => (
+        <div className="location-item" key={index} onClick={() => handleStateSelectModal(state)}>
+          <span>{state.name}</span>
+          <span className="location-arrow">›</span>
         </div>
-        {!showAll && filteredStates.length > 8 && (
-          <button className="show-more-button" onClick={handleShowMore}>
-            Show More
-          </button>
-        )}
+      ))}
+    </div>
+  </div>
+</div>
       </Modal>
 
      {/* Login Modal */}
@@ -465,8 +498,40 @@ useEffect(() => {
       <button className="modal-close-button" onClick={() => setLoginModalIsOpen(false)}>
         <IoClose />
       </button>
+      
+      <div className="google-login-container">
+        <h2 style={{ textAlign: 'center' }}>Login with Google</h2>
+        <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+          {isLoading ? (
+            <div className="loader-container">
+              <Oval height={40} width={40} color="#4fa94d" />
+            </div>
+          ) : (
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onFailure={handleLoginFailure}
+              cookiePolicy={'single_host_origin'}
+              render={(renderProps) => (
+                <button
+                  className="google-login-btn"
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                >
+                  <img
+                    src="https://developers.google.com/identity/images/g-logo.png"
+                    alt="Google Logo"
+                    style={{ marginRight: '10px' }}
+                  />
+                  Sign in with Google
+                </button>
+              )}
+            />
+          )}
+        </GoogleOAuthProvider>
+      </div>
+<h1 style={{ textAlign: 'center', marginBottom: '10px' }}>(or)</h1>
       <div className="modal-content">
-        <h2>Login</h2>
+        <h2 style={{ textAlign: 'center' }}>Login with Email</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
@@ -499,7 +564,7 @@ useEffect(() => {
           )}
         </form>
 
-        <p  style={{ marginTop: "20px" }}>
+        <p style={{ marginTop: "20px", textAlign: 'center' }}>
           Don't have an account?{" "}
           <span className="modal-toggle" onClick={() => handleRegisterModalOpen()}>
             Register now
@@ -507,7 +572,7 @@ useEffect(() => {
         </p>
 
         {!forgotPasswordMode && (
-          <p style={{ marginTop: "20px" }}>
+          <p style={{ marginTop: "20px", textAlign: 'center' }}>
             Forgot password?{" "}
             <span className="modal-toggle" onClick={handleForgotPassword}>
               Click here

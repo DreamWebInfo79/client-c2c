@@ -1,0 +1,38 @@
+.toggle-on-screen-menu {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+  }
+@media screen and (max-width: 768px) {
+    .toggle-on-screen-menu{
+        bottom: 70px;
+    }
+}  
+  .telegram-icon-gif{
+    height: 70px;
+    width: 70px;
+    border-radius: 20%;
+  }
+
+  .close-button {
+    position: absolute;
+    top: -6px;
+    right: -6px; 
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .close-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
