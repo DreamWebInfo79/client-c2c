@@ -22,7 +22,7 @@ function App() {
 
   return (
       <div className="App">
-      <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="920316076408-35gdcl6370m17toarg2qbipojrl2lqad.apps.googleusercontent.com">
        <UserProvider>
        <CarProvider>
         <Navbar />

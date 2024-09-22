@@ -534,7 +534,7 @@ useEffect(() => {
       
       <div className="google-login-container">
         <h2 style={{ textAlign: 'center' }}>Login with Google</h2>
-        <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="920316076408-35gdcl6370m17toarg2qbipojrl2lqad.apps.googleusercontent.com">
           {isLoading ? (
             <div className="loader-container">
               <Oval height={40} width={40} color="#4fa94d" />
@@ -695,7 +695,7 @@ useEffect(() => {
 
       <div className="google-login-container">
         <h2 style={{ textAlign: 'center' }}>Register with Google</h2>
-        <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="920316076408-35gdcl6370m17toarg2qbipojrl2lqad.apps.googleusercontent.com">
           {isLoading ? (
             <div className="loader-container">
               <Oval height={40} width={40} color="#4fa94d" />
