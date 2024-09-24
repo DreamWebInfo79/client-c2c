@@ -13,6 +13,7 @@ import WhatsAppMenu from './components/WhatsAppMenu';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import BottomNav from './components/BottomNav';
+import SearchPage from './components/SearchComponent';
 
 function App() {
   
@@ -22,13 +23,14 @@ function App() {
 
   return (
       <div className="App">
-      <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="920316076408-35gdcl6370m17toarg2qbipojrl2lqad.apps.googleusercontent.com">
        <UserProvider>
        <CarProvider>
         <Navbar />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/car/:brand/:id" element={<CarDetails />} />
           <Route path="/agent-login" element={<Admin />} />
           <Route path="/my-cars" element={<MyCars/>} />

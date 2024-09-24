@@ -126,12 +126,17 @@ export default function Navbar() {
   const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
 
+
+  // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+
+
   const handleLoginSuccess = async (response) => {
     setIsLoading(true);
     try {
       const { credential } = response;
       const googleResponse = await axios.post(
-        'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+        'http://localhost:3001/auth/google/callback',        
+        // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
         { token: credential },
         { withCredentials: true }
       );
@@ -447,7 +452,7 @@ useEffect(() => {
                   <FaHeart size={24} />
               </div>
               <div className="location-text">
-                <p className="navbar-heading">My Cars</p>
+                <p className="navbar-heading">My Cart</p>
                 </div>
                 </div>
                 </Link>
@@ -534,7 +539,7 @@ useEffect(() => {
       
       <div className="google-login-container">
         <h2 style={{ textAlign: 'center' }}>Login with Google</h2>
-        <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="920316076408-35gdcl6370m17toarg2qbipojrl2lqad.apps.googleusercontent.com">
           {isLoading ? (
             <div className="loader-container">
               <Oval height={40} width={40} color="#4fa94d" />
@@ -695,7 +700,7 @@ useEffect(() => {
 
       <div className="google-login-container">
         <h2 style={{ textAlign: 'center' }}>Register with Google</h2>
-        <GoogleOAuthProvider clientId="402163496970-mocslrju19q1leo461undlh9u1f3jrbs.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="920316076408-35gdcl6370m17toarg2qbipojrl2lqad.apps.googleusercontent.com">
           {isLoading ? (
             <div className="loader-container">
               <Oval height={40} width={40} color="#4fa94d" />

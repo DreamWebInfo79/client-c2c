@@ -50,7 +50,7 @@ const Button = styled.button`
 `;
 
 const LoginPage = ({ onLogin }) => {
-  const { saveUserToCookies } = useContext(UserContext);
+  const { user ,updateUser } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -73,10 +73,10 @@ const LoginPage = ({ onLogin }) => {
         email,    // Send email and password in the request body
         password,
       });
-
+      console.log(response.data);
       // If login is successful, trigger onLogin and handle success response
-      if (response.data.message === 'Login successful!') {
-        saveUserToCookies(response.data.email, response.data.uniqueId, response.data.role);
+      if (response.status===200) {
+        updateUser({c2cUserEmail:email, c2cUserId:response.data.uniqueId, c2cUserRole:response.data.role});
         onLogin();
 
       }
