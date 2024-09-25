@@ -736,3 +736,9 @@
   margin-bottom:5px;
   font-weight:bold;
 }
+
+@media screen and (max-width: 768px) {
+  .search-form-container{
+    display: none;
+  }
+}

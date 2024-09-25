@@ -98,7 +98,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="car-search-form-container" style={style}>
-      <div className="car-rental-container">
+      {/* <div className="car-rental-container">
       <h1 className="car-rental-heading">
       Discover and purchase classic cars  <span className="car-rental-highlight">Effortlessly</span>
       </h1>
@@ -106,14 +106,16 @@ const Home = () => {
       Explore a curated selection of vintage cars available for sale at your convenience, both online and in-person.
       </p>
       {/* <img src="https://pluspng.com/img-png/play-store-logo-png-google-play-logo-google-play-app-store-android-google-play-free-910x910.png" alt="Phone showing the app" className="car-rental-phone-image" /> */}
-      <div className="car-rental-store-buttons">
+      {/* <div className="car-rental-store-buttons">
         <Link >
           <img src="/assets/google-play.png" alt="Google Play" className="car-rental-store-badge" />
         </Link>
         <Link to="/search">
           <button className="search-car-button"><IoMdSearch size={25} /> Search Cars</button>
         </Link>
-      </div>
+      </div> */}
+    {/* </div>  */}
+    <div className='search-form-container'>
     </div>
       </div>
       <div className="car-container-main">

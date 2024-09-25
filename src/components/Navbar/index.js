@@ -10,6 +10,8 @@ import { logEvent } from '../../analytics';
 import axios from 'axios'; 
 import Cookies from 'js-cookie';
 import { UserContext } from '../UserContext';
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 import { CarContext } from '../CarContext';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import "./index.css";
@@ -48,7 +50,19 @@ export default function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { cars , setCars, handleStateSelect } = useContext(CarContext);
-  console.log(user.favouriteCar);
+  const [budget, setBudget] = useState([1, 50]);
+  const [selectBrandValue, setSelectBrandValue] = useState('');
+  const [cityValue, setCityValue] = useState('');
+  const [activeButton, setActiveButton] = useState('new');
+  const states = [
+    "Any", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
+    "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", 
+    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
+    "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ];
+
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
@@ -119,15 +133,10 @@ export default function Navbar() {
 
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
   const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(!confirmPasswordVisible);
-
-
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
   const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
   const handleOtpChange = (event) => setOtp(event.target.value);
-
-
-  // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
 
 
   const handleLoginSuccess = async (response) => {
@@ -364,6 +373,68 @@ useEffect(() => {
   }
 }, []);
 
+const handleSubmit = (event) => {
+  logEvent('search_car', { brand: selectBrandValue, city: cityValue, budget: budget[0] }, 'jk');
+  event.preventDefault();
+  const filteredCars = cars.filter((car) => {
+    const isWithinBudget = car.price >= budget[0] && car.price <= budget[1];
+    const matchesBrand = selectBrandValue ? car.brand === selectBrandValue : true;
+    const matchesCity = cityValue ? car.city === cityValue : true;
+
+    return isWithinBudget && matchesBrand && matchesCity;
+  });
+
+  setCars(filteredCars);
+  setIsSearchOpen(true);
+};
+
+const renderBrandOptions = () => (
+  <>
+    <option value="">Select Brand</option>
+    <option value="Maruti">Maruti</option>
+    <option value="Hyundai">Hyundai</option>
+    <option value="Honda">Honda</option>
+    <option value="Toyota">Toyota</option>
+    <option value="Ford">Ford</option>
+  </>
+);
+
+function valuetext(value) {
+  return `${value}L`;
+}
+
+const marks = [
+  { value: 1, label: '1L' },
+  { value: 10, label: '10L' },
+  { value: 20, label: '20L' },
+  { value: 30, label: '30L' },
+  { value: 40, label: '40L' },
+  { value: 50, label: '50L+' }
+];
+
+const renderCityOptions = () => (
+  <>
+    <option value="">Select State</option>
+    {states.map((state) => (
+      <option key={state} value={state}>
+        {state}
+      </option>
+    ))}
+  </>
+);
+
+const handleBudgetChange = (event, newValue) => {
+  setBudget(newValue);
+};
+
+const handleBrandOptionChange = (event) => {
+  setSelectBrandValue(event.target.value);
+};
+
+const handleCityChange = (event) => {
+  setCityValue(event.target.value);
+};
+
 
   return (
     <>
@@ -416,6 +487,7 @@ useEffect(() => {
         onChange={handleSearch} 
       />
       {search && (
+
         <ul className="dropdown">
           {filteredCars.map((car) => (
             <li key={car.id} className="car-item" onClick={() => handleCarClick(car.brand, car.carId)}>
@@ -428,20 +500,64 @@ useEffect(() => {
       </div>
       </div>
       {isSearchOpen && (
-        <div className="trending-cars">
-          <h3>Trending Cars</h3>
-          <ul>
-            <li>
-              <FaSearch /> Jeep Compass
-            </li>
-            <li>
-              <FaSearch /> Tata Curvv
-            </li>
-            <li>
-              <FaSearch /> Hyundai Alcazar
-            </li>
-          </ul>
+        <div className="car-search-form">
+      <form>
+        <div>
+        <div className="button-container">
+  <button
+  type="button"
+    className={`custom-button ${activeButton === 'new' ? 'active' : ''}`}
+    onClick={() => setActiveButton('new')}
+  >
+    New Cars
+  </button>
+  <button
+  type="button"
+    className={`custom-button ${activeButton === 'used' ? 'active' : ''}`}
+    onClick={() => setActiveButton('used')}
+  >
+    Used Cars
+  </button>
+</div>
+
+          <select
+            id="selectOption"
+            value={selectBrandValue}
+            onChange={handleBrandOptionChange}
+            className='select-item'
+          >
+            {renderBrandOptions()}
+          </select>
         </div>
+        <div className="slider-container">
+          <label htmlFor="budgetSlider" className="label-slider-item">Select Budget</label>
+          <Box sx={{ width: 300 }}>
+            <Slider
+              value={budget}
+              onChange={handleBudgetChange}
+              valueLabelDisplay="auto"
+              getAriaValueText={valuetext}
+              min={1}
+              max={50}
+              step={1}
+              marks={marks}
+            />
+          </Box>
+          <div>Selected Budget: {budget[0]}L - {budget[1]}L</div>
+        </div>
+        <div>
+          <select
+            id="selectOptionCity"
+            value={cityValue}
+            onChange={handleCityChange}
+            className='select-item'
+          >
+            {renderCityOptions()}
+          </select>
+        </div>
+        <button type="submit" onClick={handleSubmit} className="search-button">Search</button>
+      </form>
+    </div>
       )}
     </div>
             {/* </div> */}

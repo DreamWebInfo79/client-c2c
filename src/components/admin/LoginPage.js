@@ -73,7 +73,7 @@ const LoginPage = ({ onLogin }) => {
         email,    // Send email and password in the request body
         password,
       });
-      console.log(response.data);
+      // console.log(response.data);
       // If login is successful, trigger onLogin and handle success response
       if (response.status===200) {
         updateUser({c2cUserEmail:email, c2cUserId:response.data.uniqueId, c2cUserRole:response.data.role});
