@@ -5,8 +5,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import { CiLocationOn } from 'react-icons/ci';
 import { BiSolidRightArrowCircle } from 'react-icons/bi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import CarSearchForm from '../CarSearchForm';
+import { useNavigate, Link } from 'react-router-dom';
+import { IoMdSearch } from "react-icons/io";
 import { logEvent } from '../../analytics';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
@@ -94,11 +94,27 @@ const Home = () => {
   const style = {
     backgroundImage: `url("/assets/CarBG.jpg")`,
   };
-
+  
   return (
     <div className="home-container">
       <div className="car-search-form-container" style={style}>
-        <CarSearchForm />
+      <div className="car-rental-container">
+      <h1 className="car-rental-heading">
+      Discover and purchase classic cars  <span className="car-rental-highlight">Effortlessly</span>
+      </h1>
+      <p className="car-rental-description">
+      Explore a curated selection of vintage cars available for sale at your convenience, both online and in-person.
+      </p>
+      {/* <img src="https://pluspng.com/img-png/play-store-logo-png-google-play-logo-google-play-app-store-android-google-play-free-910x910.png" alt="Phone showing the app" className="car-rental-phone-image" /> */}
+      <div className="car-rental-store-buttons">
+        <Link >
+          <img src="/assets/google-play.png" alt="Google Play" className="car-rental-store-badge" />
+        </Link>
+        <Link to="/search">
+          <button className="search-car-button"><IoMdSearch size={25} /> Search Cars</button>
+        </Link>
+      </div>
+    </div>
       </div>
       <div className="car-container-main">
         <h1 className="car-container-heading">Popular Cars</h1>

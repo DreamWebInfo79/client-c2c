@@ -661,3 +661,78 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+.car-rental-container {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  padding: 50px;
+  width:500px;
+  background: rgba(255, 255, 255, 0.05); /* More transparent */
+  border-radius: 15px;
+  backdrop-filter: blur(10px); /* Adjust the blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Border color with transparency */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  /* padding: 20px; Space inside the glass element */
+  color: #ffffff; /* Text color */
+  position: relative; /* Needed for sliding */
+  animation: slideLeft 0.5s forwards; /* Slide animation */
+}
+
+@keyframes slideLeft {
+  from {
+      transform: translateX(100px); /* Start 100px to the right */
+      opacity: 0; /* Start transparent */
+  }
+  to {
+      transform: translateX(0); /* End at original position */
+      opacity: 1; /* Fully opaque */
+  }
+}
+
+.car-rental-heading {
+  font-size: 33px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.car-rental-highlight {
+  color: #007bff; /* Blue highlight for "Easily" */
+}
+
+.car-rental-description {
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+.car-rental-phone-image {
+  max-width: 300px;
+  margin-bottom: 30px;
+}
+
+.car-rental-store-buttons {
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  gap: 20px;
+}
+
+.car-rental-store-badge {
+  width: 150px;
+  height: auto;
+}
+
+.search-car-button{
+  display:flex;
+  align-items:center;
+  padding:10px;
+  gap:10px;
+  text-decoration: none;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background-color:light-blue;
+  margin-bottom:5px;
+  font-weight:bold;
+}

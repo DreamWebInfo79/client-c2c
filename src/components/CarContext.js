@@ -29,7 +29,7 @@ export const CarProvider = ({ children }) => {
   };
 
   return (
-    <CarContext.Provider value={{ cars, handleStateSelect }}>
+    <CarContext.Provider value={{ cars, handleStateSelect, setCars }}>
       {children}
     </CarContext.Provider>
   );
