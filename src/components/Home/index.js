@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import { FaSearch, FaHistory, FaMoneyBillWave, FaTruck } from 'react-icons/fa';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { CiLocationOn } from 'react-icons/ci';
@@ -11,6 +12,8 @@ import { logEvent } from '../../analytics';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
 import { CarContext } from '../CarContext';
+import SearchPage from '../Search';
+
 import './index.css';
 
 const Home = () => {
@@ -97,27 +100,20 @@ const Home = () => {
   
   return (
     <div className="home-container">
-      <div className="car-search-form-container" style={style}>
-      {/* <div className="car-rental-container">
-      <h1 className="car-rental-heading">
-      Discover and purchase classic cars  <span className="car-rental-highlight">Effortlessly</span>
-      </h1>
-      <p className="car-rental-description">
-      Explore a curated selection of vintage cars available for sale at your convenience, both online and in-person.
-      </p>
-      {/* <img src="https://pluspng.com/img-png/play-store-logo-png-google-play-logo-google-play-app-store-android-google-play-free-910x910.png" alt="Phone showing the app" className="car-rental-phone-image" /> */}
-      {/* <div className="car-rental-store-buttons">
-        <Link >
-          <img src="/assets/google-play.png" alt="Google Play" className="car-rental-store-badge" />
-        </Link>
-        <Link to="/search">
-          <button className="search-car-button"><IoMdSearch size={25} /> Search Cars</button>
-        </Link>
-      </div> */}
-    {/* </div>  */}
+      <div className="car-search-form-container">
+      <div className="fullscreen-video-container">
+        <video autoPlay loop className="fullscreen-video">
+          <source src="/video/BGVideo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+     
     <div className='search-form-container'>
     </div>
       </div>
+    <SearchPage/>
+
       <div className="car-container-main">
         <h1 className="car-container-heading">Popular Cars</h1>
         <div>
@@ -224,7 +220,62 @@ const Home = () => {
             <p>No cars available for this brand.</p>
           )}
         </div>
+
       </div>
+      <div className="app-container">
+      <div className="image-container">
+        {/* Mobile Image */}
+        <img
+          src="https://www.mytechlogy.com/upload/by_users/TomBrown/031312051407FstoppersAndroidScreenshot2.jpg" // Replace with your mobile image URL
+          alt="Mobile App Screenshot"
+          className="mobile-image"
+        />
+      </div>
+      <div className="features-container">
+        <h1 className="features-heading">Key Features of the C2C App</h1>
+        <div className="features-grid">
+          <div className="feature-item-home">
+            <div className="icon-home">
+              <FaSearch size={40} color="#00aaff" />
+            </div>
+            <h3>Powerful Search</h3>
+            <p className="feature-p-home">
+              Easily filter and sort through our extensive inventory to find the perfect car for your needs.
+            </p>
+          </div>
+          
+          <div className="feature-item-home">
+            <div className="icon-home">
+              <FaHistory size={40} color="#00aaff" />
+            </div>
+            <h3>Vehicle History Reports</h3>
+            <p>
+              Access detailed reports on the condition and maintenance of each used car, ensuring transparency.
+            </p>
+          </div>
+          
+          <div className="feature-item-home">
+            <div className="icon-home">
+              <FaMoneyBillWave size={40} color="#00aaff" />
+            </div>
+            <h3>Financing Options</h3>
+            <p>
+              Explore flexible financing plans and get pre-approved, making the purchasing process seamless.
+            </p>
+          </div>
+          
+          <div className="feature-item-home">
+            <div className="icon-home">
+              <FaTruck size={40} color="#00aaff" />
+            </div>
+            <h3>Hassle-Free Delivery</h3>
+            <p>
+              Schedule a convenient time for your car to be delivered directly to your home or office.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   );
 };

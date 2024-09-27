@@ -54,6 +54,8 @@ export default function Navbar() {
   const [selectBrandValue, setSelectBrandValue] = useState('');
   const [cityValue, setCityValue] = useState('');
   const [activeButton, setActiveButton] = useState('new');
+  const [activeLink, setActiveLink] = useState('new');
+
   const states = [
     "Any", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", 
     "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", 
@@ -439,17 +441,17 @@ const handleCityChange = (event) => {
   return (
     <>
       <header className="header">
-        <div className="container">
+        <div className="container-navbar">
         <div className="brand">
       <Link to="/">
-  <div className="brand-logo">
+  {/* <div className="brand-logo"> */}
     <div>
         <img alt='c2c-logo' className="logo-c2c" src='/assets/C2Clogo.jpg' />
-    </div>
-    <div>
       <h1 className="brand-name-c2c">C2C</h1>
     </div>
-  </div>
+    <div>
+    </div>
+  {/* </div> */}
       </Link>
 </div>
           <nav className="nav">
@@ -470,13 +472,9 @@ const handleCityChange = (event) => {
           </button>
         ) : (
           <div className="location-search" onClick={toggleSearch}>
-              <div className="location-icon">
-                  <FaSearch size={24} />
-              </div>
-              <div className="location-text">
-                <p className="navbar-heading">Search</p>
-                </div>
-                </div>
+          <FaSearch className="search-icon" />
+              <input placeholder="search cars..." className="location-search-input" type="search" />
+          </div>
         )}
         <div>
           <input 
@@ -500,26 +498,25 @@ const handleCityChange = (event) => {
       </div>
       </div>
       {isSearchOpen && (
-        <div className="car-search-form">
+        <div className="car-search-form" style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
       <form>
         <div>
-        <div className="button-container">
-  <button
-  type="button"
-    className={`custom-button ${activeButton === 'new' ? 'active' : ''}`}
-    onClick={() => setActiveButton('new')}
+        <div className="link-container">
+  <a
+    href="#"
+    className={`button-custom-link ${activeLink === 'new' ? 'activee' : ''}`}
+    onClick={() => setActiveLink('new')}
   >
     New Cars
-  </button>
-  <button
-  type="button"
-    className={`custom-button ${activeButton === 'used' ? 'active' : ''}`}
-    onClick={() => setActiveButton('used')}
+  </a>
+  <a
+    href="#"
+    className={`button-custom-link ${activeLink === 'used' ? 'activee' : ''}`}
+    onClick={() => setActiveLink('used')}
   >
     Used Cars
-  </button>
+  </a>
 </div>
-
           <select
             id="selectOption"
             value={selectBrandValue}
@@ -555,31 +552,38 @@ const handleCityChange = (event) => {
             {renderCityOptions()}
           </select>
         </div>
-        <button type="submit" onClick={handleSubmit} className="search-button">Search</button>
+        <button type="submit" onClick={handleSubmit} className="search-button blue-button">Search</button>
       </form>
     </div>
       )}
     </div>
             {/* </div> */}
             <div className="icons">
-                <Link to ="/my-cars">
+            <div className="user-container-hiding">
             <div className="location">
+                <Link to ="/my-cars">
+            <div className="location hiding-icon-for-mobile">
               <div className="location-icon">
                   <FaHeart size={24} />
               </div>
               <div className="location-text">
                 <p className="navbar-heading">My Cart</p>
-                </div>
-                </div>
+              </div>
+            </div>
                 </Link>
-              <div className="location" title="Location" onClick={openModal}>
+            </div>  
+            </div>
+            <div className="location">
+            <div className="location" title="Location" onClick={openModal}>
                 <div className="location-icon">
                   <FaMapMarkerAlt size={24} />
                 </div>
                 <div className="location-text">
-                <p className="navbar-heading">Choose Location</p>
+                  <p className="navbar-heading">Choose Location</p>
                 </div>
-              </div>
+            </div>
+            </div>
+            <div className="user-container-hiding">
               <div className="location">
       {userId ? (
         <>
@@ -602,7 +606,8 @@ const handleCityChange = (event) => {
           </div>
         </div>
       )}
-    </div>
+              </div>
+            </div>
               
             </div>
           </div>

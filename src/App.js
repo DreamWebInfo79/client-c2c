@@ -13,7 +13,7 @@ import WhatsAppMenu from './components/WhatsAppMenu';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import BottomNav from './components/BottomNav';
-import SearchPage from './components/SearchComponent';
+import SearchPage from './components/Search';
 
 function App() {
   
