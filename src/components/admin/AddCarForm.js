@@ -277,7 +277,6 @@ const updatedCarDetails = {
   images: [...carDetails.images, ...uploadedImageUrls],
   features: selectedFeatures.map(feature => {
     const matchedFeature = featureIcons.find(f => f.label === feature.label);
-    console.log(matchedFeature);
     return {
       label: feature.label,
       iconName: matchedFeature ? matchedFeature.icon.name : 'Unknown Icon' // This adds the icon name
