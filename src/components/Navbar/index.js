@@ -453,7 +453,7 @@ const handleCityChange = (event) => {
     </div>
   {/* </div> */}
       </Link>
-</div>
+
           <nav className="nav">
             <ul>
               {/* <li>
@@ -462,9 +462,8 @@ const handleCityChange = (event) => {
               
             </ul>
           </nav>
-          <div className="actions">
-            {/* <div className="search"> */}
-            <div className={`search-container ${isSearchOpen ? "open" : ""}`}>
+          </div>
+          <div className={`search-container ${isSearchOpen ? "open" : ""}`}>
       <div className="search-header">
         {isSearchOpen ? (
           <button className="back-icon" onClick={closeSearch}>
@@ -557,7 +556,7 @@ const handleCityChange = (event) => {
     </div>
       )}
     </div>
-            {/* </div> */}
+          <div>
             <div className="icons">
             <div className="user-container-hiding">
             <div className="location">

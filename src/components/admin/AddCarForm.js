@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 import { FaCar, FaMoneyBill, FaCalendarAlt, FaMapMarkerAlt, FaRoad, FaSnowflake, FaWindowMaximize, FaCogs, FaBluetooth, FaKey, FaSun, FaCameraRetro, FaExclamationCircle } from 'react-icons/fa';
@@ -70,13 +70,6 @@ const conditionOptions = [
   { value: 'Used', label: 'Used' },
 ];
 
-// const locationOptions = [
-//   { value: 'Hyderabad, Telangana', label: 'Hyderabad, Telangana' },
-//   { value: 'Bangalore, Karnataka', label: 'Bangalore, Karnataka' },
-//   { value: 'Mumbai, Maharashtra', label: 'Mumbai, Maharashtra' },
-//   // Add more locations as needed
-// ];
-
 const locationOptions=Indian_states_cities_list.STATES_OBJECT
 
 const featureIcons = [ 
@@ -98,6 +91,26 @@ const featureIcons = [
   { icon: FaChargingStation, label: 'Electric Charging Port' },
   { icon: FaRulerCombined, label: 'Adjustable Steering' }
 ];
+
+const iconMapping = {
+  FaSnowflake:FaSnowflake,
+  FaWindowMaximize:FaWindowMaximize,
+  FaCogs:FaCogs,
+  FaBluetooth:FaBluetooth,
+  FaKey:FaKey,
+  FaSun:FaSun,
+  FaCameraRetro:FaCameraRetro,
+  FaCarBattery:FaCarBattery,
+  FaGasPump:FaGasPump,
+  FaMusic:FaMusic,
+  FaTachometerAlt:FaTachometerAlt,
+  FaFan:FaFan,
+  FaShieldAlt:FaShieldAlt,
+  FaHandsHelping:FaHandsHelping,
+  FaLightbulb:FaLightbulb,
+  FaChargingStation:FaChargingStation,
+  FaRulerCombined:FaRulerCombined
+};
 
 const defaultTechnicalSpecifications = [
   { label: 'Touchscreen Display', value: 'Yes' },
@@ -138,6 +151,10 @@ const CarForm = () => {
   const [isCustomBrand, setIsCustomBrand] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    console.log(carDetails)
+  }, [carDetails]);
+
 
   const handleAddSpecification = () => {
     const updatedSpecifications = [...specifications, { label: '', value: '' }];
@@ -170,6 +187,7 @@ const CarForm = () => {
 
 const toggleFeature = (iconObj) => {
   const isAlreadySelected = selectedFeatures.some(feature => feature.label === iconObj.label);
+  console.log()
 
   if (isAlreadySelected) {
     // If already selected, remove it from the selected features
@@ -197,79 +215,12 @@ const toggleFeature = (iconObj) => {
     setImagePreviews(previews);
   };
 
-  // const uploadImagesToCloudinary = async () => {
-  //   const uploadedImageUrls = [];
-    
-  //   for (const file of imageFiles) {
-  //     const formData = new FormData();
-  //     formData.append('file', file);
-  //     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-
-  //     const customImageName = `${carDetails.brand}-${carDetails.model}-${Date.now()}`;
-
-  //     // const customImageName="image_testing_by_jk_1";
-
-  //     formData.append('public_id', customImageName);
-
-  //     try {
-  //       const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
-  //       uploadedImageUrls.push(response.data.secure_url);
-  //     } catch (error) {
-  //       console.error('Error uploading image:', error);
-  //     }
-  //   }
-
-  //   setCarDetails({
-  //     ...carDetails,
-  //     images: [...carDetails.images, ...uploadedImageUrls],
-  //   });
-  //   setImageFiles([]); // Clear selected files after upload
-  //   setImagePreviews([]); // Clear previews
-  // };
-
   const handleImageDelete = (index) => {
     setCarDetails({
       ...carDetails,
       images: carDetails.images.filter((_, i) => i !== index),
     });
     setImagePreviews(imagePreviews.filter((_, i) => i !== index));
-  };
-
-  const handleFeatureAdd = () => {
-    if (selectedFeature) {
-      setCarDetails({
-        ...carDetails,
-        features: [...carDetails.features, selectedFeature],
-      });
-      setSelectedFeature(null);
-    }
-  };
-
-  const handleFeatureDelete = (index) => {
-    setCarDetails({
-      ...carDetails,
-      features: carDetails.features.filter((_, i) => i !== index),
-    });
-  };
-
-  const handleTechnicalSpecificationChange = (index, field, value) => {
-    const updatedSpecs = [...carDetails.technicalSpecifications];
-    updatedSpecs[index] = {
-      ...updatedSpecs[index],
-      [field]: value,
-    };
-    setCarDetails({
-      ...carDetails,
-      technicalSpecifications: updatedSpecs,
-    });
-  };
-
-
-  const handleSpecificationDelete = (index) => {
-    setCarDetails({
-      ...carDetails,
-      technicalSpecifications: carDetails.technicalSpecifications.filter((_, i) => i !== index),
-    });
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -316,12 +267,26 @@ const toggleFeature = (iconObj) => {
   
       // Invoke the Cloudinary image upload function and get URLs
       const uploadedImageUrls = await uploadImagesToCloudinary();
+
+      console.log(carDetails.features);
   
       // Temporarily update carDetails and log the result
-      const updatedCarDetails = {
-        ...carDetails,
-        images: [...carDetails.images, ...uploadedImageUrls],
-      };
+// Temporarily update carDetails and log the result
+const updatedCarDetails = {
+  ...carDetails,
+  images: [...carDetails.images, ...uploadedImageUrls],
+  features: selectedFeatures.map(feature => {
+    const matchedFeature = featureIcons.find(f => f.label === feature.label);
+    console.log(matchedFeature);
+    return {
+      label: feature.label,
+      iconName: matchedFeature ? matchedFeature.icon.name : 'Unknown Icon' // This adds the icon name
+    };
+  }),
+};
+
+
+      // console.log(updatedCarDetails);
       
   
       // Update state
@@ -341,7 +306,8 @@ const toggleFeature = (iconObj) => {
       // Ensure images are included before submitting
       if (carData.car.images && carData.car.images.length > 0) {
         try {
-          const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars', carData);
+          const response = await axios.post('http://localhost:3001/cars', carData);
+          // const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars', carData);
           setCarDetails({
             carId: uuidv4(),
             brand: '',
@@ -393,6 +359,8 @@ const toggleFeature = (iconObj) => {
     const uniqueFeatures = selectedFeatures.filter(feature => 
       !carDetails.features.some(existingFeature => existingFeature.label === feature.label)
     );
+
+    console.log(uniqueFeatures);
 
     setCarDetails({
       ...carDetails,
@@ -556,7 +524,6 @@ const toggleFeature = (iconObj) => {
                 <div key={index} className="feature-item">
                   <feature.icon size={24} />
                   <p>{feature.label}</p>
-                  <MdDelete size={24} className="delete-icon" onClick={() => handleFeatureDelete(index)} />
                 </div>
               ))}
             </div>

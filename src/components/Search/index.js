@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BsFilterRight } from "react-icons/bs";
+import { Slider, Box, Typography } from '@mui/material';
 
 import './index.css';
 
@@ -9,11 +10,16 @@ const CarFilter = () => {
   const [condition, setCondition] = useState('');
   const [carType, setCarType] = useState('');
   const [availability, setAvailability] = useState('');
-  const [priceRange, setPriceRange] = useState(1000000); // Default ₹10 Lacs
+  // const [priceRange, setPriceRange] = useState(1000000); // Default ₹10 Lacs
   const [fuelType, setFuelType] = useState('');
   const [transmission, setTransmission] = useState('');
   const [mileage, setMileage] = useState('');
-  const [brand, setBrand] = useState(''); // State for selected brand
+  const [brand, setBrand] = useState(''); 
+  const [priceRange, setPriceRange] = useState([100000, 5000000]);
+
+  const handleSliderChange = (value) => {
+    setPriceRange(value);
+  };
 
   const handleSearch = () => {
     const filters = {
@@ -42,6 +48,11 @@ const CarFilter = () => {
       <option value="Ford">Ford</option>
     </>
   );
+
+  const formatPrice = (price) => {
+    return price ? price.toLocaleString('en-IN') : 0;
+  };
+
 
   return (
     <div className="filter-container">
@@ -132,17 +143,21 @@ const CarFilter = () => {
 
       {/* Price Range Slider */}
       <div className="filter-group">
-        <label>Price Range: ₹0 to ₹20 Lacs</label>
-        <input
-          type="range"
-          min="100000"
-          max="5000000"
-          step="10000"
+      <Typography gutterBottom>Price Range: ₹0 to ₹50 Lacs</Typography>
+      <Box sx={{ width: 300 }}>
+        <Slider
           value={priceRange}
-          onChange={(e) => setPriceRange(e.target.value)}
+          onChange={handleSliderChange}
+          valueLabelDisplay="auto"
+          min={100000}
+          max={5000000}
+          step={10000}
         />
-        <p>Selected Price: ₹{parseInt(priceRange).toLocaleString('en-IN')}</p>
-      </div>
+      </Box>
+      <Typography>
+        Selected Price Range: ₹{formatPrice(priceRange[0])} to ₹{formatPrice(priceRange[1])}
+      </Typography>
+    </div>
       <div>
         <button className="search-button" onClick={handleSearch}>
           Search

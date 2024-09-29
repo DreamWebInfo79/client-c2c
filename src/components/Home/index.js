@@ -12,6 +12,7 @@ import { logEvent } from '../../analytics';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
 import { CarContext } from '../CarContext';
+import ReactPlayer from 'react-player'
 import SearchPage from '../Search';
 
 import './index.css';
@@ -102,10 +103,18 @@ const Home = () => {
     <div className="home-container">
       <div className="car-search-form-container">
       <div className="fullscreen-video-container">
-        <video autoPlay loop className="fullscreen-video">
-          <source src="/video/BGVideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+      <div class="youtube-video-container">
+    <iframe 
+        class="responsive-iframe"
+        src="https://www.youtube.com/embed/PtWdTavikfQ?autoplay=1" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+</div>
+
+
       </div>
 
      

@@ -221,7 +221,7 @@ const toggleFavourite = async (carId) => {
   </div>
   <div className='car-header-centre'>
     <p className='car-price'>Rs: {car.price}</p>
-    <p className='car-infos'>{car.kmDriven}</p>
+    <p className='car-infos'>Km: {car.kmDriven}</p>
   </div>
   <div className='car-header-right'>
   <div
@@ -234,7 +234,7 @@ const toggleFavourite = async (carId) => {
                     >
                       {user.favouriteCar[car.carId] ? <FaHeart /> : <FaRegHeart />}
                     </div>
-    <p> Add to favourite</p>
+    <p> Add to cart</p>
   </div>
 </div>
 
@@ -251,9 +251,9 @@ const toggleFavourite = async (carId) => {
     </Carousel>
   </div>
   <div className="car-info">
-    <h1 className="car-title">{car.model}</h1>
+    <h1 className="car-titlee">{car.model}</h1>
     
-    <p className="car-description">Car is at a good price and condition</p>
+    <p className="car-description">{car.paragraph}</p>
     <p className="car-detail"><strong>Year:</strong> {car.year}</p>
     <p className="car-detail"><strong>Mileage:</strong> {car.kmDriven} km</p>
     <p className="car-detail"><strong>Condition:</strong> {car.condition}</p>

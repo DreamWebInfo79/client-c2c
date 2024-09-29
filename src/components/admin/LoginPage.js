@@ -76,6 +76,7 @@ const LoginPage = ({ onLogin }) => {
       // console.log(response.data);
       // If login is successful, trigger onLogin and handle success response
       if (response.status===200) {
+        Cookies.set('c2cUserRole', response.data.role);
         updateUser({c2cUserEmail:email, c2cUserId:response.data.uniqueId, c2cUserRole:response.data.role});
         onLogin();
 
