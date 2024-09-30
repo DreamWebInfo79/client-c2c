@@ -154,17 +154,17 @@
 
 @media screen and (max-width:778px){
    .NewUcExCard{
-    display: flex;
-    height: auto;
-    width: 100%;
+    /* display: flex; */
+    /* height: auto; */
+    width: 200px !important;
    } 
-   .image_container {
+   /* .image_container {
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
     height: 154px !important;
     width: 100% !important;
-  }
+  } */
 
   
 .imagebox {
@@ -173,7 +173,7 @@
   background: rgba(229, 229, 229, 0.3);
   position: relative;
   height: 100%;
-  width: 140px !important;
+  /* width: 140px !important; */
 }
 
 .imagebox img {
@@ -181,7 +181,7 @@
   border: 0px;
   width: 100% !important;
   border-style: none;
-  width: 100%;
+  /* width: 100%; */
   object-fit: cover;
   height: 154px;
 }
@@ -489,7 +489,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #b40b0b !important;
+    background-color: #0b0000 !important;
     height: 180px !important;
     width: 100%;
   }
@@ -526,11 +526,31 @@
 
 .cars-brand-container-home {
   display: flex;
+  /* margin: 20px 0; */
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  /* margin: 20px 0; */
+  margin-left : 20px;
+  margin-right: 20px;
 }
+
+/* Mobile-specific Styles */
+@media screen and (max-width: 768px) {
+  .car-container-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 0;
+  }
+  .cars-brand-container-home{
+    display: flex;
+    flex-direction: column; 
+    height: 300px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+  }
+}
+
 
 /* Common Styles */
 .tabs-container {
