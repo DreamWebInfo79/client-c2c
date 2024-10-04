@@ -6,6 +6,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
 import { FaRegHeart, FaTag, FaCogs, FaMapMarkerAlt, FaCar, FaTachometerAlt, FaChair, FaGasPump, FaPaintBrush, FaUser, FaHeart } from 'react-icons/fa';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { FaMoneyBill, FaCalendarAlt, FaExclamationCircle } from 'react-icons/fa';
+import { MdPhotoCamera, MdDelete, MdAdd } from 'react-icons/md';
+import { FaCarBattery, FaMusic, FaFan, FaShieldAlt, FaHandsHelping, FaLightbulb, FaChargingStation, FaRulerCombined, FaOilCan, FaLeaf } from 'react-icons/fa';
+import Select from 'react-select';
 import { Carousel } from 'react-responsive-carousel';
 import { CiLocationOn } from "react-icons/ci";
 import { BiSolidRightArrowCircle } from "react-icons/bi";
@@ -20,6 +24,26 @@ import axios from 'axios';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import { UserContext } from '../UserContext';
 import { logEvent } from '../../analytics';
+
+const featureIcons = [ 
+  { icon: FaSnowflake, label: 'Air Conditioning' },
+  { icon: FaWindowMaximize, label: 'Power Windows' },
+  { icon: FaCogs, label: 'Power Steering' },
+  { icon: FaBluetooth, label: 'Bluetooth Connectivity' },
+  { icon: FaKey, label: 'Keyless Entry' },
+  { icon: FaSun, label: 'Sunroof' },
+  { icon: FaCameraRetro, label: 'Backup Camera' },
+  { icon: FaCarBattery, label: 'Battery Saver Mode' },
+  { icon: FaGasPump, label: 'Fuel Efficient' },
+  { icon: FaMusic, label: 'Premium Sound System' },
+  { icon: FaTachometerAlt, label: 'Tachometer' },
+  { icon: FaFan, label: 'Ventilated Seats' },
+  { icon: FaShieldAlt, label: 'Anti-Lock Brakes (ABS)' },
+  { icon: FaHandsHelping, label: 'Parking Assistance' },
+  { icon: FaLightbulb, label: 'LED Headlights' },
+  { icon: FaChargingStation, label: 'Electric Charging Port' },
+  { icon: FaRulerCombined, label: 'Adjustable Steering' }
+];
 
 const CarDetails = () => {  
   const { user, clearUser, updateUser } = useContext(UserContext);
@@ -188,6 +212,8 @@ const toggleFavourite = async (carId) => {
     FaCameraRetro: FaCameraRetro
   };
 
+  
+
   if (loading) {
     return (
       <div className="loading-spinner-container">
@@ -325,10 +351,11 @@ const toggleFavourite = async (carId) => {
   <h1 className="feature-heading-text">Features</h1>
   <ul style={{ display: "flex", justifyContent: "center", listStyleType: "none", padding: 0, gap: '10px', margin: 0, flexWrap: 'wrap' }}>
   {car.features.map((feature, index) => {
-    const IconComponent = iconMapping[feature.icon]; // Lookup the icon component
+    const featureData = featureIcons.find(f => f.label === feature.label);
+    const IconComponent = featureData ? featureData.icon : null;
     return (
       <li key={index} className='feature'>
-        {IconComponent && <IconComponent size={26} />}
+        {IconComponent && <IconComponent size={26} style={{ marginRight: '10px' }} />}
         <p>{feature.label}</p>
       </li>
     );

@@ -268,27 +268,17 @@ const toggleFeature = (iconObj) => {
       // Invoke the Cloudinary image upload function and get URLs
       const uploadedImageUrls = await uploadImagesToCloudinary();
 
-      console.log(carDetails.features);
   
       // Temporarily update carDetails and log the result
 // Temporarily update carDetails and log the result
 const updatedCarDetails = {
   ...carDetails,
-  images: [...carDetails.images, ...uploadedImageUrls],
-  features: selectedFeatures.map(feature => {
-    const matchedFeature = featureIcons.find(f => f.label === feature.label);
-    return {
-      label: feature.label,
-      iconName: matchedFeature ? matchedFeature.icon.name : 'Unknown Icon' // This adds the icon name
-    };
-  }),
+  images: [...carDetails.images, ...uploadedImageUrls], 
 };
 
 
-      // console.log(updatedCarDetails);
       
   
-      // Update state
       setCarDetails(updatedCarDetails);
   
       // Use a short delay to ensure state is updated (if needed)
@@ -305,8 +295,8 @@ const updatedCarDetails = {
       // Ensure images are included before submitting
       if (carData.car.images && carData.car.images.length > 0) {
         try {
-          const response = await axios.post('http://localhost:3001/cars', carData);
-          // const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars', carData);
+          // const response = await axios.post('http://localhost:3001/cars', carData);
+          const response = await axios.post('https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/cars', carData);
           setCarDetails({
             carId: uuidv4(),
             brand: '',
