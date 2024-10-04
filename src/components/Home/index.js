@@ -101,26 +101,10 @@ const Home = () => {
   
   return (
     <div className="home-container">
-      <div className="car-search-form-container">
-      <div className="fullscreen-video-container">
-      <div class="youtube-video-container">
-    <iframe 
-        class="responsive-iframe"
-        src="https://www.youtube.com/embed/PtWdTavikfQ?autoplay=1" 
-        title="YouTube video player" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
-</div>
-
-
-      </div>
-
+      {/* <div className="car-search-form-container"> */}
+        <img style={{ width: "100%", height: "100%",backgroundSize: "cover" }} src="/assets/000.png" alt="main-image" />
      
-    <div className='search-form-container'>
-    </div>
-      </div>
+      {/* </div> */}
     <SearchPage/>
 
       <div className="car-container-main">
@@ -231,6 +215,10 @@ const Home = () => {
         </div>
 
       </div>
+      <img style={{ width: "100%", height: "100%",backgroundSize: "cover" }} src="/assets/001.png" alt="main-image" />
+      <img style={{ width: "100%", height: "100%",backgroundSize: "cover" }} src="/assets/002.png" alt="main-image" />
+      <img style={{ width: "100%", height: "100%",backgroundSize: "cover" }} src="/assets/003.png" alt="main-image" />
+
       <div className="app-container">
       <div className="image-container">
         {/* Mobile Image */}
@@ -285,7 +273,25 @@ const Home = () => {
         </div>
       </div>
     </div>
-    </div>
+    <img style={{ width: "100%", height: "100%",backgroundSize: "cover" }} src="/assets/004.png" alt="main-image" />
+  {/* <div className="fullscreen-video-container"> * */}
+      {/* <div class="youtube-video-container"> */}
+      <iframe 
+    class="responsive-iframe"
+    src="https://www.youtube.com/embed/PtWdTavikfQ?autoplay=1&loop=1&playlist=PtWdTavikfQ&rel=0&modestbranding=1&controls=0" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+
+
+
+</div>
+
+      // </div>
+
+    // </div>
   );
 };
 
