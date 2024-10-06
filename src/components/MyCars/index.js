@@ -14,10 +14,10 @@ const MyCars = () => {
   const [loading, setLoading] = useState(true);
   const [favourites, setFavourites] = useState({});
   const navigate = useNavigate();
-
+  console.log(user)
   // Fetch favorite cars
   const fetchFavoriteCars = async () => {
-    if (user) {
+    if (user.c2cUserId) {
       try {
         const response = await axios.get(
           `https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/car/favorites/${user.c2cUserId}`
