@@ -9,23 +9,7 @@
   .NewUcExCard{
     width: 300px;
   }
-/* 
-  @media screen and (max-width:800px){
-    .NewUcExCard{
-      width: 90%;
-    }
-   
-  
-    .car-image-container img {
-      width: 100%;
-      height: auto;
-      object-fit: cover; 
-      max-width: 100%;
-    }
 
-    
-  }
-   */
   .car-image-container {
     width: 100%;
     display: flex;
@@ -60,14 +44,6 @@
     .free-test-drive{
       width: 50px;
 
-    }
-
-    .book-now{
-
-    }
-
-    .car-info{
-      /* display: none !important; */
     }
     .car-details{
       margin-top: 430px;
@@ -393,20 +369,6 @@ h1 {
     font-size: 28px;
     color: #333;
 }
-/* 
-.price-container{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 5px 4px 8px rgba(0, 0, 0, 0.1);
-
-} */
-
 
 .car-info {
   background-color: #fff;
@@ -488,12 +450,6 @@ h1 {
 .social-icon:hover {
   color: #000;
 }
-/* .legend{
-  width: 150px;
-  height: 150px;
-} */
-
-/* styles.css */
 
 .line {
   border: 0;
@@ -504,91 +460,6 @@ h1 {
   align-self: center; /* Center align the line */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Black shadow */
 }
-
-/* 
-@media only screen and (max-width: 768px) {
- 
-  .car-header-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .car-header-left,
-  .car-header-centre,
-  .car-header-right {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 15px;
-  }
-
-  .car-price {
-    font-size: 20px;
-  }
-
-  .car-header-left h1 {
-    font-size: 18px;
-  }
-
-  .btn-container {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .book-now, .free-test-drive {
-    width: 100%;
-    font-size: 14px;
-  }
-
-
-  .car-info {
-    margin-top: 15px;
-  }
-} */
-/* 
-@media only screen and (max-width: 480px) {
-  
-  .car-details-container {
-    padding: 10px;
-  }
-
-  .car-header-container {
-    flex-direction: column;
-  }
-
-  .car-header-left h1 {
-    font-size: 16px;
-  }
-
-  .car-header-right {
-    font-size: 14px;
-  }
-
-  .car-price {
-    font-size: 18px;
-  }
-
-  .btn-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .book-now, .free-test-drive {
-    font-size: 12px;
-  }
-
-  .car-image-container img {
-    width: 100%;
-  }
-
-  .car-info {
-    margin-top: 10px;
-  }
-
-  .social-icon {
-    font-size: 20px;
-  }
-} */
-
 
 .car-details-main{
   display: flex;

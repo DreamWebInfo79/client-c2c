@@ -82,7 +82,7 @@ export default function Navbar() {
   const handleLocationSearch =(e)=>{
     setSearchQuery(e.target.value);
   }
-
+  
   const handleCarClick = (brand,carId) => {
     navigate(`/car/${brand}/${carId}`);
     setSearch('');
