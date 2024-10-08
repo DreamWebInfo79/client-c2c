@@ -14,7 +14,6 @@ const MyCars = () => {
   const [loading, setLoading] = useState(true);
   const [favourites, setFavourites] = useState({});
   const navigate = useNavigate();
-  console.log(user)
   // Fetch favorite cars
   const fetchFavoriteCars = async () => {
     if (user.c2cUserId) {
