@@ -66,6 +66,7 @@ const TermsAndConditions = () => {
                     <li>Visa</li>
                     <li>Mastercard</li>
                     <li>PayPal</li>
+                    <li>Cash</li>
                 </ul>
             </div>
             
@@ -89,7 +90,7 @@ const TermsAndConditions = () => {
             
             <div style={sectionStyle}>
                 <h2 style={headerStyle}>8. Contact Us</h2>
-                <p>If you have any questions about these Terms, please contact us at support@oldcarsellingwebsite.com.</p>
+                <p>If you have any questions about these Terms, please contact us at support@cars2customer.com.</p>
             </div>
         </div>
     );

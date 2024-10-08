@@ -1,6 +1,7 @@
 import React from "react";
 import { FaFacebook, FaTwitter, FaWhatsapp, FaInstagram } from "react-icons/fa";
 import './index.css';
+import { Link } from 'react-router-dom';
 import { logEvent } from '../../analytics';
 
 export default function Component() {
@@ -20,13 +21,10 @@ export default function Component() {
       <footer id="footer" className="footer">
         <div className="footer-container">
           <div className="footer-links">
-            <a className="footer-link-item" href="https://www.car2customer.com/about-us/" title="About Us">About Us</a>
-            {/* <a className="footer-link-item" href="https://www.car2customer.com/career/" title="Careers">Careers</a> */}
-            <a className="footer-link-item" href="https://www.car2customer.com/used/sell/terms/" title="Terms & Conditions">Terms & Conditions</a>
-            <a className="footer-link-item" href="https://www.car2customer.com/contactus/" title="Advertise">Advertise</a>
-          </div>
-
-          <div className="footer-content">
+            <Link className="footer-link-item" to="/about-us" title="About Us">About Us</Link>
+            <Link className="footer-link-item" to="/terms-and-conditions" title="Terms & Conditions">Terms & Conditions</Link>
+          </div>         
+           <div className="footer-content">
             <div className="footer-section">
               <h1 className="footer-text">Connect with us!!</h1>
               <div className="social-links">

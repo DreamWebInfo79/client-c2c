@@ -14,6 +14,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './App.css';
 import BottomNav from './components/BottomNav';
 import SearchPage from './components/Search';
+import TermsAndConditions from './components/TermsAndConditions';
+import About from './components/About';
 
 function App() {
   
@@ -34,6 +36,8 @@ function App() {
           <Route path="/car/:brand/:id" element={<CarDetails />} />
           <Route path="/agent-login" element={<Admin />} />
           <Route path="/my-cars" element={<MyCars/>} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions/>} />
+          {/* <Route path="/about-us" element={<About/>} /> */}
         </Routes>
         <Footer />
         <WhatsAppMenu />

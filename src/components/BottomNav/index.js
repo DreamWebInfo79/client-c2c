@@ -10,6 +10,7 @@ import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { CarContext } from '../CarContext';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import {Oval} from 'react-loader-spinner'
 
 
 
@@ -42,10 +43,13 @@ const BottomNav = () => {
   const [activeButton, setActiveButton] = useState('new');
   const [activeLink, setActiveLink] = useState('new');
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [otpErrorMessage, setOtpErrorMessage] = useState('');
 
 
     const openLoginModal = () => setLoginModalIsOpen(true);
     const handleEmailChange = (event) => setEmail(event.target.value);
+    const handleOtpChange = (event) => setOtp(event.target.value);
+
 
 
 
@@ -289,6 +293,8 @@ const BottomNav = () => {
         setUserName(email); // Replace with actual API call if needed
       }
     }, []);
+
+
     
 
     return (
