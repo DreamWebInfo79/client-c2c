@@ -379,9 +379,14 @@ const toggleFavourite = async (carId) => {
     </div>   
         </div>
         <h1 className="related-cars-heading">Related Cars</h1>
-        <div className="cars-brand-container">
-        {cars.map(car => (
-              <div className="NewUcExCard posR"  onClick={() => navigate(`/car/${car.brand}/${car.carId}`)} key={car.carId}>
+        <div className="cars-brand-container-home">
+          {cars.length > 0 ? (
+            cars.map((car) => (
+              <div
+                className="NewUcExCard posR"
+                onClick={() => navigate(`/car/${car.brand}/${car.carId}`)}
+                key={car.carId}
+              >
                 <div className="image_container posR">
                   <div className="imagebox hover">
                     <img
@@ -398,9 +403,9 @@ const toggleFavourite = async (carId) => {
                   <div className="title_heart_section">
                     <div className="titlebox hover">
                       <h3 className="title">
-                        <div  title={car.model} className="car-link">
-                          <p>{`${car.year} ${car.model}`}</p>
-                        </div>
+                        <a title={car.model} className="car-link">
+                          {`${car.year} ${car.model}`}
+                        </a>
                       </h3>
                       <div className="dotsDetails">
                         {`${car.year} • ${car.condition}`}
@@ -409,10 +414,12 @@ const toggleFavourite = async (carId) => {
                     <div
                       id="shortlistHeartIcon"
                       className="shortlist NewUcrShortList"
-                      onClick={() => "toggleFavourite"(car.carId)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent click event from propagating to the card
+                        toggleFavourite(car.carId);
+                      }}
                     >
-                      {/* {"favourites"[car.carId] ? <FaHeart /> : <FaRegHeart />} */}
-                      <FaRegHeart />
+                      {user.favouriteCar[car.carId] ? <FaHeart /> : <FaRegHeart />}
                     </div>
                   </div>
                   <div className="Price hover">
@@ -433,7 +440,10 @@ const toggleFavourite = async (carId) => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <p>No cars available for this brand.</p>
+          )}
         </div>
       </div>
       <Modal
