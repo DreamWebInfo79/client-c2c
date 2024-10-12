@@ -14,7 +14,6 @@ import {Oval} from 'react-loader-spinner'
 
 
 
-
 const BottomNav = () => {
     
   const [isRegister, setIsRegister] = useState(false);
@@ -23,7 +22,6 @@ const BottomNav = () => {
   
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [otpErrorMessage, setOtpErrorMessage] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otp, setOtp] = useState(''); // OTP state
@@ -45,10 +43,12 @@ const BottomNav = () => {
   const [activeButton, setActiveButton] = useState('new');
   const [activeLink, setActiveLink] = useState('new');
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [otpErrorMessage, setOtpErrorMessage] = useState('');
 
 
     const openLoginModal = () => setLoginModalIsOpen(true);
     const handleEmailChange = (event) => setEmail(event.target.value);
+
 
 
 
@@ -294,6 +294,8 @@ const BottomNav = () => {
         setUserName(email); // Replace with actual API call if needed
       }
     }, []);
+
+
     
 
     return (
