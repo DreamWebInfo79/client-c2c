@@ -71,8 +71,8 @@ const BottomNav = () => {
       try {
         const { credential } = response;
         const googleResponse = await axios.post(
-          // 'http://localhost:3001/auth/google/callback',        
-          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+          'http://localhost:3001/auth/google/callback',        
+          // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
           { token: credential },
           { withCredentials: true }
         );
@@ -499,8 +499,8 @@ const BottomNav = () => {
             </div>
           ) : (
             <GoogleLogin
-              onSuccess={handleRegisterSuccess}
-              onFailure={handleRegisterFailure}
+              onSuccess={handleLoginSuccess}
+              onFailure={handleLoginFailure}
               cookiePolicy={'single_host_origin'}
               render={(renderProps) => (
                 <button
@@ -513,7 +513,7 @@ const BottomNav = () => {
                     alt="Google Logo"
                     style={{ marginRight: '10px' }}
                   />
-                  Sign up with Google
+                  Sign in with Google
                 </button>
               )}
             />
