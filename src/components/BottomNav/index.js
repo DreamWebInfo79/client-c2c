@@ -71,8 +71,8 @@ const BottomNav = () => {
       try {
         const { credential } = response;
         const googleResponse = await axios.post(
-          'http://localhost:3001/auth/google/callback',        
-          // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+          // 'http://localhost:3001/auth/google/callback',        
+          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
           { token: credential },
           { withCredentials: true }
         );
