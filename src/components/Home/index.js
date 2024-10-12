@@ -220,14 +220,7 @@ const Home = () => {
       <img style={{ width: "100%", height: "100%",backgroundSize: "cover" }} src="/assets/003.png" alt="main-image" />
 
       <div className="app-container">
-      <div className="image-container">
-        {/* Mobile Image */}
-        <img
-          src="https://www.mytechlogy.com/upload/by_users/TomBrown/031312051407FstoppersAndroidScreenshot2.jpg" // Replace with your mobile image URL
-          alt="Mobile App Screenshot"
-          className="mobile-image"
-        />
-      </div>
+      
       <div className="features-container">
         <h1 className="features-heading">Key Features of the C2C App</h1>
         <div className="features-grid">

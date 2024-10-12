@@ -10,6 +10,8 @@ import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { CarContext } from '../CarContext';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import {Oval} from 'react-loader-spinner'
+
 
 
 
@@ -21,6 +23,7 @@ const BottomNav = () => {
   
   const [loginModalIsOpen, setLoginModalIsOpen] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [otpErrorMessage, setOtpErrorMessage] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [otp, setOtp] = useState(''); // OTP state
@@ -60,14 +63,16 @@ const BottomNav = () => {
     
     const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
     const toggleConfirmPasswordVisibility = () => setConfirmPasswordVisible(!confirmPasswordVisible);
+    const handleOtpChange = (event) => setOtp(event.target.value);
+
 
     const handleLoginSuccess = async (response) => {
       setIsLoading(true);
       try {
         const { credential } = response;
         const googleResponse = await axios.post(
-          'http://localhost:3001/auth/google/callback',        
-          // 'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
+          // 'http://localhost:3001/auth/google/callback',        
+          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/auth/google/callback',
           { token: credential },
           { withCredentials: true }
         );
