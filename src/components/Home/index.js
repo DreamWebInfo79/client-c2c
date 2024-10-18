@@ -64,7 +64,8 @@ const Home = () => {
       if (isFavourite) {
         // API call to remove the car from favorites
         const response = await axios.post(
-          `https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove`,
+          // `http://localhost:3001/favorites/remove`,
+          'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/remove',
           { uniqueId: user.c2cUserId, carId }
         );
 
@@ -74,6 +75,7 @@ const Home = () => {
       } else {
         // API call to add the car to favorites
         const response = await axios.post(
+          // 'http://localhost:3001/favorites/add',
           'https://7fk3e7jqgbgy7oaji5dudhb6jy0grwiu.lambda-url.ap-south-1.on.aws/favorites/add',
           {
             uniqueId: user.c2cUserId,
